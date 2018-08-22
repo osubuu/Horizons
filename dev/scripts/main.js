@@ -101,13 +101,13 @@ travelApp.getStat = statType => {
 travelApp.getStat(travelApp.userPermCouple);
 
 // Init function to hold all our functions in order
-travelApp.init = function () {
+travelApp.init = function() {
   // travelApp.getUserInput();
   // travelApp.displayStats();
 };
 
 // Document Ready to call our init() function and start the app
-$(function () {
+$(function() {
   // travelApp.init();
 });
 
