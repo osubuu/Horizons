@@ -43,21 +43,24 @@ travelApp.statArray = [
     direction: "max"
   }
 ];
-
+// This function holds all our events funtions 
 travelApp.eventsFunction = () => {
+  // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
 };
 
 /* 1. GET USER INPUT */
-// Purpose of travel
+// This event function gets the user input by the id attribute and loops it into the traveApp.userStat array. When the id from the user matches the id in oneof the objects, we can target other properties from that object. I.e. stat, direction, description.
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     // Loop through array and match object to user input
     travelApp.statArray.forEach(item => {
       if (item.id === inputID) {
+        // Store user stat in a variable
         travelApp.userStat = item.stat;
+        // Call the travelApp.getStat function and pass in the stat and direction values.
         travelApp.getStat(item.stat, item.direction);
       }
     });
@@ -184,14 +187,15 @@ travelApp.getStat = (statType, direction) => {
 travelApp.getStat(travelApp.userPermCouple);
 
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
+  // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   // travelApp.getUserInput();
   // travelApp.displayStats();
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
