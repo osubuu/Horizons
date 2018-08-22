@@ -92,7 +92,7 @@ travelApp.getStat = statType => {
     }
   }).then(res => {
     console.log(res);
-    console.log(travelApp.determineBot3(res, statType));
+    console.log(travelApp.getRecommendations(res, statType, "max"));
   });
 };
 // Eventually this will be called in our display function
@@ -109,8 +109,7 @@ $(function() {
   // travelApp.init();
 });
 
-// Calculate top 3 countries function
-
+// Determine whether we want the top 3 or bottom 3 rankings
 travelApp.getRecommendations = (res, statType, direction) => {
   if (direction === "max") {
     travelApp.determineTop3(res, statType);
@@ -119,6 +118,7 @@ travelApp.getRecommendations = (res, statType, direction) => {
   }
 };
 
+// Calculate Top 3 Rankings
 travelApp.determineTop3 = (result, stat) => {
   let heap = new MinHeap();
 
@@ -160,15 +160,9 @@ travelApp.determineTop3 = (result, stat) => {
   return top3;
 };
 
-// do -1 math with bottom 3 logic
+// Calculate Bottom 3 Rankings
 travelApp.determineBot3 = (result, stat) => {
   let heap = new MinHeap();
-  let heap2 = new MinHeap();
-
-  heap2.add(-1);
-  heap2.add(-2);
-  heap2.add(-3);
-  console.log(heap2.peek());
 
   let bot3 = [];
   let property = stat;
@@ -189,7 +183,7 @@ travelApp.determineBot3 = (result, stat) => {
     } else {
       console.log(heap.peek() + " vs " + stat);
 
-      if (stat < heap.peek()) {
+      if (stat > heap.peek()) {
         console.log(
           "bigger than " + heap.peek() + ", " + stat + " being added"
         );
