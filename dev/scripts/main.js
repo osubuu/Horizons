@@ -1,64 +1,64 @@
-/* NAMESPACE */
-const app = {};
+const MinHeap = require("fastpriorityqueue");
+const MaxHeap = require("heap-min-max").MaxHeap;
+
+// Create an object representing our travel app (NAMESPACE)
+const travelApp = {};
 
 /* 1. GET USER INPUT */
 // Purpose of travel
-app.getUserPurpose = () => {
+travelApp.getUserPurpose = () => {
   // display stats question
   // listen for the user click
 };
 
 /* 2. MAKE THE INQSTATS API REQUEST */
-app.getStatsAPIInfo = () => {
+travelApp.getStatsAPIInfo = () => {
   // based on click from user, send the predetermined statistic in the API request
   // send ajax request to inqstats
 };
 
 /* 3. Calculate top 3 countries */
-app.calculateDestinations = () => {
+travelApp.calculateDestinations = () => {
   //Filter through API response based on the top criteria
 };
 
 /* 4. Display destinations */
-app.displayDestinations = () => {
-  // Append top 3 countries to screen
+travelApp.displayDestinations = () => {
+  // travelAppend top 3 countries to screen
   // Explain briefly reasoning for the top destinations
 };
 
 /* 5. Reset if needed */
-app.reset = () => {
-  // reset app
+travelApp.reset = () => {
+  // reset travelApp
 };
 
 /* ====================
 EXTRA STUFF
 
 /* 1. MAKE MAP */
-app.generateMap = () => {
+travelApp.generateMap = () => {
   // use JVQ library
 };
 
 // Selection and ranking of stats
-app.getUserRanking = () => {
+travelApp.getUserRanking = () => {
   // listen for user inputs
 };
 
 // Get info from Wikipedia (AJAX)
-app.getWiki = () => {
+travelApp.getWiki = () => {
   // get extract
 };
 
 // Get image
-app.getPixabay = () => {
+travelApp.getPixabay = () => {
   // get country image(s)
 };
 
 // change color of three destination on map
 // append information cards to the countries in the map
 // append wiki + pixabay results
-
-// Create an object representing our travel app
-const travelApp = {};
 
 // (To be done) Listen for user click event to select purpose of travel
 // Insert event-listener function here
@@ -92,6 +92,7 @@ travelApp.getStat = statType => {
     }
   }).then(res => {
     console.log(res);
+    console.log(travelApp.determineBot3(res, statType));
   });
 };
 // Eventually this will be called in our display function
@@ -107,3 +108,102 @@ travelApp.init = function() {
 $(function() {
   // travelApp.init();
 });
+
+// Calculate top 3 countries function
+
+travelApp.getRecommendations = (res, statType, direction) => {
+  if (direction === "max") {
+    travelApp.determineTop3(res, statType);
+  } else if (direction === "min") {
+    travelApp.determineBot3(res, statType);
+  }
+};
+
+travelApp.determineTop3 = (result, stat) => {
+  let heap = new MinHeap();
+
+  let top3 = [];
+  let property = stat;
+
+  let countryCounter = 0;
+
+  result.map(country => {
+    let stat = Number(country[property]);
+    console.log(stat);
+    let countryName = country.countryName;
+    let countryObj = { name: countryName, stat: stat };
+
+    if (countryCounter < 3) {
+      console.log("first three: " + stat);
+      heap.add(stat);
+      top3.push(countryObj);
+      countryCounter++;
+    } else {
+      console.log(heap.peek() + " vs " + stat);
+
+      if (stat > heap.peek()) {
+        console.log(
+          "bigger than " + heap.peek() + ", " + stat + " being added"
+        );
+
+        for (let n = 0; n < top3.length; n++) {
+          if (top3[n].stat === heap.peek()) {
+            top3.splice(n, 1, countryObj);
+          }
+        }
+
+        heap.poll();
+        heap.add(stat);
+      }
+    }
+  });
+  return top3;
+};
+
+// do -1 math with bottom 3 logic
+travelApp.determineBot3 = (result, stat) => {
+  let heap = new MinHeap();
+  let heap2 = new MinHeap();
+
+  heap2.add(-1);
+  heap2.add(-2);
+  heap2.add(-3);
+  console.log(heap2.peek());
+
+  let bot3 = [];
+  let property = stat;
+
+  let countryCounter = 0;
+
+  result.map(country => {
+    let stat = Number(country[property]) * -1;
+    console.log(stat);
+    let countryName = country.countryName;
+    let countryObj = { name: countryName, stat: stat };
+
+    if (countryCounter < 3) {
+      console.log("first three: " + stat);
+      heap.add(stat);
+      bot3.push(countryObj);
+      countryCounter++;
+    } else {
+      console.log(heap.peek() + " vs " + stat);
+
+      if (stat < heap.peek()) {
+        console.log(
+          "bigger than " + heap.peek() + ", " + stat + " being added"
+        );
+
+        for (let n = 0; n < bot3.length; n++) {
+          if (bot3[n].stat === heap.peek()) {
+            bot3.splice(n, 1, countryObj);
+          }
+        }
+
+        heap.poll();
+        heap.add(stat);
+      }
+    }
+  });
+  return bot3;
+};
