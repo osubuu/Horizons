@@ -3,9 +3,63 @@ const MinHeap = require("fastpriorityqueue");
 // Create an object representing our travel app (NAMESPACE)
 const travelApp = {};
 
+travelApp.statArray = [
+  {
+    id: 'button-vacation',
+    stat: 'density',
+    direction: 'min'
+  },
+  {
+    id: 'button-visit-visa',
+    stat: 'tourist_arrivals',
+    direction: 'max'
+  },
+  {
+    id: 'button-education',
+    stat: 'education_expenditure',
+    direction: 'max'
+  },
+  {
+    id: 'button-work-holiday',
+    stat: 'jobless_rate',
+    direction: 'min'
+  },
+  {
+    id: 'button-perm-solo',
+    stat: 'gini',
+    direction: 'min'
+  },
+  {
+    id: 'button-perm-couple',
+    stat: 'happiness_index',
+    direction: 'max'
+  },
+  {
+    id: 'button-perm-family',
+    stat: 'hdi',
+    direction: 'max'
+  }
+]
+
+travelApp.eventsFunction = () => {
+  travelApp.getUserPurpose();
+};
+
 /* 1. GET USER INPUT */
 // Purpose of travel
 travelApp.getUserPurpose = () => {
+  $('.travel-form__button').on('click', function () {
+    // Store user input in variable
+    const inputID = $(this).attr('id');
+    // Loop through array and match object to user input
+    travelApp.statArray.forEach((item) => {
+      if (item.id === inputID) {
+        travelApp.getStat(item.stat, item.direction);
+      }
+    });
+
+
+  });
   // display stats question
   // listen for the user click
 };
@@ -23,6 +77,7 @@ travelApp.calculateDestinations = () => {
 
 /* 4. Display destinations */
 travelApp.displayDestinations = () => {
+
   // travelAppend top 3 countries to screen
   // Explain briefly reasoning for the top destinations
 };
@@ -79,7 +134,7 @@ travelApp.statKey = "5d3687c7c1788d5f";
 travelApp.statURL = "http://inqstatsapi.inqubu.com";
 
 // The getStat function is used to get a single statistic from the API for all countries. It returns the return value from $.ajax().
-travelApp.getStat = statType => {
+travelApp.getStat = (statType, direction) => {
   $.ajax({
     url: travelApp.statURL,
     method: "GET",
@@ -94,21 +149,31 @@ travelApp.getStat = statType => {
 
     // calling the calculation function to get the top3/bottom3 countries
     // must find a way to store whether we want a "min" or "max" value
-    console.log(travelApp.getRecommendations(res, statType, "min"));
+    console.log(travelApp.getRecommendations(res, statType, direction));
   });
 };
 // Eventually this will be called in our display function
 travelApp.getStat(travelApp.userPermCouple);
 
 // Init function to hold all our functions in order
+<<<<<<< HEAD
 travelApp.init = function() {
+=======
+travelApp.init = function () {
+  travelApp.eventsFunction();
+>>>>>>> dabeb7e0e021a5e7fab0a2284a3e82a82d063a91
   // travelApp.getUserInput();
   // travelApp.displayStats();
 };
 
 // Document Ready to call our init() function and start the app
+<<<<<<< HEAD
 $(function() {
   // travelApp.init();
+=======
+$(function () {
+  travelApp.init();
+>>>>>>> dabeb7e0e021a5e7fab0a2284a3e82a82d063a91
 });
 
 // Determine whether we want the top 3 or bottom 3 rankings
