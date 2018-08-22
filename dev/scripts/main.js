@@ -1,5 +1,4 @@
 const MinHeap = require("fastpriorityqueue");
-const MaxHeap = require("heap-min-max").MaxHeap;
 
 // Create an object representing our travel app (NAMESPACE)
 const travelApp = {};
@@ -92,7 +91,10 @@ travelApp.getStat = statType => {
     }
   }).then(res => {
     console.log(res);
-    console.log(travelApp.determineBot3(res, statType));
+
+    // calling the calculation function to get the top3/bottom3 countries
+    // must find a way to store whether we want a "min" or "max" value
+    console.log(travelApp.getRecommendations(res, statType, "min"));
   });
 };
 // Eventually this will be called in our display function
@@ -109,101 +111,128 @@ $(function() {
   // travelApp.init();
 });
 
-// Calculate top 3 countries function
-
+// Determine whether we want the top 3 or bottom 3 rankings
 travelApp.getRecommendations = (res, statType, direction) => {
   if (direction === "max") {
-    travelApp.determineTop3(res, statType);
+    return travelApp.determineTop3(res, statType);
   } else if (direction === "min") {
-    travelApp.determineBot3(res, statType);
+    return travelApp.determineBot3(res, statType);
   }
 };
 
+/* CALCULATE TOP 3 RANKINGS */
 travelApp.determineTop3 = (result, stat) => {
+  // initialize a heap array to keep track of the 3 largest stat scores
   let heap = new MinHeap();
 
+  // initialize a secondary array to keep track of the 3 lowest scores AND
+  // the associated country to each score
   let top3 = [];
+
+  // store the stat type into a property variable for easier use
   let property = stat;
 
+  // start a country counter at 0 just for the sake of adding the first 3 countries into the heap
   let countryCounter = 0;
 
+  // go through each country from the results of the AJAX call to INQStats
   result.map(country => {
+    // store the stat score and the name of the current country in variables
     let stat = Number(country[property]);
-    console.log(stat);
     let countryName = country.countryName;
-    let countryObj = { name: countryName, stat: stat };
 
+    // store both stat and country name into an object to be added into the top 3 if needed
+    let countryObj = {
+      name: countryName,
+      stat: stat
+    };
+
+    // if it's the first 3 countries from the result, no work required. Just add them directly into both the heap and top3 variables
     if (countryCounter < 3) {
-      console.log("first three: " + stat);
       heap.add(stat);
       top3.push(countryObj);
+
+      // increment countryCounter to know when we're past the first 3 countries
       countryCounter++;
     } else {
-      console.log(heap.peek() + " vs " + stat);
-
+      // CONDITION TO CHECK IF the current country stat is greater than any of the current stats in the current top 3 countries
       if (stat > heap.peek()) {
-        console.log(
-          "bigger than " + heap.peek() + ", " + stat + " being added"
-        );
-
+        // if so, find the location of the smallest stat score in the current top 3 array and replace it with the new stat and its associated country
         for (let n = 0; n < top3.length; n++) {
           if (top3[n].stat === heap.peek()) {
             top3.splice(n, 1, countryObj);
           }
         }
 
+        // remove the smallest stat score from the heap as well
         heap.poll();
+
+        // add the new smallest score onto the heap
         heap.add(stat);
       }
     }
   });
+  // return top 3 scores with countries
   return top3;
 };
 
-// do -1 math with bottom 3 logic
+/* CALCULATE BOTTOM 3 RANKINGS */
 travelApp.determineBot3 = (result, stat) => {
+  // initialize a heap array to keep track of the 3 lowest stat scores
   let heap = new MinHeap();
-  let heap2 = new MinHeap();
 
-  heap2.add(-1);
-  heap2.add(-2);
-  heap2.add(-3);
-  console.log(heap2.peek());
-
+  // initialize a secondary array to keep track of the 3 lowest scores AND
+  // the associated country to each score
   let bot3 = [];
+
+  // store the stat type into a property variable for easier use
   let property = stat;
 
+  // start a country counter at 0 just for the sake of adding the first 3 countries into the heap
   let countryCounter = 0;
 
+  // go through each country from the results of the AJAX call to INQStats
   result.map(country => {
+    // calculate a NEGATIVE score of the stat type in order to implement a MAX HEAP for the bottom 3 calculation
     let stat = Number(country[property]) * -1;
-    console.log(stat);
+
+    // store country name in a country name variable
     let countryName = country.countryName;
+
+    // store both stat and country name into an object to be added into the bottom 3 if needed
     let countryObj = { name: countryName, stat: stat };
 
+    // if it's the first 3 countries from the result, no work required. Just add them directly into both the heap and bot3 variables
     if (countryCounter < 3) {
-      console.log("first three: " + stat);
       heap.add(stat);
       bot3.push(countryObj);
+
+      // increment countryCounter to know when we're past the first 3 countries
       countryCounter++;
     } else {
-      console.log(heap.peek() + " vs " + stat);
-
-      if (stat < heap.peek()) {
-        console.log(
-          "bigger than " + heap.peek() + ", " + stat + " being added"
-        );
-
+      // CONDITION TO CHECK IF the current country stat is smaller than any of the current stats in the current bottom 3 countries
+      if (stat > heap.peek()) {
+        // if so, find the location of the largest stat score in the current bottom 3 array and replace it with the new stat and its associated country
         for (let n = 0; n < bot3.length; n++) {
           if (bot3[n].stat === heap.peek()) {
             bot3.splice(n, 1, countryObj);
           }
         }
 
+        // remove the largest stat score from the heap as well
         heap.poll();
+
+        // add the new smallest score onto the heap
         heap.add(stat);
       }
     }
   });
+
+  // Turn numbers in array back to positive by multiplying by -1
+  bot3.forEach(country => {
+    country.stat *= -1;
+  });
+
+  // return bottom 3 scores with countries
   return bot3;
 };
