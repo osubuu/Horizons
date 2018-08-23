@@ -54,11 +54,22 @@ travelApp.statArray = [
   },
   {
     id: "button-perm-family",
-    stat: "hdi",
-    direction: "max",
-    statName: "Human Development Index",
-    description:
-      "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
+    stats: [
+      {
+        stat: "hdi",
+        direction: "max",
+        statName: "Human Development Index",
+        description:
+          "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
+      },
+      {
+        stat: "hdi",
+        direction: "max",
+        statName: "Human Development Index",
+        description:
+          "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
+      }
+    ]
   }
 ];
 // This function holds all our events funtions
@@ -148,45 +159,7 @@ travelApp.reset = () => {
 
 /* ====================
 EXTRA STUFF
-
-/* 1. MAKE MAP */
-travelApp.generateMap = () => {
-  // use JVQ library
-};
-
-// Selection and ranking of stats
-travelApp.getUserRanking = () => {
-  // listen for user inputs
-};
-
-// Get info from Wikipedia (AJAX)
-travelApp.getWiki = () => {
-  // get extract
-};
-
-// Get image
-travelApp.getPixabay = () => {
-  // get country image(s)
-};
-
-// change color of three destination on map
-// append information cards to the countries in the map
-// append wiki + pixabay results
-
-// (To be done) Listen for user click event to select purpose of travel
-// Insert event-listener function here
-
-// (To be done) Store value of user input in a variable
-// something something.val() or .text() depending on what our inputs are.
-
-// Store in a variable, the query parameters for each travel type
-travelApp.userVacation = "density"; // Returns the population density of a country (per km²).
-travelApp.userWorkHoliday = "jobless_rate"; // The number of unemployed people in relation to the labor force for a country.
-travelApp.userEducation = "education_expenditure"; // Returns the public expenditure on education (in % of the GDP for a country).
-travelApp.userPermFamily = "hdi"; // Human Development Index (HDI). Combines several parameters (e.g. life expectancy or GDP). Scale: 0-1; 0 = low development. 1 = high development.
-travelApp.userPermSolo = "gini"; // The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)
-travelApp.userPermCouple = "happiness_index"; // Returns the values of the world happiness survey of the UNSDSN. The higher the value, the happier the country.
-travelApp.userVisitVisa = "tourist_arrivals"; // The number of foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc.
+=============*/
 
 // Store important info for calls to the INQStats API.
 travelApp.statKey = "5d3687c7c1788d5f";
@@ -406,13 +379,5 @@ travelApp.slideDrag = () => {
     revert: true,
     containment: "#drag-container"
   });
-  $("ul, li").disableSelection();
-  // $(".draggable").draggable({
-  //   axis: "y",
-  //   connectToSortable: "#sortable",
-  //   containment: "#sortable",
-  //   revert: "invalid",
-  //   scroll: false
-  // });
   $("ul, li").disableSelection();
 };
