@@ -378,11 +378,29 @@ travelApp.statArray = [
           "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
       },
       {
-        stat: "hdi",
+        stat: "happiness_index",
         direction: "max",
-        statName: "Human Development Index",
+        statName: "Happiness Index",
         description:
+<<<<<<< HEAD
           "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
+=======
+          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
+      },
+      {
+        stat: "gini",
+        direction: "min",
+        statName: "Gini Coefficient",
+        description:
+          "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
+      },
+      {
+        stat: "jobless_rate",
+        direction: "min",
+        statName: "Jobless Rate",
+        description:
+          "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
+>>>>>>> 995b35b24fac66dafb2859ca1efeb19c4834c659
       }
     ]
   }
@@ -434,7 +452,7 @@ travelApp.displayDestinations = results => {
     let countryContainer = $("<div>").addClass("country-result");
     let countryName = $("<h2>")
       .addClass("country-name")
-      .text(`${country.name}`);
+      .text(`${country.countryName}`);
     console.log(country);
 
     // Get stat number and description from statArrray
@@ -481,14 +499,14 @@ travelApp.statKey = "5d3687c7c1788d5f";
 travelApp.statURL = "http://inqstatsapi.inqubu.com";
 
 // The getStat function is used to get a single statistic from the API for all countries. It returns the return value from $.ajax().
-travelApp.getStat = (statType, direction) => {
+travelApp.getStat = (statType1, statType2, statType3) => {
   $.ajax({
     url: travelApp.statURL,
     method: "GET",
     dataType: "json",
     data: {
       api_key: travelApp.statKey,
-      data: statType,
+      data: `hdi,${statType1},${statType2},${statType3}`,
       cmd: "getWorldData"
     }
   }).then(res => {
@@ -496,8 +514,13 @@ travelApp.getStat = (statType, direction) => {
 
     // calling the calculation function to get the top n / bottom n countries
 
-    let finalResults = travelApp.getRecommendations(res, statType, direction);
-    travelApp.displayDestinations(finalResults);
+    let finalResults = travelApp.getRecommendations(
+      res,
+      statType1,
+      statType2,
+      statType3
+    );
+    // travelApp.displayDestinations(finalResults);
   });
 };
 
@@ -563,16 +586,70 @@ $(function () {
 });
 
 // Determine whether we want the top n or bottom n rankings
-travelApp.getRecommendations = (res, statType, direction) => {
+travelApp.getRecommendations = (res, statType1, statType2, statType3) => {
+  // Find direction of each stat type and return it in an array
+  let arrDirections = travelApp.findDirections(statType1, statType2, statType3);
+
+  // Initialize arrays and numbers for each round of iteration/filtering
+  let initialArr = [];
+  let arr1 = [];
+  let arr2 = [];
+  let arr3 = [];
+  let initialIter = 60;
+  let iteration1 = 10;
+  let iteration2 = 5;
+  let iteration3 = 3;
+
+  //Initial filter to account for realistic results (based on HDI)
+  initialArr = travelApp.determineResults(res, "hdi", "max", initialIter);
+  console.log(initialArr);
+
+  // ITERATION 1
+  arr1 = travelApp.determineResults(
+    initialArr,
+    statType1,
+    arrDirections[0],
+    iteration1
+  );
+  console.log(arr1);
+
+  // ITERATION 2
+  arr2 = travelApp.determineResults(
+    arr1,
+    statType2,
+    arrDirections[1],
+    iteration2
+  );
+  console.log(arr2);
+
+  // ITERATION 3
+  arr3 = travelApp.determineResults(
+    arr2,
+    statType3,
+    arrDirections[2],
+    iteration3
+  );
+  console.log(arr3);
+
+  // return the array with the final results
+  return arr3;
+};
+
+travelApp.determineResults = (array, statType, direction, iterationNumber) => {
+  let resultArray = [];
+  // if we want TOP numbers
   if (direction === "max") {
-    return travelApp.determineTopN(res, statType, 3);
-  } else if (direction === "min") {
-    return travelApp.determineBotN(res, statType, 3);
+    resultArray = travelApp.determineTopN(array, statType, iterationNumber);
   }
+  // if we want BOT numbers
+  else if (direction === "min") {
+    resultArray = travelApp.determineBotN(array, statType, iterationNumber);
+  }
+  return resultArray;
 };
 
 /* CALCULATE TOP N RANKINGS */
-travelApp.determineTopN = (result, stat, n) => {
+travelApp.determineTopN = (result, statType, n) => {
   // initialize a heap array to keep track of the n largest stat scores
   let heap = new MinHeap();
 
@@ -581,7 +658,7 @@ travelApp.determineTopN = (result, stat, n) => {
   let topN = [];
 
   // store the stat type into a property variable for easier use
-  let property = stat;
+  let property = statType;
 
   // start a country counter at 0 just for the sake of adding the first n countries into the heap
   let countryCounter = 0;
@@ -590,18 +667,11 @@ travelApp.determineTopN = (result, stat, n) => {
   result.map(country => {
     // store the stat score and the name of the current country in variables
     let stat = Number(country[property]);
-    let countryName = country.countryName;
-
-    // store both stat and country name into an object to be added into the top n if needed
-    let countryObj = {
-      name: countryName,
-      stat: stat
-    };
 
     // if it's the first n countries from the result, no work required. Just add them directly into both the heap and top3 variables
     if (countryCounter < n) {
       heap.add(stat);
-      topN.push(countryObj);
+      topN.push(country);
 
       // increment countryCounter to know when we're past the first n countries
       countryCounter++;
@@ -610,8 +680,10 @@ travelApp.determineTopN = (result, stat, n) => {
       if (stat > heap.peek()) {
         // if so, find the location of the smallest stat score in the current top n array and replace it with the new stat and its associated country
         for (let m = 0; m < topN.length; m++) {
-          if (topN[m].stat === heap.peek()) {
-            topN.splice(m, 1, countryObj);
+          let currentStat = Number(topN[m][property]);
+          if (currentStat === heap.peek()) {
+            topN.splice(m, 1, country);
+            break;
           }
         }
 
@@ -628,7 +700,7 @@ travelApp.determineTopN = (result, stat, n) => {
 };
 
 /* CALCULATE BOTTOM N RANKINGS */
-travelApp.determineBotN = (result, stat, n) => {
+travelApp.determineBotN = (result, statType, n) => {
   // initialize a heap array to keep track of the n lowest stat scores
   let heap = new MinHeap();
 
@@ -637,7 +709,7 @@ travelApp.determineBotN = (result, stat, n) => {
   let botN = [];
 
   // store the stat type into a property variable for easier use
-  let property = stat;
+  let property = statType;
 
   // start a country counter at 0 just for the sake of adding the first n countries into the heap
   let countryCounter = 0;
@@ -647,16 +719,10 @@ travelApp.determineBotN = (result, stat, n) => {
     // calculate a NEGATIVE score of the stat type in order to implement a MAX HEAP for the bottom n calculation
     let stat = Number(country[property]) * -1;
 
-    // store country name in a country name variable
-    let countryName = country.countryName;
-
-    // store both stat and country name into an object to be added into the bottom n if needed
-    let countryObj = { name: countryName, stat: stat };
-
     // if it's the first n countries from the result, no work required. Just add them directly into both the heap and bot3 variables
     if (countryCounter < n) {
       heap.add(stat);
-      botN.push(countryObj);
+      botN.push(country);
 
       // increment countryCounter to know when we're past the first n countries
       countryCounter++;
@@ -665,8 +731,10 @@ travelApp.determineBotN = (result, stat, n) => {
       if (stat > heap.peek()) {
         // if so, find the location of the largest stat score in the current bottom n array and replace it with the new stat and its associated country
         for (let m = 0; m < botN.length; m++) {
-          if (botN[m].stat === heap.peek()) {
-            botN.splice(m, 1, countryObj);
+          let currentStat = Number(botN[m][property]) * -1;
+          if (currentStat === heap.peek()) {
+            botN.splice(m, 1, country);
+            break;
           }
         }
 
@@ -689,10 +757,87 @@ travelApp.determineBotN = (result, stat, n) => {
 };
 
 travelApp.slideDrag = () => {
-  $("#sortable").sortable({
-    // axis: "y",
-    revert: true,
-    containment: "#drag-container"
+  $("ul").sortable({
+    connectWith: ".sortable",
+    revert: true
+    // containment: "#drag-container"
   });
   $("ul, li").disableSelection();
 };
+
+travelApp.userPurpose = "button-perm-family";
+
+/* DISPLAY ALL STATS FOR THE SELECTED PURPOSE ON SCREEN */
+travelApp.displayStats = purposeID => {
+  // Go through each purpose object in the Stat Array
+  travelApp.statArray.forEach(purposeObj => {
+    // If the purpose ID matches the purpose Object id
+    if (purposeID === purposeObj.id) {
+      $(".test").append($("<ul>").addClass("choices", "sortable"));
+      // Go through every stat for this purpose
+      purposeObj.stats.forEach(stat => {
+        // Append each of the stat name on screen for the user to rank
+        let markUpItem = $("<li>")
+          .attr("id", stat.stat)
+          .text(stat.statName);
+        $(".choices").append(markUpItem);
+      });
+    }
+  });
+};
+
+/* OBTAIN THE RANKING OF THE STATS FROM USER */
+travelApp.getUserRankings = () => {
+  $(".userSubmit").on("click", function() {
+    // get the user rankings from his ordering of stats and store in a variable
+    let userRankings = $(".choices")[0].children;
+
+    // initialize an empty array to store the top 3 rankings
+    let statsForAPICall = [];
+
+    // get first top 3 rankings (stats in 1st, 2nd and 3rd positions)
+    // and store them inside an array
+    for (let i = 0; i < 3; i++) {
+      statsForAPICall.push(userRankings[i].id);
+    }
+
+    console.log(statsForAPICall);
+    travelApp.getStat(...statsForAPICall);
+  });
+};
+
+/* FIND MAX/MIN DIRECTIONS OF STAT TYPES */
+travelApp.findDirections = (statType1, statType2, statType3) => {
+  // Find whether each stattype is max or min
+  let stat1Direction = "";
+  let stat2Direction = "";
+  let stat3Direction = "";
+
+  // Loop through the Stat Array to find direction of stattypes
+  travelApp.statArray.forEach(purpose => {
+    // if the current purpose matches the user purpose,
+    if (purpose.id === travelApp.userPurpose) {
+      // go through the stats array of that purpose object
+      purpose.stats.forEach(stat => {
+        // if the current stat in the stats array is stattype1, get this direction
+        if (stat.stat === statType1) {
+          stat1Direction = stat.direction;
+        }
+        // if the current stat in the stats array is stattype2, get this direction
+        else if (stat.stat === statType2) {
+          stat2Direction = stat.direction;
+        }
+        // if the current stat in the stats array is stattype2, get this direction
+        else if (stat.stat === statType3) {
+          stat3Direction = stat.direction;
+        }
+      });
+    }
+  });
+
+  return [stat1Direction, stat2Direction, stat3Direction];
+};
+
+travelApp.userPurpose = "button-perm-family";
+travelApp.displayStats(travelApp.userPurpose);
+travelApp.getUserRankings();
