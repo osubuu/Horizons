@@ -4,110 +4,6 @@ const MinHeap = require("fastpriorityqueue");
 const travelApp = {};
 travelApp.userStat = "";
 
-// Vacation
-// "density"
-// "forest_area_percent"
-// "happiness_index"
-// "tourist_arrivals"
-// "tourism_expenditure"
-// "urban_population"
-// ** Extras **
-// "population"
-
-// Education
-// "education_expenditure"
-// "co2_emissions"
-// "corruption_index"
-// "happiness_index"
-// "hdi" (life expectancy, education, and per capita income)
-// "health_expenditure"
-// ** Extras **
-// "death_rate"
-
-// Visitor Visa
-// "happiness_index"
-// "health_expenditure"
-// "tourist_arrivals"
-// "density"
-// "inflation"
-// "co2_emissions"
-
-
-// Working Holiday
-// "density"
-// "tourist_arrivals"
-// "gini" (wealth distribution)
-// "happiness_index"
-// "jobless_rate"
-// "medianwage"
-// ** Extras **
-// "corruption_index"
-// "co2_emissions"
-// "death_rate"
-// "forest_area_percent"
-// "gdp_capita"
-// "health_expenditure"
-// "military_expenditure"
-// "tax_revenue"
-// "urban_population"
-
-// Permanent Solo
-// "hdi" (life expectancy, education, and per capita income)
-// "corruption_index"
-// "medianwage"
-// "inflation"
-// "health_expenditure"
-// "urban_population"
-// ** Extras **
-// "density"
-// "death_rate"
-// "debts_percent"
-// "gdp_capita"
-// "gini" (wealth distribution)
-// "happiness_index"
-// "life_expectancy"
-// "military_expenditure"
-// "co2_emissions"
-
-// Permanent Couple
-// "hdi" (life expectancy, education, and per capita income)
-// "jobless_rate"
-// "gini" (wealth distribution)
-// "happiness_index"
-// "death_rate"
-// "debts_percent"
-// ** Extras **
-// "corruption_index"
-// "density"
-// "co2_emissions"
-// "gdp_capita"
-// "health_expenditure"
-// "life_expectancy"
-// "literacy_rate"
-// "medianwage"
-// "military_expenditure"
-
-
-// Permanent Family
-// "education_expenditure"
-// "health_expenditure"
-// "literacy_rate"
-// "life_expectancy"
-// "death_rate"
-// "medianwage"
-// ** Extras **
-// "co2_emissions"
-// "corruption_index"
-// "density"
-// "debts_percent"
-// "gdp_capita"
-// "gini" (wealth distribution)
-// "happiness_index"
-// "hdi" (life expectancy, education, and per capita income)
-// "jobless_rate"
-// "military_expenditure"
-// "tax_revenue"
-
 travelApp.statArray = [
   // VACATION BUTTON
   // ===============
@@ -146,14 +42,14 @@ travelApp.statArray = [
         direction: "max",
         statName: "Urban Population (high)",
         description:
-          "Represents the percentage of people who live in a city."
+          "The percentage of people who live in a city."
       },
       {
         stat: "forest_area_percent",
         direction: "max",
         statName: "Forest Area",
         description:
-          "Represents the total amount of forest area in a country (in km²)"
+          "The total amount of forest area in a country (in km²)"
       }
     ]
   },
@@ -167,21 +63,21 @@ travelApp.statArray = [
         direction: "max",
         statName: "Education Expenditure",
         description:
-          "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
+          "Education expenditure represents government spending in % of GDP."
       },
       {
         stat: "co2_emissions",
         direction: "min",
         statName: "CO2 Emissions",
         description:
-          "Represents the CO2 emissions in metric tons per person per year."
+          "CO2 emissions in metric tons per person per year."
       },
       {
         stat: "corruption_index",
         direction: "min",
         statName: "Corruption Index",
         description:
-          "Represents the Corruption Perceptions Index (CPI). (Scale: 0-100; 0 = high corruption. 100 = low corruption)."
+          "The Corruption Perceptions Index (CPI). (Scale: 0-100; 0 = high corruption. 100 = low corruption)."
       },
       {
         stat: "happiness_index",
@@ -202,7 +98,7 @@ travelApp.statArray = [
         direction: "max",
         statName: "Health Expenditure",
         description:
-          "Defines public spending on health, measured in % of GDP."
+          "Public spending on health, measured in % of GDP."
       }
     ]
   },
@@ -223,7 +119,7 @@ travelApp.statArray = [
         direction: "max",
         statName: "Health Expenditure",
         description:
-          "Defines public spending on health, measured in % of GDP."
+          "Public spending on health, measured in % of GDP."
       },
       {
         stat: "tourist_arrivals",
@@ -243,24 +139,17 @@ travelApp.statArray = [
         direction: "min",
         statName: "CO2 Emissions",
         description:
-          "Represents the CO2 emissions in metric tons per person per year."
+          "CO2 emissions in metric tons per person per year."
       },
       {
         stat: "inflation",
         direction: "min",
         statName: "Inflation",
         description:
-          "Defines the annual change of consumer prices (unit: %)."
+          "The annual change of consumer prices (unit: %)."
       }
     ]
   },
-  // Working Holiday
-  // "density"
-  // "tourist_arrivals"
-  // "gini" (wealth distribution)
-  // "happiness_index"
-  // "jobless_rate"
-  // "medianwage"
   // WORKING HOLIDAY BUTTON
   // ======================
   {
@@ -299,76 +188,21 @@ travelApp.statArray = [
         direction: "min",
         statName: "Jobless Rate",
         description:
-          "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
+          "The number of unemployed people in relation to the labor force for a country."
       },
-      {}
+      {
+        stat: "medianwage",
+        direction: "max",
+        statName: "Median Wage",
+        description:
+          "A measure of the monthly median wage before taxes, including public benefits (e.g child allowance); unit: USD."
+      }
     ]
   },
   // PERMANENT-SOLO BUTTON
   // ======================
   {
     id: "button-perm-solo",
-    stats: [
-      {},
-      {},
-      {},
-      {},
-      {},
-      {}
-    ]
-  },
-  // PERMANENT-COUPLE BUTTON
-  // ======================
-  {
-    id: "button-perm-couple",
-    stats: [
-      {},
-      {},
-      {},
-      {},
-      {},
-      {}
-    ]
-  },
-  // PERMANENT-FAMILY BUTTON
-  // ======================
-  {
-    id: "button-perm-family",
-    stats: [
-      {},
-      {},
-      {},
-      {},
-      {},
-      {}
-    ]
-  },
-
-
-
-
-  {
-    id: "button-work-holiday",
-
-  },
-  {
-    id: "button-perm-solo",
-    stat: "gini",
-    direction: "min",
-    statName: "Gini Coefficient",
-    description:
-      "The Gini coefficient states how uniformly assets are distributed in a country. (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)."
-  },
-  {
-    id: "button-perm-couple",
-    stat: "happiness_index",
-    direction: "max",
-    statName: "Happiness Index",
-    description:
-      "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
-  },
-  {
-    id: "button-perm-family",
     stats: [
       {
         stat: "hdi",
@@ -378,29 +212,138 @@ travelApp.statArray = [
           "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
       },
       {
-        stat: "happiness_index",
-        direction: "max",
-        statName: "Happiness Index",
+        stat: "corruption_index",
+        direction: "min",
+        statName: "Corruption Index",
         description:
-<<<<<<< HEAD
-          "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
-=======
-          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
+          "The Corruption Perceptions Index (CPI). (Scale: 0-100; 0 = high corruption. 100 = low corruption)."
       },
       {
-        stat: "gini",
-        direction: "min",
-        statName: "Gini Coefficient",
+        stat: "medianwage",
+        direction: "max",
+        statName: "Median Wage",
         description:
-          "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
+          "A measure of the monthly median wage before taxes, including public benefits (e.g child allowance); unit: USD."
+      },
+      {
+        stat: "inflation",
+        direction: "min",
+        statName: "Inflation",
+        description:
+          "The annual change of consumer prices (unit: %)."
+      },
+      {
+        stat: "health_expenditure",
+        direction: "max",
+        statName: "Health Expenditure",
+        description:
+          "Public spending on health, measured in % of GDP."
+      },
+      {
+        stat: "urban_population",
+        direction: "max",
+        statName: "Urban Population (high)",
+        description:
+          "The percentage of people who live in a city."
+      }
+    ]
+  },
+  // PERMANENT-COUPLE BUTTON
+  // ======================
+  {
+    id: "button-perm-couple",
+    stats: [
+      {
+        stat: "hdi",
+        direction: "max",
+        statName: "Human Development Index",
+        description:
+          "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
       },
       {
         stat: "jobless_rate",
         direction: "min",
         statName: "Jobless Rate",
         description:
-          "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
->>>>>>> 995b35b24fac66dafb2859ca1efeb19c4834c659
+          "The number of unemployed people in relation to the labor force for a country."
+      },
+      {
+        id: "button-perm-solo",
+        stat: "gini",
+        direction: "min",
+        statName: "Gini Coefficient",
+        description:
+          "The Gini coefficient states how uniformly assets are distributed in a country. (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)."
+      },
+      {
+        stat: "happiness_index",
+        direction: "max",
+        statName: "Happiness Index",
+        description:
+          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+      },
+      {
+        stat: "death_rate",
+        direction: "min",
+        statName: "Rate of Deaths",
+        description:
+          "The average number of deaths per year per 1,000 people."
+      },
+      {
+        stat: "debts_percent",
+        direction: "min",
+        statName: "Government Debt",
+        description:
+          "The percentage of government borrowings in relation to the GDP."
+      }
+    ]
+  },
+  // PERMANENT-FAMILY BUTTON
+  // ======================
+  {
+    id: "button-perm-family",
+    stats: [
+      {
+        stat: "education_expenditure",
+        direction: "max",
+        statName: "Education Expenditure",
+        description:
+          "Education expenditure represents government spending in % of GDP."
+      },
+      {
+        stat: "health_expenditure",
+        direction: "max",
+        statName: "Health Expenditure",
+        description:
+          "Public spending on health, measured in % of GDP."
+      },
+      {
+        stat: "literacy_rate",
+        direction: "max",
+        statName: "Literacy Rate",
+        description:
+          "The percentage of people that have the ability to read and write by age 15."
+      },
+      {
+        stat: "life_expectancy",
+        direction: "max",
+        statName: "Life Expectancy",
+        description:
+          "The average number of years a person will live (at birth)."
+      },
+      {
+        stat: "death_rate",
+        direction: "min",
+        statName: "Rate of Deaths",
+        description:
+          "The average number of deaths per year per 1,000 people."
+      },
+      {
+        stat: "medianwage",
+        direction: "max",
+        statName: "Median Wage",
+        description:
+          "A measure of the monthly median wage before taxes, including public benefits (e.g child allowance); unit: USD."
       }
     ]
   }
@@ -513,7 +456,7 @@ travelApp.getStat = (statType1, statType2, statType3) => {
     console.log(res);
 
     // calling the calculation function to get the top n / bottom n countries
-
+    // finalResults holds an array of three objects. Each object contains a country and it's 3 stat types. I need to re-edit the display function to account for the new array/objects/array/objects I created and set the conditional to compare it to the data in the finalResults array. Then edit the elements I created and how they are appended on the page.
     let finalResults = travelApp.getRecommendations(
       res,
       statType1,
@@ -788,7 +731,7 @@ travelApp.displayStats = purposeID => {
 
 /* OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".userSubmit").on("click", function() {
+  $(".userSubmit").on("click", function () {
     // get the user rankings from his ordering of stats and store in a variable
     let userRankings = $(".choices")[0].children;
 
