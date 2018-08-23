@@ -173,10 +173,9 @@ travelApp.getStat = (statType, direction) => {
   }).then(res => {
     console.log(res);
 
-    // calling the calculation function to get the top3/bottom3 countries
+    // calling the calculation function to get the top n / bottom n countries
 
     let finalResults = travelApp.getRecommendations(res, statType, direction);
-
     travelApp.displayDestinations(finalResults);
   });
 };
@@ -186,6 +185,7 @@ travelApp.getStat(travelApp.userPermCouple);
 // Init function to hold all our functions in order
 travelApp.init = function() {
   travelApp.eventsFunction();
+  travelApp.slideDrag();
   // travelApp.getUserInput();
   // travelApp.displayStats();
 };
@@ -195,28 +195,28 @@ $(function() {
   travelApp.init();
 });
 
-// Determine whether we want the top 3 or bottom 3 rankings
+// Determine whether we want the top n or bottom n rankings
 travelApp.getRecommendations = (res, statType, direction) => {
   if (direction === "max") {
-    return travelApp.determineTop3(res, statType);
+    return travelApp.determineTopN(res, statType, 3);
   } else if (direction === "min") {
-    return travelApp.determineBot3(res, statType);
+    return travelApp.determineBotN(res, statType, 3);
   }
 };
 
-/* CALCULATE TOP 3 RANKINGS */
-travelApp.determineTop3 = (result, stat) => {
-  // initialize a heap array to keep track of the 3 largest stat scores
+/* CALCULATE TOP N RANKINGS */
+travelApp.determineTopN = (result, stat, n) => {
+  // initialize a heap array to keep track of the n largest stat scores
   let heap = new MinHeap();
 
-  // initialize a secondary array to keep track of the 3 lowest scores AND
+  // initialize a secondary array to keep track of the n lowest scores AND
   // the associated country to each score
-  let top3 = [];
+  let topN = [];
 
   // store the stat type into a property variable for easier use
   let property = stat;
 
-  // start a country counter at 0 just for the sake of adding the first 3 countries into the heap
+  // start a country counter at 0 just for the sake of adding the first n countries into the heap
   let countryCounter = 0;
 
   // go through each country from the results of the AJAX call to INQStats
@@ -225,26 +225,26 @@ travelApp.determineTop3 = (result, stat) => {
     let stat = Number(country[property]);
     let countryName = country.countryName;
 
-    // store both stat and country name into an object to be added into the top 3 if needed
+    // store both stat and country name into an object to be added into the top n if needed
     let countryObj = {
       name: countryName,
       stat: stat
     };
 
-    // if it's the first 3 countries from the result, no work required. Just add them directly into both the heap and top3 variables
-    if (countryCounter < 3) {
+    // if it's the first n countries from the result, no work required. Just add them directly into both the heap and top3 variables
+    if (countryCounter < n) {
       heap.add(stat);
-      top3.push(countryObj);
+      topN.push(countryObj);
 
-      // increment countryCounter to know when we're past the first 3 countries
+      // increment countryCounter to know when we're past the first n countries
       countryCounter++;
     } else {
-      // CONDITION TO CHECK IF the current country stat is greater than any of the current stats in the current top 3 countries
+      // CONDITION TO CHECK IF the current country stat is greater than any of the current stats in the current top n countries
       if (stat > heap.peek()) {
-        // if so, find the location of the smallest stat score in the current top 3 array and replace it with the new stat and its associated country
-        for (let n = 0; n < top3.length; n++) {
-          if (top3[n].stat === heap.peek()) {
-            top3.splice(n, 1, countryObj);
+        // if so, find the location of the smallest stat score in the current top n array and replace it with the new stat and its associated country
+        for (let m = 0; m < topN.length; m++) {
+          if (topN[m].stat === heap.peek()) {
+            topN.splice(m, 1, countryObj);
           }
         }
 
@@ -256,50 +256,50 @@ travelApp.determineTop3 = (result, stat) => {
       }
     }
   });
-  // return top 3 scores with countries
-  return top3;
+  // return top n scores with countries
+  return topN;
 };
 
-/* CALCULATE BOTTOM 3 RANKINGS */
-travelApp.determineBot3 = (result, stat) => {
-  // initialize a heap array to keep track of the 3 lowest stat scores
+/* CALCULATE BOTTOM N RANKINGS */
+travelApp.determineBotN = (result, stat, n) => {
+  // initialize a heap array to keep track of the n lowest stat scores
   let heap = new MinHeap();
 
-  // initialize a secondary array to keep track of the 3 lowest scores AND
+  // initialize a secondary array to keep track of the n lowest scores AND
   // the associated country to each score
-  let bot3 = [];
+  let botN = [];
 
   // store the stat type into a property variable for easier use
   let property = stat;
 
-  // start a country counter at 0 just for the sake of adding the first 3 countries into the heap
+  // start a country counter at 0 just for the sake of adding the first n countries into the heap
   let countryCounter = 0;
 
   // go through each country from the results of the AJAX call to INQStats
   result.map(country => {
-    // calculate a NEGATIVE score of the stat type in order to implement a MAX HEAP for the bottom 3 calculation
+    // calculate a NEGATIVE score of the stat type in order to implement a MAX HEAP for the bottom n calculation
     let stat = Number(country[property]) * -1;
 
     // store country name in a country name variable
     let countryName = country.countryName;
 
-    // store both stat and country name into an object to be added into the bottom 3 if needed
+    // store both stat and country name into an object to be added into the bottom n if needed
     let countryObj = { name: countryName, stat: stat };
 
-    // if it's the first 3 countries from the result, no work required. Just add them directly into both the heap and bot3 variables
-    if (countryCounter < 3) {
+    // if it's the first n countries from the result, no work required. Just add them directly into both the heap and bot3 variables
+    if (countryCounter < n) {
       heap.add(stat);
-      bot3.push(countryObj);
+      botN.push(countryObj);
 
-      // increment countryCounter to know when we're past the first 3 countries
+      // increment countryCounter to know when we're past the first n countries
       countryCounter++;
     } else {
-      // CONDITION TO CHECK IF the current country stat is smaller than any of the current stats in the current bottom 3 countries
+      // CONDITION TO CHECK IF the current country stat is smaller than any of the current stats in the current bottom n countries
       if (stat > heap.peek()) {
-        // if so, find the location of the largest stat score in the current bottom 3 array and replace it with the new stat and its associated country
-        for (let n = 0; n < bot3.length; n++) {
-          if (bot3[n].stat === heap.peek()) {
-            bot3.splice(n, 1, countryObj);
+        // if so, find the location of the largest stat score in the current bottom n array and replace it with the new stat and its associated country
+        for (let m = 0; m < botN.length; m++) {
+          if (botN[m].stat === heap.peek()) {
+            botN.splice(m, 1, countryObj);
           }
         }
 
@@ -313,10 +313,27 @@ travelApp.determineBot3 = (result, stat) => {
   });
 
   // Turn numbers in array back to positive by multiplying by -1
-  bot3.forEach(country => {
+  botN.forEach(country => {
     country.stat *= -1;
   });
 
-  // return bottom 3 scores with countries
-  return bot3;
+  // return bottom n scores with countries
+  return botN;
+};
+
+travelApp.slideDrag = () => {
+  $("#sortable").sortable({
+    // axis: "y",
+    revert: true,
+    containment: "#drag-container",
+    placeholder: "ui-corner-all"
+  });
+  // $(".draggable").draggable({
+  //   axis: "y",
+  //   connectToSortable: "#sortable",
+  //   containment: "#sortable",
+  //   revert: "invalid",
+  //   scroll: false
+  // });
+  // $("ul, li").disableSelection();
 };
