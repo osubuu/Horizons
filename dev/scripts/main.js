@@ -17,45 +17,51 @@ travelApp.statArray = [
     stat: "tourist_arrivals",
     direction: "max",
     statName: "Tourist Arrivals",
-    description: "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc. World Average: [insert average]"
+    description:
+      "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc. World Average: [insert average]"
   },
   {
     id: "button-education",
     stat: "education_expenditure",
     direction: "max",
     statName: "Education Expenditure",
-    description: "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
+    description:
+      "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
   },
   {
     id: "button-work-holiday",
     stat: "jobless_rate",
     direction: "min",
     statName: "Jobless Rate",
-    description: "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
+    description:
+      "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
   },
   {
     id: "button-perm-solo",
     stat: "gini",
     direction: "min",
     statName: "Gini Coefficient",
-    description: "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
+    description:
+      "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
   },
   {
     id: "button-perm-couple",
     stat: "happiness_index",
     direction: "max",
     statName: "Happiness Index",
-    description: "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
+    description:
+      "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
   },
   {
     id: "button-perm-family",
     stat: "hdi",
     direction: "max",
     statName: "Human Development Index",
-    description: "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
+    description:
+      "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
   }
 ];
-// This function holds all our events funtions 
+// This function holds all our events funtions
 travelApp.eventsFunction = () => {
   // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
@@ -64,7 +70,7 @@ travelApp.eventsFunction = () => {
 /* 1. GET USER INPUT */
 // This event function gets the user input by the id attribute and loops it into the traveApp.userStat array. When the id from the user matches the id in oneof the objects, we can target other properties from that object. I.e. stat, direction, description.
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function () {
+  $(".travel-form__button").on("click", function() {
     // Store user input in variable
     const inputID = $(this).attr("id");
     // Loop through array and match object to user input
@@ -119,7 +125,9 @@ travelApp.displayDestinations = results => {
       }
     });
     // This variable holds the paragraph element for the stat name and number.
-    let statNumberElement = $("<p>").addClass("stat-number").text(statNumberText);
+    let statNumberElement = $("<p>")
+      .addClass("stat-number")
+      .text(statNumberText);
     // This variable holds the paragraph element for the stat description
     let statDescription = $("<p>")
       .addClass("stat-description")
@@ -208,17 +216,17 @@ travelApp.getStat = (statType, direction) => {
 // Store important info for calls to the Wiki API.
 travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
 // Get info from Wikipedia (AJAX)
-travelApp.getWiki = (country) => {
+travelApp.getWiki = country => {
   // get extract
   $.ajax({
     url: travelApp.wikiURL,
-    method: 'GET',
-    dataType: 'jsonp',
+    method: "GET",
+    dataType: "jsonp",
     data: {
-      action: 'query',
-      prop: 'extracts',
+      action: "query",
+      prop: "extracts",
       titles: country,
-      format: 'json',
+      format: "json",
       exlimit: 1,
       exsentences: 4,
       exintro: true,
@@ -229,19 +237,18 @@ travelApp.getWiki = (country) => {
   });
 };
 // Wiki Ajax request TEST
-travelApp.getWiki('italy');
-
+travelApp.getWiki("italy");
 
 // Store important info for calls to the Pixabay API.
 travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
 travelApp.pixaURL = "https://www.pixabay.com/api/";
 // Get info from Wikipedia (AJAX)
-travelApp.getPixa = (country) => {
+travelApp.getPixa = country => {
   // get extract
   $.ajax({
     url: travelApp.pixaURL,
-    method: 'GET',
-    dataType: 'jsonp',
+    method: "GET",
+    dataType: "jsonp",
     data: {
       key: travelApp.pixaKey,
       q: country
@@ -251,10 +258,10 @@ travelApp.getPixa = (country) => {
   });
 };
 // Pixabay Ajax request TEST
-travelApp.getPixa('italy');
+travelApp.getPixa("italy");
 
 // Init function to hold all our functions in order
-travelApp.init = function () {
+travelApp.init = function() {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   travelApp.slideDrag();
@@ -263,7 +270,7 @@ travelApp.init = function () {
 };
 
 // Document Ready to call our init() function and start the app
-$(function () {
+$(function() {
   travelApp.init();
 });
 
@@ -397,9 +404,9 @@ travelApp.slideDrag = () => {
   $("#sortable").sortable({
     // axis: "y",
     revert: true,
-    containment: "#drag-container",
-    placeholder: "ui-corner-all"
+    containment: "#drag-container"
   });
+  $("ul, li").disableSelection();
   // $(".draggable").draggable({
   //   axis: "y",
   //   connectToSortable: "#sortable",
@@ -407,5 +414,5 @@ travelApp.slideDrag = () => {
   //   revert: "invalid",
   //   scroll: false
   // });
-  // $("ul, li").disableSelection();
+  $("ul, li").disableSelection();
 };
