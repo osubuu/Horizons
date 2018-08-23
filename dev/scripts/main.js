@@ -180,7 +180,7 @@ travelApp.userPermSolo = "gini"; // The Gini coefficient states how uniformly as
 travelApp.userPermCouple = "happiness_index"; // Returns the values of the world happiness survey of the UNSDSN. The higher the value, the happier the country.
 travelApp.userVisitVisa = "tourist_arrivals"; // The number of foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc.
 
-// Store important info for the API calls into variables
+// Store important info for calls to the INQStats API.
 travelApp.statKey = "5d3687c7c1788d5f";
 travelApp.statURL = "http://inqstatsapi.inqubu.com";
 
@@ -205,8 +205,54 @@ travelApp.getStat = (statType, direction) => {
     travelApp.displayDestinations(finalResults);
   });
 };
-// Eventually this will be called in our display function
-travelApp.getStat(travelApp.userPermCouple);
+
+// Store important info for calls to the Wiki API.
+travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
+// Get info from Wikipedia (AJAX)
+travelApp.getWiki = (country) => {
+  // get extract
+  $.ajax({
+    url: travelApp.wikiURL,
+    method: 'GET',
+    dataType: 'jsonp',
+    data: {
+      action: 'query',
+      prop: 'extracts',
+      titles: country,
+      format: 'json',
+      exlimit: 1,
+      exsentences: 4,
+      exintro: true,
+      explaintext: true
+    }
+  }).then(res => {
+    console.log(res);
+  });
+};
+// Wiki Ajax request TEST
+travelApp.getWiki('italy');
+
+
+// Store important info for calls to the Pixabay API.
+travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
+travelApp.pixaURL = "https://www.pixabay.com/api/";
+// Get info from Wikipedia (AJAX)
+travelApp.getPixa = (country) => {
+  // get extract
+  $.ajax({
+    url: travelApp.pixaURL,
+    method: 'GET',
+    dataType: 'jsonp',
+    data: {
+      key: travelApp.pixaKey,
+      q: country
+    }
+  }).then(res => {
+    console.log(res);
+  });
+};
+// Pixabay Ajax request TEST
+travelApp.getPixa('italy');
 
 // Init function to hold all our functions in order
 travelApp.init = function () {
