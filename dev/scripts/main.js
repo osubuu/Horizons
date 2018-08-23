@@ -9,55 +9,70 @@ travelApp.statArray = [
     id: "button-vacation",
     stat: "density",
     direction: "min",
-    description: "vacation determined by country density"
+    statName: "Population Density",
+    description: "Measured in per km². World Average: [insert average]"
   },
   {
     id: "button-visit-visa",
     stat: "tourist_arrivals",
     direction: "max",
-    description: "location determined by # of tourist arrival"
+    statName: "Tourist Arrivals",
+    description: "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc. World Average: [insert average]"
   },
   {
     id: "button-education",
     stat: "education_expenditure",
-    direction: "max"
+    direction: "max",
+    statName: "Education Expenditure",
+    description: "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
   },
   {
     id: "button-work-holiday",
     stat: "jobless_rate",
-    direction: "min"
+    direction: "min",
+    statName: "Jobless Rate",
+    description: "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
   },
   {
     id: "button-perm-solo",
     stat: "gini",
-    direction: "min"
+    direction: "min",
+    statName: "Gini Coefficient",
+    description: "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
   },
   {
     id: "button-perm-couple",
     stat: "happiness_index",
-    direction: "max"
+    direction: "max",
+    statName: "Happiness Index",
+    description: "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
   },
   {
     id: "button-perm-family",
     stat: "hdi",
-    direction: "max"
+    direction: "max",
+    statName: "Human Development Index",
+    description: "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
   }
 ];
-
+// This function holds all our events funtions 
 travelApp.eventsFunction = () => {
+  // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
 };
 
 /* 1. GET USER INPUT */
-// Purpose of travel
+// This event function gets the user input by the id attribute and loops it into the traveApp.userStat array. When the id from the user matches the id in oneof the objects, we can target other properties from that object. I.e. stat, direction, description.
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     // Loop through array and match object to user input
     travelApp.statArray.forEach(item => {
       if (item.id === inputID) {
+        // Store user stat in a variable
         travelApp.userStat = item.stat;
+        // Call the travelApp.getStat function and pass in the stat and direction values.
         travelApp.getStat(item.stat, item.direction);
       }
     });
@@ -88,20 +103,30 @@ travelApp.displayDestinations = results => {
     let countryName = $("<h2>")
       .addClass("country-name")
       .text(`${country.name}`);
+    console.log(country);
 
-    // Get stat description from statArrray
+    // Get stat number and description from statArrray
     let description = "";
+    let statNumberText = "";
     travelApp.statArray.forEach(item => {
       if (travelApp.userStat === item.stat) {
+        // This variable has the string of stat type, followed by the stat number. Later this can be appended right before the description so that it looks something like:
+        // <p>Population Density: 3.01</p>
+        // <p>The population density is measured in KM2 blah blah blah</p>
+        statNumberText = `${item.statName}: ${country.stat}`;
+        console.log(statNumberText);
         description = item.description;
       }
     });
+    // This variable holds the paragraph element for the stat name and number.
+    let statNumberElement = $("<p>").addClass("stat-number").text(statNumberText);
+    // This variable holds the paragraph element for the stat description
     let statDescription = $("<p>")
-      .addClass("description")
+      .addClass("stat-description")
       .text(`${description}`);
 
     // append all HTML tags together to the container div
-    countryContainer.append(countryName, statDescription);
+    countryContainer.append(countryName, statNumberElement, statDescription);
 
     // append container div to screen under results sections
     $(".results").append(countryContainer);
@@ -155,7 +180,7 @@ travelApp.userPermSolo = "gini"; // The Gini coefficient states how uniformly as
 travelApp.userPermCouple = "happiness_index"; // Returns the values of the world happiness survey of the UNSDSN. The higher the value, the happier the country.
 travelApp.userVisitVisa = "tourist_arrivals"; // The number of foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc.
 
-// Store important info for the API calls into variables
+// Store important info for calls to the INQStats API.
 travelApp.statKey = "5d3687c7c1788d5f";
 travelApp.statURL = "http://inqstatsapi.inqubu.com";
 
@@ -180,18 +205,65 @@ travelApp.getStat = (statType, direction) => {
     travelApp.displayDestinations(finalResults);
   });
 };
-// Eventually this will be called in our display function
-travelApp.getStat(travelApp.userPermCouple);
+
+// Store important info for calls to the Wiki API.
+travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
+// Get info from Wikipedia (AJAX)
+travelApp.getWiki = (country) => {
+  // get extract
+  $.ajax({
+    url: travelApp.wikiURL,
+    method: 'GET',
+    dataType: 'jsonp',
+    data: {
+      action: 'query',
+      prop: 'extracts',
+      titles: country,
+      format: 'json',
+      exlimit: 1,
+      exsentences: 4,
+      exintro: true,
+      explaintext: true
+    }
+  }).then(res => {
+    console.log(res);
+  });
+};
+// Wiki Ajax request TEST
+travelApp.getWiki('italy');
+
+
+// Store important info for calls to the Pixabay API.
+travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
+travelApp.pixaURL = "https://www.pixabay.com/api/";
+// Get info from Wikipedia (AJAX)
+travelApp.getPixa = (country) => {
+  // get extract
+  $.ajax({
+    url: travelApp.pixaURL,
+    method: 'GET',
+    dataType: 'jsonp',
+    data: {
+      key: travelApp.pixaKey,
+      q: country
+    }
+  }).then(res => {
+    console.log(res);
+  });
+};
+// Pixabay Ajax request TEST
+travelApp.getPixa('italy');
 
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
+  // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   // travelApp.getUserInput();
   // travelApp.displayStats();
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
