@@ -9,38 +9,50 @@ travelApp.statArray = [
     id: "button-vacation",
     stat: "density",
     direction: "min",
-    description: "vacation determined by country density"
+    statName: "Population Density",
+    description: "Measured in per km². World Average: [insert average]"
   },
   {
     id: "button-visit-visa",
     stat: "tourist_arrivals",
     direction: "max",
-    description: "location determined by # of tourist arrival"
+    statName: "Tourist Arrivals",
+    description: "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc. World Average: [insert average]"
   },
   {
     id: "button-education",
     stat: "education_expenditure",
-    direction: "max"
+    direction: "max",
+    statName: "Education Expenditure",
+    description: "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
   },
   {
     id: "button-work-holiday",
     stat: "jobless_rate",
-    direction: "min"
+    direction: "min",
+    statName: "Jobless Rate",
+    description: "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
   },
   {
     id: "button-perm-solo",
     stat: "gini",
-    direction: "min"
+    direction: "min",
+    statName: "Gini Coefficient",
+    description: "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
   },
   {
     id: "button-perm-couple",
     stat: "happiness_index",
-    direction: "max"
+    direction: "max",
+    statName: "Happiness Index",
+    description: "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
   },
   {
     id: "button-perm-family",
     stat: "hdi",
-    direction: "max"
+    direction: "max",
+    statName: "Human Development Index",
+    description: "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
   }
 ];
 // This function holds all our events funtions 
@@ -91,20 +103,30 @@ travelApp.displayDestinations = results => {
     let countryName = $("<h2>")
       .addClass("country-name")
       .text(`${country.name}`);
+    console.log(country);
 
-    // Get stat description from statArrray
+    // Get stat number and description from statArrray
     let description = "";
+    let statNumberText = "";
     travelApp.statArray.forEach(item => {
       if (travelApp.userStat === item.stat) {
+        // This variable has the string of stat type, followed by the stat number. Later this can be appended right before the description so that it looks something like:
+        // <p>Population Density: 3.01</p>
+        // <p>The population density is measured in KM2 blah blah blah</p>
+        statNumberText = `${item.statName}: ${country.stat}`;
+        console.log(statNumberText);
         description = item.description;
       }
     });
+    // This variable holds the paragraph element for the stat name and number.
+    let statNumberElement = $("<p>").addClass("stat-number").text(statNumberText);
+    // This variable holds the paragraph element for the stat description
     let statDescription = $("<p>")
-      .addClass("description")
+      .addClass("stat-description")
       .text(`${description}`);
 
     // append all HTML tags together to the container div
-    countryContainer.append(countryName, statDescription);
+    countryContainer.append(countryName, statNumberElement, statDescription);
 
     // append container div to screen under results sections
     $(".results").append(countryContainer);
