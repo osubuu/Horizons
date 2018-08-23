@@ -4,37 +4,352 @@ const MinHeap = require("fastpriorityqueue");
 const travelApp = {};
 travelApp.userStat = "";
 
+// Vacation
+// "density"
+// "forest_area_percent"
+// "happiness_index"
+// "tourist_arrivals"
+// "tourism_expenditure"
+// "urban_population"
+// ** Extras **
+// "population"
+
+// Education
+// "education_expenditure"
+// "co2_emissions"
+// "corruption_index"
+// "happiness_index"
+// "hdi" (life expectancy, education, and per capita income)
+// "health_expenditure"
+// ** Extras **
+// "death_rate"
+
+// Visitor Visa
+// "happiness_index"
+// "health_expenditure"
+// "tourist_arrivals"
+// "density"
+// "inflation"
+// "co2_emissions"
+
+
+// Working Holiday
+// "density"
+// "tourist_arrivals"
+// "gini" (wealth distribution)
+// "happiness_index"
+// "jobless_rate"
+// "medianwage"
+// ** Extras **
+// "corruption_index"
+// "co2_emissions"
+// "death_rate"
+// "forest_area_percent"
+// "gdp_capita"
+// "health_expenditure"
+// "military_expenditure"
+// "tax_revenue"
+// "urban_population"
+
+// Permanent Solo
+// "hdi" (life expectancy, education, and per capita income)
+// "corruption_index"
+// "medianwage"
+// "inflation"
+// "health_expenditure"
+// "urban_population"
+// ** Extras **
+// "density"
+// "death_rate"
+// "debts_percent"
+// "gdp_capita"
+// "gini" (wealth distribution)
+// "happiness_index"
+// "life_expectancy"
+// "military_expenditure"
+// "co2_emissions"
+
+// Permanent Couple
+// "hdi" (life expectancy, education, and per capita income)
+// "jobless_rate"
+// "gini" (wealth distribution)
+// "happiness_index"
+// "death_rate"
+// "debts_percent"
+// ** Extras **
+// "corruption_index"
+// "density"
+// "co2_emissions"
+// "gdp_capita"
+// "health_expenditure"
+// "life_expectancy"
+// "literacy_rate"
+// "medianwage"
+// "military_expenditure"
+
+
+// Permanent Family
+// "education_expenditure"
+// "health_expenditure"
+// "literacy_rate"
+// "life_expectancy"
+// "death_rate"
+// "medianwage"
+// ** Extras **
+// "co2_emissions"
+// "corruption_index"
+// "density"
+// "debts_percent"
+// "gdp_capita"
+// "gini" (wealth distribution)
+// "happiness_index"
+// "hdi" (life expectancy, education, and per capita income)
+// "jobless_rate"
+// "military_expenditure"
+// "tax_revenue"
+
 travelApp.statArray = [
+  // VACATION BUTTON
+  // ===============
   {
     id: "button-vacation",
-    stat: "density",
-    direction: "min",
-    statName: "Population Density",
-    description: "Measured in per km². World Average: [insert average]"
+    stats: [
+      {
+        stat: "density",
+        direction: "min",
+        statName: "Population Density (low)",
+        description: "The population density is measured in per km²."
+      },
+      {
+        stat: "happiness_index",
+        direction: "max",
+        statName: "Happiness Index",
+        description:
+          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+      },
+      {
+        stat: "tourist_arrivals",
+        direction: "max",
+        statName: "Tourist Arrivals",
+        description:
+          "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc."
+      },
+      {
+        stat: "tourism_expenditure",
+        direction: "max",
+        statName: "Tourist Expenditure",
+        description:
+          "The amount of government spending dedicated for tourism (in % of the GDP for a country)."
+      },
+      {
+        stat: "urban_population",
+        direction: "max",
+        statName: "Urban Population (high)",
+        description:
+          "Represents the percentage of people who live in a city."
+      },
+      {
+        stat: "forest_area_percent",
+        direction: "max",
+        statName: "Forest Area",
+        description:
+          "Represents the total amount of forest area in a country (in km²)"
+      }
+    ]
   },
-  {
-    id: "button-visit-visa",
-    stat: "tourist_arrivals",
-    direction: "max",
-    statName: "Tourist Arrivals",
-    description:
-      "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc. World Average: [insert average]"
-  },
+  // EDUCATION BUTTON
+  // ================
   {
     id: "button-education",
-    stat: "education_expenditure",
-    direction: "max",
-    statName: "Education Expenditure",
-    description:
-      "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
+    stats: [
+      {
+        stat: "education_expenditure",
+        direction: "max",
+        statName: "Education Expenditure",
+        description:
+          "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
+      },
+      {
+        stat: "co2_emissions",
+        direction: "min",
+        statName: "CO2 Emissions",
+        description:
+          "Represents the CO2 emissions in metric tons per person per year."
+      },
+      {
+        stat: "corruption_index",
+        direction: "min",
+        statName: "Corruption Index",
+        description:
+          "Represents the Corruption Perceptions Index (CPI). (Scale: 0-100; 0 = high corruption. 100 = low corruption)."
+      },
+      {
+        stat: "happiness_index",
+        direction: "max",
+        statName: "Happiness Index",
+        description:
+          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+      },
+      {
+        stat: "hdi",
+        direction: "max",
+        statName: "Human Development Index",
+        description:
+          "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
+      },
+      {
+        stat: "health_expenditure",
+        direction: "max",
+        statName: "Health Expenditure",
+        description:
+          "Defines public spending on health, measured in % of GDP."
+      }
+    ]
   },
+  // VISITOR VISA BUTTON
+  // ===================
+  {
+    id: "button-visit-visa",
+    stats: [
+      {
+        stat: "happiness_index",
+        direction: "max",
+        statName: "Happiness Index",
+        description:
+          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+      },
+      {
+        stat: "health_expenditure",
+        direction: "max",
+        statName: "Health Expenditure",
+        description:
+          "Defines public spending on health, measured in % of GDP."
+      },
+      {
+        stat: "tourist_arrivals",
+        direction: "max",
+        statName: "Tourist Arrivals",
+        description:
+          "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc."
+      },
+      {
+        stat: "density",
+        direction: "min",
+        statName: "Population Density (low)",
+        description: "The population density is measured in per km²."
+      },
+      {
+        stat: "co2_emissions",
+        direction: "min",
+        statName: "CO2 Emissions",
+        description:
+          "Represents the CO2 emissions in metric tons per person per year."
+      },
+      {
+        stat: "inflation",
+        direction: "min",
+        statName: "Inflation",
+        description:
+          "Defines the annual change of consumer prices (unit: %)."
+      }
+    ]
+  },
+  // Working Holiday
+  // "density"
+  // "tourist_arrivals"
+  // "gini" (wealth distribution)
+  // "happiness_index"
+  // "jobless_rate"
+  // "medianwage"
+  // WORKING HOLIDAY BUTTON
+  // ======================
   {
     id: "button-work-holiday",
-    stat: "jobless_rate",
-    direction: "min",
-    statName: "Jobless Rate",
-    description:
-      "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
+    stats: [
+      {
+        stat: "density",
+        direction: "min",
+        statName: "Population Density (low)",
+        description: "The population density is measured in per km²."
+      },
+      {
+        stat: "tourist_arrivals",
+        direction: "max",
+        statName: "Tourist Arrivals",
+        description:
+          "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc."
+      },
+      {
+        id: "button-perm-solo",
+        stat: "gini",
+        direction: "min",
+        statName: "Gini Coefficient",
+        description:
+          "The Gini coefficient states how uniformly assets are distributed in a country. (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)."
+      },
+      {
+        stat: "happiness_index",
+        direction: "max",
+        statName: "Happiness Index",
+        description:
+          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+      },
+      {
+        stat: "jobless_rate",
+        direction: "min",
+        statName: "Jobless Rate",
+        description:
+          "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
+      },
+      {}
+    ]
+  },
+  // PERMANENT-SOLO BUTTON
+  // ======================
+  {
+    id: "button-perm-solo",
+    stats: [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  // PERMANENT-COUPLE BUTTON
+  // ======================
+  {
+    id: "button-perm-couple",
+    stats: [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  // PERMANENT-FAMILY BUTTON
+  // ======================
+  {
+    id: "button-perm-family",
+    stats: [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+
+
+
+
+  {
+    id: "button-work-holiday",
+
   },
   {
     id: "button-perm-solo",
@@ -42,7 +357,7 @@ travelApp.statArray = [
     direction: "min",
     statName: "Gini Coefficient",
     description:
-      "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
+      "The Gini coefficient states how uniformly assets are distributed in a country. (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)."
   },
   {
     id: "button-perm-couple",
@@ -60,13 +375,16 @@ travelApp.statArray = [
         direction: "max",
         statName: "Human Development Index",
         description:
-          "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
+          "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
       },
       {
         stat: "happiness_index",
         direction: "max",
         statName: "Happiness Index",
         description:
+<<<<<<< HEAD
+          "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
+=======
           "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
       },
       {
@@ -82,6 +400,7 @@ travelApp.statArray = [
         statName: "Jobless Rate",
         description:
           "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
+>>>>>>> 995b35b24fac66dafb2859ca1efeb19c4834c659
       }
     ]
   }
@@ -95,7 +414,7 @@ travelApp.eventsFunction = () => {
 /* 1. GET USER INPUT */
 // This event function gets the user input by the id attribute and loops it into the traveApp.userStat array. When the id from the user matches the id in oneof the objects, we can target other properties from that object. I.e. stat, direction, description.
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     // Loop through array and match object to user input
@@ -253,7 +572,7 @@ travelApp.getPixa = country => {
 travelApp.getPixa("italy");
 
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   travelApp.slideDrag();
@@ -262,7 +581,7 @@ travelApp.init = function() {
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
