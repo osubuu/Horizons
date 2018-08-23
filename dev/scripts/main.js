@@ -17,45 +17,51 @@ travelApp.statArray = [
     stat: "tourist_arrivals",
     direction: "max",
     statName: "Tourist Arrivals",
-    description: "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc. World Average: [insert average]"
+    description:
+      "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc. World Average: [insert average]"
   },
   {
     id: "button-education",
     stat: "education_expenditure",
     direction: "max",
     statName: "Education Expenditure",
-    description: "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
+    description:
+      "Education expenditure represents government spending in % of GDP. World Average: [insert average]"
   },
   {
     id: "button-work-holiday",
     stat: "jobless_rate",
     direction: "min",
     statName: "Jobless Rate",
-    description: "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
+    description:
+      "The number of unemployed people in relation to the labor force for a country. World Average: [insert average]"
   },
   {
     id: "button-perm-solo",
     stat: "gini",
     direction: "min",
     statName: "Gini Coefficient",
-    description: "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
+    description:
+      "The Gini coefficient states how uniformly assets are distributed in a country (scale: 0-100; 0 = equal distribution. 100 = unequal distribution). World Average: [insert average]"
   },
   {
     id: "button-perm-couple",
     stat: "happiness_index",
     direction: "max",
     statName: "Happiness Index",
-    description: "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
+    description:
+      "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country. World Average: [insert average]"
   },
   {
     id: "button-perm-family",
     stat: "hdi",
     direction: "max",
     statName: "Human Development Index",
-    description: "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
+    description:
+      "The HDI is a statistic of life expectancy, education, and per capita income indicators. Scale: 0-1; 0 = low development. 1 = high development. World Average: [insert average]"
   }
 ];
-// This function holds all our events funtions 
+// This function holds all our events funtions
 travelApp.eventsFunction = () => {
   // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
@@ -64,7 +70,7 @@ travelApp.eventsFunction = () => {
 /* 1. GET USER INPUT */
 // This event function gets the user input by the id attribute and loops it into the traveApp.userStat array. When the id from the user matches the id in oneof the objects, we can target other properties from that object. I.e. stat, direction, description.
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function () {
+  $(".travel-form__button").on("click", function() {
     // Store user input in variable
     const inputID = $(this).attr("id");
     // Loop through array and match object to user input
@@ -119,7 +125,9 @@ travelApp.displayDestinations = results => {
       }
     });
     // This variable holds the paragraph element for the stat name and number.
-    let statNumberElement = $("<p>").addClass("stat-number").text(statNumberText);
+    let statNumberElement = $("<p>")
+      .addClass("stat-number")
+      .text(statNumberText);
     // This variable holds the paragraph element for the stat description
     let statDescription = $("<p>")
       .addClass("stat-description")
@@ -198,10 +206,9 @@ travelApp.getStat = (statType, direction) => {
   }).then(res => {
     console.log(res);
 
-    // calling the calculation function to get the top3/bottom3 countries
+    // calling the calculation function to get the top n / bottom n countries
 
     let finalResults = travelApp.getRecommendations(res, statType, direction);
-
     travelApp.displayDestinations(finalResults);
   });
 };
@@ -209,17 +216,17 @@ travelApp.getStat = (statType, direction) => {
 // Store important info for calls to the Wiki API.
 travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
 // Get info from Wikipedia (AJAX)
-travelApp.getWiki = (country) => {
+travelApp.getWiki = country => {
   // get extract
   $.ajax({
     url: travelApp.wikiURL,
-    method: 'GET',
-    dataType: 'jsonp',
+    method: "GET",
+    dataType: "jsonp",
     data: {
-      action: 'query',
-      prop: 'extracts',
+      action: "query",
+      prop: "extracts",
       titles: country,
-      format: 'json',
+      format: "json",
       exlimit: 1,
       exsentences: 4,
       exintro: true,
@@ -230,19 +237,18 @@ travelApp.getWiki = (country) => {
   });
 };
 // Wiki Ajax request TEST
-travelApp.getWiki('italy');
-
+travelApp.getWiki("italy");
 
 // Store important info for calls to the Pixabay API.
 travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
 travelApp.pixaURL = "https://www.pixabay.com/api/";
 // Get info from Wikipedia (AJAX)
-travelApp.getPixa = (country) => {
+travelApp.getPixa = country => {
   // get extract
   $.ajax({
     url: travelApp.pixaURL,
-    method: 'GET',
-    dataType: 'jsonp',
+    method: "GET",
+    dataType: "jsonp",
     data: {
       key: travelApp.pixaKey,
       q: country
@@ -252,43 +258,44 @@ travelApp.getPixa = (country) => {
   });
 };
 // Pixabay Ajax request TEST
-travelApp.getPixa('italy');
+travelApp.getPixa("italy");
 
 // Init function to hold all our functions in order
-travelApp.init = function () {
+travelApp.init = function() {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
+  travelApp.slideDrag();
   // travelApp.getUserInput();
   // travelApp.displayStats();
 };
 
 // Document Ready to call our init() function and start the app
-$(function () {
+$(function() {
   travelApp.init();
 });
 
-// Determine whether we want the top 3 or bottom 3 rankings
+// Determine whether we want the top n or bottom n rankings
 travelApp.getRecommendations = (res, statType, direction) => {
   if (direction === "max") {
-    return travelApp.determineTop3(res, statType);
+    return travelApp.determineTopN(res, statType, 3);
   } else if (direction === "min") {
-    return travelApp.determineBot3(res, statType);
+    return travelApp.determineBotN(res, statType, 3);
   }
 };
 
-/* CALCULATE TOP 3 RANKINGS */
-travelApp.determineTop3 = (result, stat) => {
-  // initialize a heap array to keep track of the 3 largest stat scores
+/* CALCULATE TOP N RANKINGS */
+travelApp.determineTopN = (result, stat, n) => {
+  // initialize a heap array to keep track of the n largest stat scores
   let heap = new MinHeap();
 
-  // initialize a secondary array to keep track of the 3 lowest scores AND
+  // initialize a secondary array to keep track of the n lowest scores AND
   // the associated country to each score
-  let top3 = [];
+  let topN = [];
 
   // store the stat type into a property variable for easier use
   let property = stat;
 
-  // start a country counter at 0 just for the sake of adding the first 3 countries into the heap
+  // start a country counter at 0 just for the sake of adding the first n countries into the heap
   let countryCounter = 0;
 
   // go through each country from the results of the AJAX call to INQStats
@@ -297,26 +304,26 @@ travelApp.determineTop3 = (result, stat) => {
     let stat = Number(country[property]);
     let countryName = country.countryName;
 
-    // store both stat and country name into an object to be added into the top 3 if needed
+    // store both stat and country name into an object to be added into the top n if needed
     let countryObj = {
       name: countryName,
       stat: stat
     };
 
-    // if it's the first 3 countries from the result, no work required. Just add them directly into both the heap and top3 variables
-    if (countryCounter < 3) {
+    // if it's the first n countries from the result, no work required. Just add them directly into both the heap and top3 variables
+    if (countryCounter < n) {
       heap.add(stat);
-      top3.push(countryObj);
+      topN.push(countryObj);
 
-      // increment countryCounter to know when we're past the first 3 countries
+      // increment countryCounter to know when we're past the first n countries
       countryCounter++;
     } else {
-      // CONDITION TO CHECK IF the current country stat is greater than any of the current stats in the current top 3 countries
+      // CONDITION TO CHECK IF the current country stat is greater than any of the current stats in the current top n countries
       if (stat > heap.peek()) {
-        // if so, find the location of the smallest stat score in the current top 3 array and replace it with the new stat and its associated country
-        for (let n = 0; n < top3.length; n++) {
-          if (top3[n].stat === heap.peek()) {
-            top3.splice(n, 1, countryObj);
+        // if so, find the location of the smallest stat score in the current top n array and replace it with the new stat and its associated country
+        for (let m = 0; m < topN.length; m++) {
+          if (topN[m].stat === heap.peek()) {
+            topN.splice(m, 1, countryObj);
           }
         }
 
@@ -328,50 +335,50 @@ travelApp.determineTop3 = (result, stat) => {
       }
     }
   });
-  // return top 3 scores with countries
-  return top3;
+  // return top n scores with countries
+  return topN;
 };
 
-/* CALCULATE BOTTOM 3 RANKINGS */
-travelApp.determineBot3 = (result, stat) => {
-  // initialize a heap array to keep track of the 3 lowest stat scores
+/* CALCULATE BOTTOM N RANKINGS */
+travelApp.determineBotN = (result, stat, n) => {
+  // initialize a heap array to keep track of the n lowest stat scores
   let heap = new MinHeap();
 
-  // initialize a secondary array to keep track of the 3 lowest scores AND
+  // initialize a secondary array to keep track of the n lowest scores AND
   // the associated country to each score
-  let bot3 = [];
+  let botN = [];
 
   // store the stat type into a property variable for easier use
   let property = stat;
 
-  // start a country counter at 0 just for the sake of adding the first 3 countries into the heap
+  // start a country counter at 0 just for the sake of adding the first n countries into the heap
   let countryCounter = 0;
 
   // go through each country from the results of the AJAX call to INQStats
   result.map(country => {
-    // calculate a NEGATIVE score of the stat type in order to implement a MAX HEAP for the bottom 3 calculation
+    // calculate a NEGATIVE score of the stat type in order to implement a MAX HEAP for the bottom n calculation
     let stat = Number(country[property]) * -1;
 
     // store country name in a country name variable
     let countryName = country.countryName;
 
-    // store both stat and country name into an object to be added into the bottom 3 if needed
+    // store both stat and country name into an object to be added into the bottom n if needed
     let countryObj = { name: countryName, stat: stat };
 
-    // if it's the first 3 countries from the result, no work required. Just add them directly into both the heap and bot3 variables
-    if (countryCounter < 3) {
+    // if it's the first n countries from the result, no work required. Just add them directly into both the heap and bot3 variables
+    if (countryCounter < n) {
       heap.add(stat);
-      bot3.push(countryObj);
+      botN.push(countryObj);
 
-      // increment countryCounter to know when we're past the first 3 countries
+      // increment countryCounter to know when we're past the first n countries
       countryCounter++;
     } else {
-      // CONDITION TO CHECK IF the current country stat is smaller than any of the current stats in the current bottom 3 countries
+      // CONDITION TO CHECK IF the current country stat is smaller than any of the current stats in the current bottom n countries
       if (stat > heap.peek()) {
-        // if so, find the location of the largest stat score in the current bottom 3 array and replace it with the new stat and its associated country
-        for (let n = 0; n < bot3.length; n++) {
-          if (bot3[n].stat === heap.peek()) {
-            bot3.splice(n, 1, countryObj);
+        // if so, find the location of the largest stat score in the current bottom n array and replace it with the new stat and its associated country
+        for (let m = 0; m < botN.length; m++) {
+          if (botN[m].stat === heap.peek()) {
+            botN.splice(m, 1, countryObj);
           }
         }
 
@@ -385,10 +392,27 @@ travelApp.determineBot3 = (result, stat) => {
   });
 
   // Turn numbers in array back to positive by multiplying by -1
-  bot3.forEach(country => {
+  botN.forEach(country => {
     country.stat *= -1;
   });
 
-  // return bottom 3 scores with countries
-  return bot3;
+  // return bottom n scores with countries
+  return botN;
+};
+
+travelApp.slideDrag = () => {
+  $("#sortable").sortable({
+    // axis: "y",
+    revert: true,
+    containment: "#drag-container"
+  });
+  $("ul, li").disableSelection();
+  // $(".draggable").draggable({
+  //   axis: "y",
+  //   connectToSortable: "#sortable",
+  //   containment: "#sortable",
+  //   revert: "invalid",
+  //   scroll: false
+  // });
+  $("ul, li").disableSelection();
 };
