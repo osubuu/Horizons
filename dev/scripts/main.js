@@ -370,8 +370,6 @@ travelApp.getUserPurpose = () => {
       }
     });
   });
-  // display stats question
-  // listen for the user click
 };
 
 /* 2. MAKE THE INQSTATS API REQUEST */
@@ -467,6 +465,8 @@ travelApp.getStat = (statType1, statType2, statType3) => {
   });
 };
 
+// WIKIPEDIA API: GET AND DISPLAY
+// ==============================
 // Store important info for calls to the Wiki API.
 travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
 // Get info from Wikipedia (AJAX)
@@ -484,21 +484,34 @@ travelApp.getWiki = country => {
       exlimit: 1,
       exsentences: 4,
       exintro: true,
-      explaintext: true
+      explaintext: true,
+      redirects: 1
     }
   }).then(res => {
     console.log(res);
+    travelApp.displayWiki(res);
   });
 };
 // Wiki Ajax request TEST
-travelApp.getWiki("italy");
+travelApp.getWiki("spain");
 
+// Display Wikipedia country extract on the page.
+travelApp.displayWiki = results => {
+  // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
+  const wikiExtractObject = results.query.pages;
+  // If we convert the above object into an array, the extract can be accessed on the first value of the array. This variable holds the wiki extract.
+  const wikiExtractArray = Object.values(wikiExtractObject)[0].extract;
+  console.log(wikiExtractArray);
+};
+
+// PIXABAY API: GET AND DISPLAY
+// ============================
 // Store important info for calls to the Pixabay API.
 travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
 travelApp.pixaURL = "https://www.pixabay.com/api/";
 // Get info from Wikipedia (AJAX)
 travelApp.getPixa = country => {
-  // get extract
+  // Get image URL
   $.ajax({
     url: travelApp.pixaURL,
     method: "GET",
@@ -509,10 +522,26 @@ travelApp.getPixa = country => {
     }
   }).then(res => {
     console.log(res);
+    travelApp.displayPixa(res);
   });
 };
 // Pixabay Ajax request TEST
 travelApp.getPixa("italy");
+
+// Display Pixabay country images on the page
+travelApp.displayPixa = results => {
+  // Store the array that holds the image URLs in an array
+  const resultsArray = results.hits;
+  // Create an empty array that will hold all the available country images
+  const imageArray = [];
+  // Loop through the results array and push all images into the imageArray
+  resultsArray.forEach((item) => {
+    imageArray.push(item.largeImageURL);
+  });
+  console.log(imageArray);
+};
+
+
 
 // Init function to hold all our functions in order
 travelApp.init = function () {
