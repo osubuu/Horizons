@@ -612,6 +612,7 @@ travelApp.displayDestinations = (results, statChoices) => {
   $(".results").empty();
   console.log(results);
   // Go through each country result and build the string literal to append to the page
+  let k = 0;
   results.forEach(country => {
     // This element holds all elements for one country result
     let countryContainerElement = $("<div>").addClass("result-container");
@@ -620,7 +621,8 @@ travelApp.displayDestinations = (results, statChoices) => {
     // This element holds the name of the country
     let countryNameElement = $("<h2>").addClass("country-name").text(`${country.countryName}`);
     // This element holds the description of the country, taken from the wiki API
-    let countryDescriptionElement = $('<p>').addClass('wiki-text').text(travelApp.wikiExtractArray);
+    let countryDescriptionElement = $('<p>').addClass('wiki-text').text(travelApp.wikiExtract[k]);
+    k++;
     // This element holds the text for each of the three stats we're displaying
     let statListElement = $('<ul>').addClass('stat-list');
     // Append the stat list <ul>, wiki text <p> and country name <h2> to the card div.
@@ -668,7 +670,7 @@ travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
 // Get info from Wikipedia (AJAX)
 travelApp.getWiki = country => {
   // get extract
-  $.ajax({
+  return $.ajax({
     url: travelApp.wikiURL,
     method: "GET",
     dataType: "jsonp",
@@ -683,22 +685,36 @@ travelApp.getWiki = country => {
       explaintext: true,
       redirects: 1
     }
-  }).then(res => {
-    console.log(res);
-    travelApp.displayWiki(res);
+    // }).then(res => {
+    //   console.log(res);
+    //   travelApp.displayWiki(res);
   });
 };
 // Wiki Ajax request TEST
-travelApp.getWiki("spain");
+// travelApp.getWiki("spain");
 
+travelApp.wikiPromiseArray = [];
+travelApp.wikiPromiseArray.push(travelApp.getWiki("spain"));
+travelApp.wikiPromiseArray.push(travelApp.getWiki("canada"));
+travelApp.wikiPromiseArray.push(travelApp.getWiki("italy"));
+console.log(travelApp.wikiPromiseArray);
+
+$.when(...travelApp.wikiPromiseArray).then((...wikiResults) => {
+  console.log(wikiResults);
+  wikiResults.forEach((wikiResult) => {
+    travelApp.displayWiki(wikiResult);
+  })
+  console.log(travelApp.wikiExtract);
+});
 // Display Wikipedia country extract on the page.
-travelApp.displayWiki = results => {
+travelApp.wikiExtract = [];
+travelApp.displayWiki = result => {
   // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
-  const wikiExtractObject = results.query.pages;
+  const wikiExtractObject = result[0].query.pages;
   // If we convert the above object into an array, the extract can be accessed on the first value of the array. This variable holds the wiki extract.
-  travelApp.wikiExtractArray = Object.values(wikiExtractObject)[0].extract;
-  console.log(wikiExtractArray);
+  travelApp.wikiExtract.push(Object.values(wikiExtractObject)[0].extract);
 };
+
 
 // PIXABAY API: GET AND DISPLAY
 // ============================
