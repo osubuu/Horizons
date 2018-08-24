@@ -5,6 +5,12 @@ const MinHeap = require("fastpriorityqueue");
 const travelApp = {};
 travelApp.userStat = "";
 
+// global array to store proper stat names from the travelApp.statArray for the ending
+travelApp.statNamesArray = [];
+
+// global array to store proper stat descriptions from the travelApp.statArray for the ending
+travelApp.statDescriptionArray = [];
+
 // ARRAY WITH ALL RELEVANT STATS FOR EACH PURPOSE
 travelApp.statArray = [
   // VACATION BUTTON
@@ -346,7 +352,7 @@ travelApp.eventsFunction = () => {
 
 /* 1. GET USER INPUT */
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     travelApp.userPurpose = inputID;
@@ -379,7 +385,7 @@ travelApp.displayStats = purposeID => {
 
 /* 3. OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".test").on("click", ".userSubmit", function() {
+  $(".test").on("click", ".userSubmit", function () {
     // get the user rankings from his ordering of stats and store in a variable
     let userRankings = $(".choices")[0].children;
 
@@ -417,13 +423,15 @@ travelApp.getStat = (statType1, statType2, statType3) => {
 
     // calling the calculation function to get the top n / bottom n countries
     // finalResults holds an array of three objects. Each object contains a country and it's 3 stat types. I need to re-edit the display function to account for the new array/objects/array/objects I created and set the conditional to compare it to the data in the finalResults array. Then edit the elements I created and how they are appended on the page.
+
+    //finalResults holds the final 3 coutries and all of their stats
     let finalResults = travelApp.getRecommendations(
       res,
       statType1,
       statType2,
       statType3
     );
-    travelApp.displayDestinations(finalResults);
+    travelApp.displayDestinations(finalResults, [statType1, statType2, statType3]);
   });
 };
 
@@ -493,19 +501,28 @@ travelApp.findDirections = (statType1, statType2, statType3) => {
         // if the current stat in the stats array is stattype1, get this direction
         if (stat.stat === statType1) {
           stat1Direction = stat.direction;
+          travelApp.statNamesArray.push(stat.statName)
+          travelApp.statDescriptionArray.push(stat.description);
         }
         // if the current stat in the stats array is stattype2, get this direction
         else if (stat.stat === statType2) {
           stat2Direction = stat.direction;
+          travelApp.statNamesArray.push(stat.statName)
+          travelApp.statDescriptionArray.push(stat.description);
+
         }
-        // if the current stat in the stats array is stattype2, get this direction
+        // if the current stat in the stats array is stattype3, get this direction
         else if (stat.stat === statType3) {
           stat3Direction = stat.direction;
+          travelApp.statNamesArray.push(stat.statName)
+          travelApp.statDescriptionArray.push(stat.description);
         }
       });
     }
   });
 
+  console.log(travelApp.statNamesArray);
+  console.log(travelApp.statDescriptionArray);
   return [stat1Direction, stat2Direction, stat3Direction];
 };
 
@@ -590,17 +607,34 @@ travelApp.determineNCountries = (result, statType, n, direction) => {
 };
 
 /* 6. DISPLAY DESTIONATIONS ON SCREEN */
-travelApp.displayDestinations = results => {
+travelApp.displayDestinations = (results, statChoices) => {
   // Get rid of previous clicked results
   $(".results").empty();
-
+  console.log(results);
   // Go through each country result and build the string literal to append to the page
   results.forEach(country => {
-    let countryContainer = $("<div>").addClass("country-result");
+    let countryContainer = $("<div>").addClass("result-background");
+    let countryCard = $("<div>").addClass("card");
     let countryName = $("<h2>")
       .addClass("country-name")
       .text(`${country.countryName}`);
-    console.log(country);
+    let countryDescription = $('<p>').addClass('wiki-text').text(travelApp.wikiExtractArray);
+    let statList = $('<ul>').addClass('stat-list');
+
+
+    // Go through the array "statChoices" and set up 3 information:
+    // 1. title of stat (taken from travelApp.statNamesArray)
+    // 2. value of stat (taken from results object)
+    // 3. description of stat (taken from travelApp.statDescriptionArray)
+    let g = 0;
+    statChoices.forEach(stat => {
+      let statTitle = travelApp.statNamesArray[g];
+      let statValue = country[stat];
+      let statDescription = travelApp.statDescriptionArray[g];
+      g++;
+      console.log(statTitle, statValue, statDescription);
+    });
+
 
     // Get stat number and description from statArrray
     let description = "";
@@ -672,7 +706,7 @@ travelApp.displayWiki = results => {
   // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
   const wikiExtractObject = results.query.pages;
   // If we convert the above object into an array, the extract can be accessed on the first value of the array. This variable holds the wiki extract.
-  const wikiExtractArray = Object.values(wikiExtractObject)[0].extract;
+  travelApp.wikiExtractArray = Object.values(wikiExtractObject)[0].extract;
   console.log(wikiExtractArray);
 };
 
@@ -714,7 +748,7 @@ travelApp.displayPixa = results => {
 };
 
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   travelApp.slideDrag();
@@ -723,7 +757,7 @@ travelApp.init = function() {
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
