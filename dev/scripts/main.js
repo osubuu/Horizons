@@ -5,6 +5,12 @@ const MinHeap = require("fastpriorityqueue");
 const travelApp = {};
 travelApp.userStat = "";
 
+// global array to store proper stat names from the travelApp.statArray for the ending
+travelApp.statNamesArray = [];
+
+// global array to store proper stat descriptions from the travelApp.statArray for the ending
+travelApp.statDescriptionArray = [];
+
 // ARRAY WITH ALL RELEVANT STATS FOR EACH PURPOSE
 travelApp.statArray = [
   // VACATION BUTTON
@@ -346,7 +352,7 @@ travelApp.eventsFunction = () => {
 
 /* 1. GET USER INPUT */
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     travelApp.userPurpose = inputID;
@@ -379,7 +385,7 @@ travelApp.displayStats = purposeID => {
 
 /* 3. OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".test").on("click", ".userSubmit", function() {
+  $(".test").on("click", ".userSubmit", function () {
     // get the user rankings from his ordering of stats and store in a variable
     let userRankings = $(".choices")[0].children;
 
@@ -417,13 +423,15 @@ travelApp.getStat = (statType1, statType2, statType3) => {
 
     // calling the calculation function to get the top n / bottom n countries
     // finalResults holds an array of three objects. Each object contains a country and it's 3 stat types. I need to re-edit the display function to account for the new array/objects/array/objects I created and set the conditional to compare it to the data in the finalResults array. Then edit the elements I created and how they are appended on the page.
+
+    //finalResults holds the final 3 coutries and all of their stats
     let finalResults = travelApp.getRecommendations(
       res,
       statType1,
       statType2,
       statType3
     );
-    travelApp.displayDestinations(finalResults);
+    travelApp.displayDestinations(finalResults, [statType1, statType2, statType3]);
   });
 };
 
@@ -493,19 +501,28 @@ travelApp.findDirections = (statType1, statType2, statType3) => {
         // if the current stat in the stats array is stattype1, get this direction
         if (stat.stat === statType1) {
           stat1Direction = stat.direction;
+          travelApp.statNamesArray.push(stat.statName)
+          travelApp.statDescriptionArray.push(stat.description);
         }
         // if the current stat in the stats array is stattype2, get this direction
         else if (stat.stat === statType2) {
           stat2Direction = stat.direction;
+          travelApp.statNamesArray.push(stat.statName)
+          travelApp.statDescriptionArray.push(stat.description);
+
         }
-        // if the current stat in the stats array is stattype2, get this direction
+        // if the current stat in the stats array is stattype3, get this direction
         else if (stat.stat === statType3) {
           stat3Direction = stat.direction;
+          travelApp.statNamesArray.push(stat.statName)
+          travelApp.statDescriptionArray.push(stat.description);
         }
       });
     }
   });
 
+  console.log(travelApp.statNamesArray);
+  console.log(travelApp.statDescriptionArray);
   return [stat1Direction, stat2Direction, stat3Direction];
 };
 
@@ -590,45 +607,54 @@ travelApp.determineNCountries = (result, statType, n, direction) => {
 };
 
 /* 6. DISPLAY DESTIONATIONS ON SCREEN */
-travelApp.displayDestinations = results => {
+travelApp.displayDestinations = (results, statChoices) => {
   // Get rid of previous clicked results
   $(".results").empty();
-
+  console.log(results);
   // Go through each country result and build the string literal to append to the page
+  let k = 0;
   results.forEach(country => {
-    let countryContainer = $("<div>").addClass("country-result");
-    let countryName = $("<h2>")
-      .addClass("country-name")
-      .text(`${country.countryName}`);
-    console.log(country);
+    // This element holds all elements for one country result
+    let countryContainerElement = $("<div>").addClass("result-container");
+    // This element will hold all text and image(s) referring to the country result
+    let countryCardElement = $("<div>").addClass("card");
+    // This element holds the name of the country
+    let countryNameElement = $("<h2>").addClass("country-name").text(`${country.countryName}`);
+    // This element holds the description of the country, taken from the wiki API
+    let countryDescriptionElement = $('<p>').addClass('wiki-text').text(travelApp.wikiExtract[k]);
+    k++;
+    // This element holds the text for each of the three stats we're displaying
+    let statListElement = $('<ul>').addClass('stat-list');
+    // Append the stat list <ul>, wiki text <p> and country name <h2> to the card div.
+    countryCardElement.append(countryNameElement, countryDescriptionElement, statListElement);
+    // console.log(countryCardElement);
+    // Append the card div to the result-container
+    countryContainerElement.append(countryCardElement);
+    //Append the result-container to the results section element on our page
+    $('.results').append(countryContainerElement);
 
-    // Get stat number and description from statArrray
-    let description = "";
-    let statNumberText = "";
-    travelApp.statArray.forEach(item => {
-      if (travelApp.userStat === item.stat) {
-        // This variable has the string of stat type, followed by the stat number. Later this can be appended right before the description so that it looks something like:
-        // <p>Population Density: 3.01</p>
-        // <p>The population density is measured in KM2 blah blah blah</p>
-        statNumberText = `${item.statName}: ${country.stat}`;
-        console.log(statNumberText);
-        description = item.description;
-      }
+    // Go through the array "statChoices" and set up 3 information:
+    // 1. title of stat (taken from travelApp.statNamesArray)
+    // 2. value of stat (taken from results object)
+    // 3. description of stat (taken from travelApp.statDescriptionArray)
+    let g = 0;
+    statChoices.forEach(stat => {
+      let statTitle = travelApp.statNamesArray[g];
+      let statValue = country[stat];
+      let statDescription = travelApp.statDescriptionArray[g];
+      g++;
+      console.log(statTitle, statValue, statDescription);
+      // This list item element will hold stat information
+      let statListItemElement = $('<li>').addClass('stat-list__item');
+      // This element holds the stat title and value
+      let statTitleElement = $('<h4>').addClass('stat-list__item__title-number').text(`${statTitle}: ${statValue}`);
+      // This element holds the stat description
+      let statDescriptionElement = $('<p>').addClass('stat-list__item__description').text(statDescription);
+      // Append stat info to the <li>
+      statListItemElement.append(statTitleElement, statDescriptionElement);
+      // Append the <li>s to the <ul>
+      statListElement.append(statListItemElement);
     });
-    // This variable holds the paragraph element for the stat name and number.
-    let statNumberElement = $("<p>")
-      .addClass("stat-number")
-      .text(statNumberText);
-    // This variable holds the paragraph element for the stat description
-    let statDescription = $("<p>")
-      .addClass("stat-description")
-      .text(`${description}`);
-
-    // append all HTML tags together to the container div
-    countryContainer.append(countryName, statNumberElement, statDescription);
-
-    // append container div to screen under results sections
-    $(".results").append(countryContainer);
   });
 };
 
@@ -644,7 +670,7 @@ travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
 // Get info from Wikipedia (AJAX)
 travelApp.getWiki = country => {
   // get extract
-  $.ajax({
+  return $.ajax({
     url: travelApp.wikiURL,
     method: "GET",
     dataType: "jsonp",
@@ -659,22 +685,36 @@ travelApp.getWiki = country => {
       explaintext: true,
       redirects: 1
     }
-  }).then(res => {
-    console.log(res);
-    travelApp.displayWiki(res);
+    // }).then(res => {
+    //   console.log(res);
+    //   travelApp.displayWiki(res);
   });
 };
 // Wiki Ajax request TEST
-travelApp.getWiki("spain");
+// travelApp.getWiki("spain");
 
+travelApp.wikiPromiseArray = [];
+travelApp.wikiPromiseArray.push(travelApp.getWiki("spain"));
+travelApp.wikiPromiseArray.push(travelApp.getWiki("canada"));
+travelApp.wikiPromiseArray.push(travelApp.getWiki("italy"));
+console.log(travelApp.wikiPromiseArray);
+
+$.when(...travelApp.wikiPromiseArray).then((...wikiResults) => {
+  console.log(wikiResults);
+  wikiResults.forEach((wikiResult) => {
+    travelApp.displayWiki(wikiResult);
+  })
+  console.log(travelApp.wikiExtract);
+});
 // Display Wikipedia country extract on the page.
-travelApp.displayWiki = results => {
+travelApp.wikiExtract = [];
+travelApp.displayWiki = result => {
   // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
-  const wikiExtractObject = results.query.pages;
+  const wikiExtractObject = result[0].query.pages;
   // If we convert the above object into an array, the extract can be accessed on the first value of the array. This variable holds the wiki extract.
-  const wikiExtractArray = Object.values(wikiExtractObject)[0].extract;
-  console.log(wikiExtractArray);
+  travelApp.wikiExtract.push(Object.values(wikiExtractObject)[0].extract);
 };
+
 
 // PIXABAY API: GET AND DISPLAY
 // ============================
@@ -714,7 +754,7 @@ travelApp.displayPixa = results => {
 };
 
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   travelApp.slideDrag();
@@ -723,7 +763,7 @@ travelApp.init = function() {
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
