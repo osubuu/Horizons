@@ -613,14 +613,23 @@ travelApp.displayDestinations = (results, statChoices) => {
   console.log(results);
   // Go through each country result and build the string literal to append to the page
   results.forEach(country => {
-    let countryContainer = $("<div>").addClass("result-background");
-    let countryCard = $("<div>").addClass("card");
-    let countryName = $("<h2>")
-      .addClass("country-name")
-      .text(`${country.countryName}`);
-    let countryDescription = $('<p>').addClass('wiki-text').text(travelApp.wikiExtractArray);
-    let statList = $('<ul>').addClass('stat-list');
-
+    // This element holds all elements for one country result
+    let countryContainerElement = $("<div>").addClass("result-container");
+    // This element will hold all text and image(s) referring to the country result
+    let countryCardElement = $("<div>").addClass("card");
+    // This element holds the name of the country
+    let countryNameElement = $("<h2>").addClass("country-name").text(`${country.countryName}`);
+    // This element holds the description of the country, taken from the wiki API
+    let countryDescriptionElement = $('<p>').addClass('wiki-text').text(travelApp.wikiExtractArray);
+    // This element holds the text for each of the three stats we're displaying
+    let statListElement = $('<ul>').addClass('stat-list');
+    // Append the stat list <ul>, wiki text <p> and country name <h2> to the card div.
+    countryCardElement.append(countryNameElement, countryDescriptionElement, statListElement);
+    // console.log(countryCardElement);
+    // Append the card div to the result-container
+    countryContainerElement.append(countryCardElement);
+    //Append the result-container to the results section element on our page
+    $('.results').append(countryContainerElement);
 
     // Go through the array "statChoices" and set up 3 information:
     // 1. title of stat (taken from travelApp.statNamesArray)
@@ -633,36 +642,17 @@ travelApp.displayDestinations = (results, statChoices) => {
       let statDescription = travelApp.statDescriptionArray[g];
       g++;
       console.log(statTitle, statValue, statDescription);
+      // This list item element will hold stat information
+      let statListItemElement = $('<li>').addClass('stat-list__item');
+      // This element holds the stat title and value
+      let statTitleElement = $('<h4>').addClass('stat-list__item__title-number').text(`${statTitle}: ${statValue}`);
+      // This element holds the stat description
+      let statDescriptionElement = $('<p>').addClass('stat-list__item__description').text(statDescription);
+      // Append stat info to the <li>
+      statListItemElement.append(statTitleElement, statDescriptionElement);
+      // Append the <li>s to the <ul>
+      statListElement.append(statListItemElement);
     });
-
-
-    // Get stat number and description from statArrray
-    let description = "";
-    let statNumberText = "";
-    travelApp.statArray.forEach(item => {
-      if (travelApp.userStat === item.stat) {
-        // This variable has the string of stat type, followed by the stat number. Later this can be appended right before the description so that it looks something like:
-        // <p>Population Density: 3.01</p>
-        // <p>The population density is measured in KM2 blah blah blah</p>
-        statNumberText = `${item.statName}: ${country.stat}`;
-        console.log(statNumberText);
-        description = item.description;
-      }
-    });
-    // This variable holds the paragraph element for the stat name and number.
-    let statNumberElement = $("<p>")
-      .addClass("stat-number")
-      .text(statNumberText);
-    // This variable holds the paragraph element for the stat description
-    let statDescription = $("<p>")
-      .addClass("stat-description")
-      .text(`${description}`);
-
-    // append all HTML tags together to the container div
-    countryContainer.append(countryName, statNumberElement, statDescription);
-
-    // append container div to screen under results sections
-    $(".results").append(countryContainer);
   });
 };
 
