@@ -11,10 +11,11 @@ travelApp.statNamesArray = [];
 // global array to store proper stat descriptions from the travelApp.statArray for the ending
 travelApp.statDescriptionArray = [];
 
-// global array to store wiki and pixabay promises
+// global array to store wiki and pixabay promises, and pixa images and text
 travelApp.wikiPromiseArray = [];
 travelApp.pixaPromiseArray = [];
 travelApp.imageArray = [];
+travelApp.imageTextArray = [];
 
 // ARRAY WITH ALL RELEVANT STATS FOR EACH PURPOSE
 travelApp.statArray = [
@@ -357,7 +358,7 @@ travelApp.eventsFunction = () => {
 
 /* 1. GET USER INPUT */
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     travelApp.userPurpose = inputID;
@@ -390,7 +391,7 @@ travelApp.displayStats = purposeID => {
 
 /* 3. OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".test").on("click", ".userSubmit", function() {
+  $(".test").on("click", ".userSubmit", function () {
     // get the user rankings from his ordering of stats and store in a variable
     let userRankings = $(".choices")[0].children;
 
@@ -655,7 +656,7 @@ travelApp.displayDestinations = (results, statChoices) => {
     let countryContainerElement = $("<div>")
       .addClass("result-container")
       .css("background-image", `url("${travelApp.imageArray[imageCounter]}")`);
-    imageCounter += 20;
+    // imageCounter += 20;
     // This element will hold all text and image(s) referring to the country result
     let countryCardElement = $("<div>").addClass("card");
     // This element holds the name of the country
@@ -669,12 +670,26 @@ travelApp.displayDestinations = (results, statChoices) => {
     countryCounter++;
     // This element holds the text for each of the three stats we're displaying
     let statListElement = $("<ul>").addClass("stat-list");
-    // Append the stat list <ul>, wiki text <p> and country name <h2> to the card div.
-    countryCardElement.append(
-      countryNameElement,
-      countryDescriptionElement,
-      statListElement
+    // This element holds the container that will hold the small pixa country image
+    let smallPixaContainerElement = $('<div>').addClass('country-image-container');
+    // This new image counter gets the image in the array that follows the first image being used as a background image for the card
+    let imageCounterSmall = imageCounter + 1;
+    // This image element will be appended to the image container
+    let smallPixaImage = $('<img>').addClass('country-image').attr(
+      {
+        src: `${travelApp.imageArray[imageCounterSmall]}`,
+        alt: `Scenic image of ${country.countryName}. Image tags include ${travelApp.imageTextArray}.`
+      }
     );
+    // Add 20 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
+    imageCounter += 20;
+    //Append the country image to its container
+    smallPixaContainerElement.append(smallPixaImage);
+    // Append the country name <h2>, wiki text <p>, stat list <ul> and image container <div> to the card <div>.
+    countryCardElement.append(countryNameElement,
+      countryDescriptionElement,
+      statListElement,
+      smallPixaContainerElement);
     // console.log(countryCardElement);
     // Append the card div to the result-container
     countryContainerElement.append(countryCardElement);
@@ -774,16 +789,19 @@ travelApp.getPixa = country => {
 travelApp.displayPixa = results => {
   // Store the array that holds the image URLs in an array
   const resultsArray = results[0].hits;
-
+  // console.log(resultsArray);
   // Loop through the results array and push all images into the imageArray
   resultsArray.forEach(item => {
+    // Array of images for each country
     travelApp.imageArray.push(item.largeImageURL);
+    // Array of image information from each country to be used for Alt text
+    travelApp.imageTextArray.push(item.tags);
   });
   console.log(travelApp.imageArray);
 };
 
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   travelApp.slideDrag();
@@ -792,7 +810,7 @@ travelApp.init = function() {
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
