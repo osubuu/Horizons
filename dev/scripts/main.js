@@ -3,19 +3,6 @@ const MinHeap = require("fastpriorityqueue");
 
 // Create an object representing our travel app (NAMESPACE)
 const travelApp = {};
-travelApp.userStat = "";
-
-// global array to store proper stat names from the travelApp.statArray for the ending
-travelApp.statNamesArray = [];
-
-// global array to store proper stat descriptions from the travelApp.statArray for the ending
-travelApp.statDescriptionArray = [];
-
-// global array to store wiki and pixabay promises, and pixa images and text
-travelApp.wikiPromiseArray = [];
-travelApp.pixaPromiseArray = [];
-travelApp.imageArray = [];
-travelApp.imageTextArray = [];
 
 // ARRAY WITH ALL RELEVANT STATS FOR EACH PURPOSE
 travelApp.statArray = [
@@ -354,11 +341,12 @@ travelApp.statArray = [
 travelApp.eventsFunction = () => {
   // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
+  travelApp.reset();
 };
 
 /* 1. GET USER INPUT */
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function () {
+  $(".travel-form__button").on("click", function() {
     // Store user input in variable
     const inputID = $(this).attr("id");
     travelApp.userPurpose = inputID;
@@ -380,18 +368,25 @@ travelApp.displayStats = purposeID => {
         // Append each of the stat name on screen for the user to rank
         let markUpItem = $("<li>")
           .attr("id", stat.stat)
+          .addClass("criteria")
           .text(stat.statName);
         $(".choices").append(markUpItem);
       });
     }
   });
 
+  // append submit button
+  let markUpButton = $("<button>")
+    .addClass("user-submit")
+    .text("SUBMIT RANKING");
+  $(".choices").append(markUpButton);
+
   travelApp.getUserRankings();
 };
 
 /* 3. OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".test").on("click", ".userSubmit", function () {
+  $(".criterias").on("click", ".user-submit", function() {
     // get the user rankings from his ordering of stats and store in a variable
     let userRankings = $(".choices")[0].children;
 
@@ -403,6 +398,14 @@ travelApp.getUserRankings = () => {
     for (let i = 0; i < 3; i++) {
       statsForAPICall.push(userRankings[i].id);
     }
+
+    // INITIALIZE ALL GLOBAL VARIABLES FOR DISPLAY AT THE END
+    travelApp.statNamesArray = [];
+    travelApp.statDescriptionArray = [];
+    travelApp.wikiPromiseArray = [];
+    travelApp.pixaPromiseArray = [];
+    travelApp.imageArray = [];
+    travelApp.imageTextArray = [];
 
     travelApp.getStat(...statsForAPICall);
   });
@@ -448,21 +451,21 @@ travelApp.getStat = (statType1, statType2, statType3) => {
       );
     });
 
-    $.when(...travelApp.wikiPromiseArray).then((...wikiResults) => {
-      wikiResults.forEach(wikiResult => {
-        travelApp.displayWiki(wikiResult);
-      });
-    });
-
-    $.when(...travelApp.pixaPromiseArray).then((...pixaResults) => {
-      console.log(pixaResults);
-      pixaResults.forEach(pixaResult => {
-        travelApp.displayPixa(pixaResult);
-      });
-    });
-
     $.when(...travelApp.wikiPromiseArray, ...travelApp.pixaPromiseArray).then(
-      () => {
+      (...wikiPixaResults) => {
+        // go through the wikiPixa results
+        for (let i = 0; i < wikiPixaResults.length; i++) {
+          // first three are wiki, push into array
+          if (i < 3) {
+            travelApp.displayWiki(wikiPixaResults[i]);
+          }
+          // last three are pixa, push into array
+          else {
+            travelApp.displayPixa(wikiPixaResults[i]);
+          }
+        }
+
+        // Display all info on screen
         travelApp.displayDestinations(finalResults, [
           statType1,
           statType2,
@@ -671,25 +674,31 @@ travelApp.displayDestinations = (results, statChoices) => {
     // This element holds the text for each of the three stats we're displaying
     let statListElement = $("<ul>").addClass("stat-list");
     // This element holds the container that will hold the small pixa country image
-    let smallPixaContainerElement = $('<div>').addClass('country-image-container');
+    let smallPixaContainerElement = $("<div>").addClass(
+      "country-image-container"
+    );
     // This new image counter gets the image in the array that follows the first image being used as a background image for the card
     let imageCounterSmall = imageCounter + 1;
     // This image element will be appended to the image container
-    let smallPixaImage = $('<img>').addClass('country-image').attr(
-      {
+    let smallPixaImage = $("<img>")
+      .addClass("country-image")
+      .attr({
         src: `${travelApp.imageArray[imageCounterSmall]}`,
-        alt: `Scenic image of ${country.countryName}. Image tags include ${travelApp.imageTextArray}.`
-      }
-    );
+        alt: `Scenic image of ${country.countryName}. Image tags include ${
+          travelApp.imageTextArray
+        }.`
+      });
     // Add 20 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
     imageCounter += 20;
     //Append the country image to its container
     smallPixaContainerElement.append(smallPixaImage);
     // Append the country name <h2>, wiki text <p>, stat list <ul> and image container <div> to the card <div>.
-    countryCardElement.append(countryNameElement,
+    countryCardElement.append(
+      countryNameElement,
       countryDescriptionElement,
       statListElement,
-      smallPixaContainerElement);
+      smallPixaContainerElement
+    );
     // console.log(countryCardElement);
     // Append the card div to the result-container
     countryContainerElement.append(countryCardElement);
@@ -723,11 +732,19 @@ travelApp.displayDestinations = (results, statChoices) => {
       statListElement.append(statListItemElement);
     });
   });
+
+  // append reset button to results
+  let resetButtonMarkup = $("<button>")
+    .addClass("reload")
+    .text("RESTART");
+  $(".results").append(resetButtonMarkup);
 };
 
 /* 7. RESET BUTTON */
 travelApp.reset = () => {
-  // reset travelApp
+  $(".results").on("click", ".reload", function() {
+    window.location.reload(true);
+  });
 };
 
 // WIKIPEDIA API: GET AND DISPLAY
@@ -747,7 +764,8 @@ travelApp.getWiki = country => {
       titles: country,
       format: "json",
       exlimit: 1,
-      exsentences: 4,
+      exchars: 300,
+      // exsentences: 3,
       exintro: true,
       explaintext: true,
       redirects: 1
@@ -782,8 +800,6 @@ travelApp.getPixa = country => {
     }
   });
 };
-// // Pixabay Ajax request TEST
-// travelApp.getPixa("italy");
 
 // Display Pixabay country images on the page
 travelApp.displayPixa = results => {
@@ -801,7 +817,7 @@ travelApp.displayPixa = results => {
 };
 
 // Init function to hold all our functions in order
-travelApp.init = function () {
+travelApp.init = function() {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   travelApp.slideDrag();
@@ -810,16 +826,20 @@ travelApp.init = function () {
 };
 
 // Document Ready to call our init() function and start the app
-$(function () {
+$(function() {
   travelApp.init();
 });
 
-// Draggable functionality
+// Sortable functionality
 travelApp.slideDrag = () => {
-  $(".choices").sortable({
-    connectWith: ".sortable",
-    revert: true
-    // containment: "#drag-container"
-  });
+  $(".choices")
+    .sortable({
+      connectWith: ".sortable",
+      scroll: false,
+      revert: true,
+      helper: "clone",
+      containment: ".criterias"
+    })
+    .css("position", "absolute");
   $("ul, li").disableSelection();
 };
