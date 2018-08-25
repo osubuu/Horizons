@@ -11,110 +11,115 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
     crossorigin="anonymous">
 
+  <!-- GOOGLE FONT -->
+  <link href="https://fonts.googleapis.com/css?family=Lora|Roboto" rel="stylesheet">
   <!-- CSS STYLING -->
   <link rel="stylesheet" href="./public/styles/styles.css">
 </head>
 
 <body>
   <div class="background">
-    <div class="wrapper">
-      <header class="welcome">
-        <h1>Project Title</h1>
-        <h3>By: Phil Bourrassa & Khoi Pham</h3>
-        <p class="welcome-message">There's no place like home. So when you decide to leave for any period of time, choosing a destination can be a difficult
-          task. At [insert company name] our unique travel application will make your most important decisions an informed
-          one. Using the most up-to-date data from prominent sources such as the United Nations and the World Bank, we help
-          you find the countries that best suit your needs.</p>
-        <button>Click to Start</button>
-      </header>
+    <header class="welcome">
+      <div class="welcome__content">
+        <h1>KP Voyage Inc.</h1>
+        <p class="welcome-message">There's no place like home. So when you decide to leave for any period of time, choosing
+          a destination can be a difficult task. At KP Voyage Inc., our unique travel application will make your most important
+          decisions informed and data-driven. Using the most up-to-date data from prominent sources such as the United Nations
+          and the World Bank, we help you find the countries that best suit your needs.
+        </p>
+        <button>Get Started</button>
+      </div>
+    </header>
 
-      <section class="purpose-section">
-        <h2>What is your purpose for traveling?</h2>
-
-        <form action="" class="travel-form">
-          <input type="radio" class="travel-form__button" name="restriction" id="button-vacation">
-          <label for="button-vacation">
-            <h3>Vacation</h3>
-            <i aria="hidden">
-              <img src="./assets/vacation.svg" alt="">
-            </i>
-          </label>
-          <input type="radio" class="travel-form__button" name="restriction" id="button-education">
-          <label for="button-education">
-            <h3>Education</h3>
-            <i aria="hidden">
-              <img src="./assets/education.svg" alt="">
-            </i>
-          </label>
-
-          <input type="radio" class="travel-form__button" name="restriction" id="button-visit-visa">
-          <label for="button-visit-visa">
-            <h3>Visitor Visa</h3>
-            <i aria="hidden">
-              <img src="./assets/visitor-visa.svg" alt="">
-            </i>
-          </label>
-
-          <input type="radio" class="travel-form__button" name="restriction" id="button-work-holiday">
-          <label for="button-work-holiday">
-            <h3>Working Holiday</h3>
-            <i aria="hidden">
-              <img src="./assets/working-holiday.svg" alt="">
-            </i>
-          </label>
-
-          <input type="radio" class="travel-form__button" name="restriction" id="button-perm-solo">
-          <label for="button-perm-solo">
-            <h3>Permanent - Individual</h3>
-            <i aria="hidden">
-              <img src="./assets/perm-solo.svg" alt="">
-            </i>
-          </label>
-
-          <input type="radio" class="travel-form__button" name="restriction" id="button-perm-couple">
-          <label for="button-perm-couple">
-            <h3>Permanent - Couple</h3>
-            <i aria="hidden">
-              <img src="./assets/perm-couple.svg" alt="">
-            </i>
-          </label>
-
-          <input type="radio" class="travel-form__button" name="restriction" id="button-perm-family">
-          <label for="button-perm-family">
-            <h3>Permanent - Family</label>
+    <section class="purpose-section">
+      <h2>What is your purpose for traveling?</h2>
+      <form action="" class="travel-form">
+        <input type="radio" name="restriction" class="travel-form__button" id="button-vacation">
+        <label class="travel-form__button-container" for="button-vacation">
+          <h3>Vacation</h3>
           <i aria="hidden">
-            <img src="./assets/perm-family.svg" alt="">
-          </i>
-        </form>
-      </section>
-
-
-
-      <section class="test">
-        <ul class="choices sortable"></ul>
-        <button class="userSubmit">SUBMIT RANKING</button>
-      </section>
-
-      <section class="results">
-        <!-- <div class="result-background">
-          <div class="card">
-            <h2 class="country-name"></h2>
-            <p class="wiki-text"></p>
-            <ul class="stat-list"></ul>
-            <div class="image-container">
-              <img src="" alt="">
+            <div class="icon-image-container">
+              <img src="./assets/vacation.svg" alt="">
             </div>
-          </div>
-        </div> -->
+          </i>
+        </label>
 
+        <input type="radio" name="restriction" class="travel-form__button" id="button-education">
+        <label class="travel-form__button-container" for="button-education">
+          <h3>Education</h3>
+          <i aria="hidden">
+            <div class="icon-image-container">
+              <img src="./assets/education.svg" alt="">
+            </div>
+          </i>
+        </label>
+
+        <input type="radio" name="restriction" class="travel-form__button" id="button-visit-visa">
+        <label class="travel-form__button-container" for="button-visit-visa">
+          <h3>Visitor Visa</h3>
+          <i aria="hidden">
+            <div class="icon-image-container">
+              <img src="./assets/visitor-visa.svg" alt="">
+            </div>
+          </i>
+        </label>
+
+        <input type="radio" name="restriction" class="travel-form__button" id="button-work-holiday">
+        <label class="travel-form__button-container" for="button-work-holiday">
+          <h3>Working Holiday</h3>
+          <i aria="hidden">
+            <div class="icon-image-container">
+              <img src="./assets/working-holiday.svg" alt="">
+            </div>
+          </i>
+        </label>
+
+        <input type="radio" name="restriction" class="travel-form__button" id="button-perm-solo">
+        <label class="travel-form__button-container" for="button-perm-solo">
+          <h3>Permanent<br>(Individual)</h3>
+          <i aria="hidden">
+            <div class="icon-image-container">
+              <img src="./assets/perm-solo.svg" alt="">
+            </div>
+          </i>
+        </label>
+
+        <input type="radio" name="restriction" class="travel-form__button" id="button-perm-couple">
+        <label class="travel-form__button-container" for="button-perm-couple">
+          <h3>Permanent<br>(Couple)</h3>
+          <i aria="hidden">
+            <div class="icon-image-container">
+              <img src="./assets/perm-couple.svg" alt="">
+            </div>
+          </i>
+        </label>
+
+        <input type="radio" name="restriction" class="travel-form__button" id="button-perm-family">
+        <label class="travel-form__button-container" for="button-perm-family">
+          <h3>Permanent<br>(Family)</h3>
+          <i aria="hidden">
+            <div class="icon-image-container">
+              <img src="./assets/perm-family.svg" alt="">
+            </div>
+          </i>
+        </label>
+      </form>
+
+      <section class="criterias">
+        <ul class="choices sortable"></ul>
       </section>
 
 
-      <footer>
-        <button class="reload">RESTART</button>
-      </footer>
+    </section>
 
-    </div>
+
+
+    <section class="results">
+
+    </section>
+
+
+
   </div>
 
 
