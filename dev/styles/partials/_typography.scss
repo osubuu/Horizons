@@ -1,7 +1,16 @@
 html {
-  font-family: $primary-font, sans-serif;
+  font-family: $primary-font;
   font-size: 62.5%;
   color: $font-color-1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $primary-font;
 }
 
 h1 {
@@ -9,13 +18,14 @@ h1 {
 }
 
 h2 {
-  font-size: 3rem;
+  font-size: 3.5rem;
+}
+
+h3 {
+  font-size: 2rem;
 }
 
 p {
   font-size: 1.5rem;
-}
-
-.travel-form__button {
-  font-size: 2.5rem;
+  font-family: $secondary-font;
 }

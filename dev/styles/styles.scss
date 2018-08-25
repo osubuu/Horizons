@@ -8,39 +8,192 @@ GENERAL STYLING
 ============================================================
 */
 
-//insert code here, between partials above and media-queries below
-h1 {
-  color: red;
+.background {
+  width: 100%;
+  height: 100vh;
+  background-image: url(../../assets/treasure-map-1850653_1920.jpg);
+  background-size: cover;
+  background-position: center;
 }
 
-li {
+.welcome {
   width: 80%;
-  text-align: center;
-  display: block;
-  background-color: lightblue;
-  border: 1px solid black;
-}
-
-#drag-container {
-  height: 10vh;
-  width: 10vw;
+  height: 100vh;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  &__content {
+    background-color: red;
+  }
+
+  h1 {
+    margin: 0;
+  }
 }
 
-ul {
+.purpose-section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: lightcyan;
+}
+
+.travel-form {
+  width: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  &__button-container {
+    background-color: #96ceb4;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin: 1%;
+    width: 20rem;
+    height: 20rem;
+
+    h3 {
+      margin: 0;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.icon-image-container {
+  width: 8rem;
+  height: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.criterias {
+  width: 100%;
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1em 0;
+}
+
+.choices {
   text-align: center;
   width: 100%;
   padding: 0;
   display: flex;
+  //   display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.criteria {
+  width: 60%;
+  font-size: 1.4rem;
+  padding: 0.5em;
+  text-align: center;
+  display: block;
+  background-color: lightblue;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.user-submit {
+  margin: 1em;
+}
+
+.results {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  position: relative;
+}
+.result-container {
+  width: calc(100% / 3);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.card {
+  width: 80%;
+  margin: auto;
+  padding: 3.25em 2em 2em 2em;
+  background-color: rgba(225, 227, 232, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.wiki-text {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.country-image-container {
+  width: 100%;
+  height: 200px;
+}
+
+.country-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.stat-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.country-name {
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.stat-list__item__title-number {
+  font-size: 1.9rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.stat-list__item__description {
+  margin-top: 0.25em;
+  font-size: 1.6rem;
+}
+
+.reload {
+  position: absolute;
+  bottom: 1.5%;
+  left: 50%;
+  transform: translateX(-50%);
+}
 /*
 ============================================================
 WELCOME SECTION
