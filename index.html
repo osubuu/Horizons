@@ -18,108 +18,111 @@
 </head>
 
 <body>
-  <div class="background">
+  <div class="background wrapper-prim">
     <header class="welcome">
-      <div class="welcome__content">
+      <div class="welcome__content wrapper-sec">
         <h1>KP Voyage Inc.</h1>
-        <p class="welcome-message">There's no place like home. So when you decide to leave for any period of time, choosing
-          a destination can be a difficult task. At KP Voyage Inc., our unique travel application will make your most important
-          decisions informed and data-driven. Using the most up-to-date data from prominent sources such as the United Nations
-          and the World Bank, we help you find the countries that best suit your needs.
+        <p class="welcome-message">There's no place like home. So when you decide to leave for any period of time, choosing a destination can be a difficult
+          task. At KP Voyage Inc., our unique travel application will make your most important decisions informed and data-driven.
+          Using the most up-to-date data from prominent sources such as the United Nations and the World Bank, we help you
+          find the countries that best suit your needs.
         </p>
         <button>Get Started</button>
       </div>
     </header>
 
-    <section class="purpose-section">
-      <h2>What is your purpose for traveling?</h2>
-      <form action="" class="travel-form">
-        <input type="radio" name="restriction" class="travel-form__button" id="button-vacation">
-        <label class="travel-form__button-container" for="button-vacation">
-          <h3>Vacation</h3>
-          <i aria="hidden">
-            <div class="icon-image-container">
-              <img src="./assets/vacation.svg" alt="">
-            </div>
-          </i>
-        </label>
+    <section class="purpose-section wrapper-prim">
+      <div class="wrapper-sec purpose-container">
+        <h2 class="purpose-header">What is your purpose for traveling?</h2>
+        <form action="" class="travel-form">
+          <input type="radio" name="restriction" class="travel-form__button" id="button-vacation">
+          <label class="travel-form__button-container" for="button-vacation">
+            <h3>Vacation</h3>
+            <i aria="hidden">
+              <div class="icon-image-container">
+                <img src="./assets/vacation.svg" alt="">
+              </div>
+            </i>
+          </label>
 
-        <input type="radio" name="restriction" class="travel-form__button" id="button-education">
-        <label class="travel-form__button-container" for="button-education">
-          <h3>Education</h3>
-          <i aria="hidden">
-            <div class="icon-image-container">
-              <img src="./assets/education.svg" alt="">
-            </div>
-          </i>
-        </label>
+          <input type="radio" name="restriction" class="travel-form__button" id="button-education">
+          <label class="travel-form__button-container" for="button-education">
+            <h3>Education</h3>
+            <i aria="hidden">
+              <div class="icon-image-container">
+                <img src="./assets/education.svg" alt="">
+              </div>
+            </i>
+          </label>
 
-        <input type="radio" name="restriction" class="travel-form__button" id="button-visit-visa">
-        <label class="travel-form__button-container" for="button-visit-visa">
-          <h3>Visitor Visa</h3>
-          <i aria="hidden">
-            <div class="icon-image-container">
-              <img src="./assets/visitor-visa.svg" alt="">
-            </div>
-          </i>
-        </label>
+          <input type="radio" name="restriction" class="travel-form__button" id="button-visit-visa">
+          <label class="travel-form__button-container" for="button-visit-visa">
+            <h3>Visitor Visa</h3>
+            <i aria="hidden">
+              <div class="icon-image-container">
+                <img src="./assets/visitor-visa.svg" alt="">
+              </div>
+            </i>
+          </label>
 
-        <input type="radio" name="restriction" class="travel-form__button" id="button-work-holiday">
-        <label class="travel-form__button-container" for="button-work-holiday">
-          <h3>Working Holiday</h3>
-          <i aria="hidden">
-            <div class="icon-image-container">
-              <img src="./assets/working-holiday.svg" alt="">
-            </div>
-          </i>
-        </label>
+          <input type="radio" name="restriction" class="travel-form__button" id="button-work-holiday">
+          <label class="travel-form__button-container" for="button-work-holiday">
+            <h3>Working Holiday</h3>
+            <i aria="hidden">
+              <div class="icon-image-container">
+                <img src="./assets/working-holiday.svg" alt="">
+              </div>
+            </i>
+          </label>
 
-        <input type="radio" name="restriction" class="travel-form__button" id="button-perm-solo">
-        <label class="travel-form__button-container" for="button-perm-solo">
-          <h3>Permanent<br>(Individual)</h3>
-          <i aria="hidden">
-            <div class="icon-image-container">
-              <img src="./assets/perm-solo.svg" alt="">
-            </div>
-          </i>
-        </label>
+          <input type="radio" name="restriction" class="travel-form__button" id="button-perm-solo">
+          <label class="travel-form__button-container" for="button-perm-solo">
+            <h3>Permanent
+              <br>(Individual)</h3>
+            <i aria="hidden">
+              <div class="icon-image-container">
+                <img src="./assets/perm-solo.svg" alt="">
+              </div>
+            </i>
+          </label>
 
-        <input type="radio" name="restriction" class="travel-form__button" id="button-perm-couple">
-        <label class="travel-form__button-container" for="button-perm-couple">
-          <h3>Permanent<br>(Couple)</h3>
-          <i aria="hidden">
-            <div class="icon-image-container">
-              <img src="./assets/perm-couple.svg" alt="">
-            </div>
-          </i>
-        </label>
+          <input type="radio" name="restriction" class="travel-form__button" id="button-perm-couple">
+          <label class="travel-form__button-container" for="button-perm-couple">
+            <h3>Permanent
+              <br>(Couple)</h3>
+            <i aria="hidden">
+              <div class="icon-image-container">
+                <img src="./assets/perm-couple.svg" alt="">
+              </div>
+            </i>
+          </label>
 
-        <input type="radio" name="restriction" class="travel-form__button" id="button-perm-family">
-        <label class="travel-form__button-container" for="button-perm-family">
-          <h3>Permanent<br>(Family)</h3>
-          <i aria="hidden">
-            <div class="icon-image-container">
-              <img src="./assets/perm-family.svg" alt="">
-            </div>
-          </i>
-        </label>
-      </form>
-
-      <section class="criterias">
-        <ul class="choices sortable"></ul>
-      </section>
-
-
+          <input type="radio" name="restriction" class="travel-form__button" id="button-perm-family">
+          <label class="travel-form__button-container" for="button-perm-family">
+            <h3>Permanent
+              <br>(Family)</h3>
+            <i aria="hidden">
+              <div class="icon-image-container">
+                <img src="./assets/perm-family.svg" alt="">
+              </div>
+            </i>
+          </label>
+        </form>
+      </div>
     </section>
 
-
-
-    <section class="results">
-
+    <section class="criterias wrapper-prim">
+      <div class="wrapper-sec criterias-container">
+        <h2 class="criteria-header"></h2>
+        <div class="choices-list-container">
+          <ul class="choices sortable"></ul>
+        </div>
+      </div>
     </section>
 
+    <section class="results wrapper-prim">
 
-
+    </section>
   </div>
 
 
