@@ -341,6 +341,17 @@ travelApp.statArray = [
 travelApp.eventsFunction = () => {
   // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
+  travelApp.getStarted();
+  travelApp.transformSVG();
+};
+
+/* 0. GET STARTED */
+travelApp.getStarted = () => {
+  $(".welcome__button").on("click", function() {
+    $("html, body")
+      .stop()
+      .animate({ scrollTop: $(".purpose-section").offset().top }, 900, "swing");
+  });
 };
 
 /* 1. GET USER INPUT */
@@ -356,7 +367,7 @@ travelApp.getUserPurpose = () => {
     // Display the criterias to be chosen
     $(".criterias").css("display", "flex");
 
-    // Smooth Scroll
+    // Smooth Scroll to criteria's section
     $("html, body")
       .stop()
       .animate(
@@ -406,6 +417,12 @@ travelApp.displayStats = purposeID => {
 travelApp.getUserRankings = () => {
   $(".choices").on("click", ".user-submit", function() {
     // get the user rankings from his ordering of stats and store in a variable
+
+    // remove submit button and put a loader until the results come back
+    $(".choices")
+      .find("li:last-child")
+      .html(`<img class="loader" src="../../assets/spinner-1s-100px.gif">`);
+
     let userRankings = $(".choices")[0].children;
 
     // initialize an empty array to store the top 3 rankings
@@ -470,21 +487,23 @@ travelApp.getStat = (statType1, statType2, statType3) => {
       );
     });
 
+    // when all wiki and pixa promises are fulfilled, store the results
+    // to prepare them for display
     $.when(...travelApp.wikiPromiseArray, ...travelApp.pixaPromiseArray).then(
       (...wikiPixaResults) => {
         // go through the wikiPixa results
         for (let i = 0; i < wikiPixaResults.length; i++) {
-          // first three are wiki, push into array
+          // first three are wiki, push (store) into array
           if (i < 3) {
-            travelApp.displayWiki(wikiPixaResults[i]);
+            travelApp.storeWiki(wikiPixaResults[i]);
           }
-          // last three are pixa, push into array
+          // last three are pixa, push (store) into array
           else {
-            travelApp.displayPixa(wikiPixaResults[i]);
+            travelApp.storePixa(wikiPixaResults[i]);
           }
         }
 
-        // Display all info on screen
+        // Once results all stored, display all info on screen (3 countries, wiki and pixa)
         travelApp.displayDestinations(finalResults, [
           statType1,
           statType2,
@@ -665,7 +684,77 @@ travelApp.determineNCountries = (result, statType, n, direction) => {
   return nCountries;
 };
 
-/* 6. DISPLAY DESTIONATIONS ON SCREEN */
+/* 6. SEND API REQUESTS TO WIKI AND PIXA */
+
+// 6.1 WIKIPEDIA API: GET AND STORE
+// ==============================
+// Store important info for calls to the Wiki API.
+travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
+// Get info from Wikipedia (AJAX)
+travelApp.getWiki = country => {
+  // get extract
+  return $.ajax({
+    url: travelApp.wikiURL,
+    method: "GET",
+    dataType: "jsonp",
+    data: {
+      action: "query",
+      prop: "extracts",
+      titles: country,
+      format: "json",
+      exlimit: 1,
+      exchars: 280,
+      exintro: true,
+      explaintext: true,
+      redirects: 1
+    }
+  });
+};
+
+// Store Wikipedia country extract
+travelApp.storeWiki = result => {
+  // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
+  const wikiExtractObject = result[0].query.pages;
+  // If we convert the above object into an array, the extract can be accessed on the first value of the array. This variable holds the wiki extract.
+  travelApp.wikiExtract.push(Object.values(wikiExtractObject)[0].extract);
+};
+
+// 6.2 PIXABAY API: GET AND STORE
+// ============================
+// Store important info for calls to the Pixabay API.
+travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
+travelApp.pixaURL = "https://www.pixabay.com/api/";
+// Get info from Wikipedia (AJAX)
+travelApp.getPixa = country => {
+  // Get image URL
+  return $.ajax({
+    url: travelApp.pixaURL,
+    method: "GET",
+    dataType: "jsonp",
+    data: {
+      key: travelApp.pixaKey,
+      q: country,
+      per_page: 15
+    }
+  });
+};
+
+// Store Pixabay country images on the page
+travelApp.storePixa = results => {
+  // Store the array that holds the image URLs in an array
+  const resultsArray = results[0].hits;
+  console.log(resultsArray);
+  // Loop through the results array and push all images into the imageArray
+  resultsArray.forEach(item => {
+    // Array of images for each country
+    travelApp.imageArray.push(item.largeImageURL);
+    // Array of image information from each country to be used for Alt text
+    travelApp.imageTextArray.push(item.tags);
+  });
+  console.log(travelApp.imageArray);
+};
+
+/* 7. DISPLAY DESTIONATIONS ON SCREEN WITH WIKI + PIXA RESULTS */
 travelApp.displayDestinations = (results, statChoices) => {
   // Get rid of previous clicked results
   $(".results").empty();
@@ -677,7 +766,14 @@ travelApp.displayDestinations = (results, statChoices) => {
     // This element holds all elements for one country result
     let countryContainerElement = $("<div>")
       .addClass("result-container")
-      .css("background-image", `url("${travelApp.imageArray[imageCounter]}")`);
+      .css(
+        "background-image",
+        `url("${
+          travelApp.imageArray[
+            travelApp.randomize(imageCounter, imageCounter + 15)
+          ]
+        }")`
+      );
     // imageCounter += 20;
     // This element will hold all text and image(s) referring to the country result
     let countryCardElement = $("<div>").addClass("card");
@@ -697,18 +793,22 @@ travelApp.displayDestinations = (results, statChoices) => {
       "country-image-container"
     );
     // This new image counter gets the image in the array that follows the first image being used as a background image for the card
-    let imageCounterSmall = imageCounter + 1;
+    // let imageCounterSmall = imageCounter + 1;
     // This image element will be appended to the image container
     let smallPixaImage = $("<img>")
       .addClass("country-image")
       .attr({
-        src: `${travelApp.imageArray[imageCounterSmall]}`,
+        src: `${
+          travelApp.imageArray[
+            travelApp.randomize(imageCounter, imageCounter + 15)
+          ]
+        }`,
         alt: `Scenic image of ${country.countryName}. Image tags include ${
           travelApp.imageTextArray
         }.`
       });
     // Add 20 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
-    imageCounter += 20;
+    imageCounter += 15;
     //Append the country image to its container
     smallPixaContainerElement.append(smallPixaImage);
     // Append the country name <h2>, wiki text <p>, stat list <ul> and image container <div> to the card <div>.
@@ -740,7 +840,7 @@ travelApp.displayDestinations = (results, statChoices) => {
       // This element holds the stat title and value
       let statTitleElement = $("<h4>")
         .addClass("stat-list__item__title-number")
-        .text(`${statTitle}: ${statValue}`);
+        .text(`${statTitle}: ${travelApp.numberWithCommas(statValue)}`);
       // This element holds the stat description
       let statDescriptionElement = $("<p>")
         .addClass("stat-list__item__description")
@@ -752,74 +852,22 @@ travelApp.displayDestinations = (results, statChoices) => {
     });
   });
 
-  $(".results").css("display", "flex");
-};
+  console.log("IMAGES LOADING");
 
-// WIKIPEDIA API: GET AND DISPLAY
-// ==============================
-// Store important info for calls to the Wiki API.
-travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
-// Get info from Wikipedia (AJAX)
-travelApp.getWiki = country => {
-  // get extract
-  return $.ajax({
-    url: travelApp.wikiURL,
-    method: "GET",
-    dataType: "jsonp",
-    data: {
-      action: "query",
-      prop: "extracts",
-      titles: country,
-      format: "json",
-      exlimit: 1,
-      exchars: 280,
-      exintro: true,
-      explaintext: true,
-      redirects: 1
-    }
+  // Display the criterias to be chosen
+  $(".results").waitForImages(function() {
+    console.log("IMAGES LOADED");
+    $(".results").css("display", "flex");
+    $("html, body")
+      .stop()
+      .animate({ scrollTop: $(".results").offset().top }, 900, "swing");
+
+    // remove loader and display submit ranking button again
+    let markUpButton = `<li><button class="user-submit">Submit Ranking</button></li>`;
+    $(".choices")
+      .find("li:last-child")
+      .html(markUpButton);
   });
-};
-
-// Display Wikipedia country extract on the page.
-travelApp.displayWiki = result => {
-  // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
-  const wikiExtractObject = result[0].query.pages;
-  // If we convert the above object into an array, the extract can be accessed on the first value of the array. This variable holds the wiki extract.
-  travelApp.wikiExtract.push(Object.values(wikiExtractObject)[0].extract);
-};
-
-// PIXABAY API: GET AND DISPLAY
-// ============================
-// Store important info for calls to the Pixabay API.
-travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
-travelApp.pixaURL = "https://www.pixabay.com/api/";
-// Get info from Wikipedia (AJAX)
-travelApp.getPixa = country => {
-  // Get image URL
-  return $.ajax({
-    url: travelApp.pixaURL,
-    method: "GET",
-    dataType: "jsonp",
-    data: {
-      key: travelApp.pixaKey,
-      q: country
-    }
-  });
-};
-
-// Display Pixabay country images on the page
-travelApp.displayPixa = results => {
-  // Store the array that holds the image URLs in an array
-  const resultsArray = results[0].hits;
-  // console.log(resultsArray);
-  // Loop through the results array and push all images into the imageArray
-  resultsArray.forEach(item => {
-    // Array of images for each country
-    travelApp.imageArray.push(item.largeImageURL);
-    // Array of image information from each country to be used for Alt text
-    travelApp.imageTextArray.push(item.tags);
-  });
-  console.log(travelApp.imageArray);
 };
 
 // Init function to hold all our functions in order
@@ -836,7 +884,9 @@ $(function() {
   travelApp.init();
 });
 
-// Sortable functionality
+/* 8. EXTRA FUNCTIONS USED THROUGHOUT APP */
+
+// 8.1 Sortable functionality for criterias
 travelApp.slideDrag = () => {
   $(".choices")
     .sortable({
@@ -848,4 +898,60 @@ travelApp.slideDrag = () => {
     })
     .css("position", "absolute");
   $("ul, li").disableSelection();
+};
+
+// 8.2 Randomizer function to select random images to display
+travelApp.randomize = (startingNum, endingNum) => {
+  return Math.floor(Math.random() * (endingNum - startingNum)) + startingNum;
+};
+
+// 8.3 Event listener to transform SVGs into inline SVGS to be able to change their colors with css fill
+travelApp.transformSVG = () => {
+  jQuery("img.svg").each(function() {
+    var $img = jQuery(this);
+    var imgID = $img.attr("id");
+    var imgClass = $img.attr("class");
+    var imgURL = $img.attr("src");
+
+    jQuery.get(
+      imgURL,
+      function(data) {
+        // Get the SVG tag, ignore the rest
+        var $svg = jQuery(data).find("svg");
+
+        // Add replaced image's ID to the new SVG
+        if (typeof imgID !== "undefined") {
+          $svg = $svg.attr("id", imgID);
+        }
+        // Add replaced image's classes to the new SVG
+        if (typeof imgClass !== "undefined") {
+          $svg = $svg.attr("class", imgClass + " replaced-svg");
+        }
+
+        // Remove any invalid XML tags as per http://validator.w3.org
+        $svg = $svg.removeAttr("xmlns:a");
+
+        // Check if the viewport is set, if the viewport is not set the SVG wont't scale.
+        if (
+          !$svg.attr("viewBox") &&
+          $svg.attr("height") &&
+          $svg.attr("width")
+        ) {
+          $svg.attr(
+            "viewBox",
+            "0 0 " + $svg.attr("height") + " " + $svg.attr("width")
+          );
+        }
+
+        // Replace image with new SVG
+        $img.replaceWith($svg);
+      },
+      "xml"
+    );
+  });
+};
+
+/* 8.4 TRANSFORM STRING NUMBERS INTO SEPARATED STRINGS WITH PROPER COMMAS FOR EACH THOUSAND UNIT */
+travelApp.numberWithCommas = stat => {
+  return stat.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
