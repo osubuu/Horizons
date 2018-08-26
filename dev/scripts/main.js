@@ -840,7 +840,7 @@ travelApp.displayDestinations = (results, statChoices) => {
       // This element holds the stat title and value
       let statTitleElement = $("<h4>")
         .addClass("stat-list__item__title-number")
-        .text(`${statTitle}: ${statValue}`);
+        .text(`${statTitle}: ${travelApp.numberWithCommas(statValue)}`);
       // This element holds the stat description
       let statDescriptionElement = $("<p>")
         .addClass("stat-list__item__description")
@@ -949,4 +949,9 @@ travelApp.transformSVG = () => {
       "xml"
     );
   });
+};
+
+/* 8.4 TRANSFORM STRING NUMBERS INTO SEPARATED STRINGS WITH PROPER COMMAS FOR EACH THOUSAND UNIT */
+travelApp.numberWithCommas = stat => {
+  return stat.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
