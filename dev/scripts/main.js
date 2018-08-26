@@ -22,14 +22,14 @@ travelApp.statArray = [
         direction: "max",
         statName: "Happiness Index",
         description:
-          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+          "Based on factors such as GDP per capita, social support, life expectancy. The higher the value, the happier the country."
       },
       {
         stat: "tourist_arrivals",
         direction: "max",
         statName: "Tourist Arrivals",
         description:
-          "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc."
+          "Represents foreign citizens that stayed at least one night. Includes hotel stays, transfers, conference visits, etc."
       },
       {
         stat: "tourism_expenditure",
@@ -75,21 +75,21 @@ travelApp.statArray = [
         direction: "min",
         statName: "Corruption Index",
         description:
-          "The Corruption Perceptions Index (CPI). (Scale: 0-100; 0 = high corruption. 100 = low corruption)."
+          "Corruption Perceptions Index (CPI). (Scale: 0-100; 0 = high corruption. 100 = low corruption)."
       },
       {
         stat: "happiness_index",
         direction: "max",
         statName: "Happiness Index",
         description:
-          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+          "Based on factors such as GDP per capita, social support, life expectancy. The higher the value, the happier the country."
       },
       {
         stat: "hdi",
         direction: "max",
         statName: "Human Development Index",
         description:
-          "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
+          "Indicator of life expectancy, education, and per capita income. (Scale: 0-1; 0 = low score. 1 = high score)."
       },
       {
         stat: "health_expenditure",
@@ -109,7 +109,7 @@ travelApp.statArray = [
         direction: "max",
         statName: "Happiness Index",
         description:
-          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+          "Based on factors such as GDP per capita, social support, life expectancy. The higher the value, the happier the country."
       },
       {
         stat: "health_expenditure",
@@ -122,7 +122,7 @@ travelApp.statArray = [
         direction: "max",
         statName: "Tourist Arrivals",
         description:
-          "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc."
+          "Represents foreign citizens that stayed at least one night. Includes hotel stays, transfers, conference visits, etc."
       },
       {
         stat: "density",
@@ -160,7 +160,7 @@ travelApp.statArray = [
         direction: "max",
         statName: "Tourist Arrivals",
         description:
-          "Based on UN data, this number represents foreign citizens that stayed at least one night in the country. This includes hotel stays, transfers, conference visits, etc."
+          "Represents foreign citizens that stayed at least one night. Includes hotel stays, transfers, conference visits, etc."
       },
       {
         id: "button-perm-solo",
@@ -168,14 +168,14 @@ travelApp.statArray = [
         direction: "min",
         statName: "Gini Coefficient",
         description:
-          "The Gini coefficient states how uniformly assets are distributed in a country. (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)."
+          "States how uniformly assets are distributed. (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)."
       },
       {
         stat: "happiness_index",
         direction: "max",
         statName: "Happiness Index",
         description:
-          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+          "Based on factors such as GDP per capita, social support, life expectancy. The higher the value, the happier the country."
       },
       {
         stat: "jobless_rate",
@@ -203,14 +203,14 @@ travelApp.statArray = [
         direction: "max",
         statName: "Human Development Index",
         description:
-          "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
+          "Indicator of life expectancy, education, and per capita income. (Scale: 0-1; 0 = low score. 1 = high score)."
       },
       {
         stat: "corruption_index",
         direction: "min",
         statName: "Corruption Index",
         description:
-          "The Corruption Perceptions Index (CPI). (Scale: 0-100; 0 = high corruption. 100 = low corruption)."
+          "Corruption Perceptions Index (CPI). (Scale: 0-100; 0 = high corruption. 100 = low corruption)."
       },
       {
         stat: "medianwage",
@@ -249,7 +249,7 @@ travelApp.statArray = [
         direction: "max",
         statName: "Human Development Index",
         description:
-          "The HDI is a statistic of life expectancy, education, and per capita income indicators. (Scale: 0-1; 0 = low development. 1 = high development)."
+          "Indicator of life expectancy, education, and per capita income. (Scale: 0-1; 0 = low score. 1 = high score)."
       },
       {
         stat: "jobless_rate",
@@ -264,14 +264,14 @@ travelApp.statArray = [
         direction: "min",
         statName: "Gini Coefficient",
         description:
-          "The Gini coefficient states how uniformly assets are distributed in a country. (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)."
+          "States how uniformly assets are distributed. (scale: 0-100; 0 = equal distribution. 100 = unequal distribution)."
       },
       {
         stat: "happiness_index",
         direction: "max",
         statName: "Happiness Index",
         description:
-          "The Happiness Index is based on factors such as GDP per capita, social support, healthy life expectancy, social freedom, generosity and absence of corruption. The higher the value, the happier the country."
+          "Based on factors such as GDP per capita, social support, life expectancy. The higher the value, the happier the country."
       },
       {
         stat: "death_rate",
@@ -341,7 +341,6 @@ travelApp.statArray = [
 travelApp.eventsFunction = () => {
   // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
-  travelApp.reset();
 };
 
 /* 1. GET USER INPUT */
@@ -353,6 +352,20 @@ travelApp.getUserPurpose = () => {
 
     // Call the display stats function
     travelApp.displayStats(travelApp.userPurpose);
+
+    // Display the criterias to be chosen
+    $(".criterias").css("display", "flex");
+
+    // Smooth Scroll
+    $("html, body")
+      .stop()
+      .animate(
+        {
+          scrollTop: $(".criterias").offset().top
+        },
+        900,
+        "swing"
+      );
   });
 };
 
@@ -381,11 +394,9 @@ travelApp.displayStats = purposeID => {
       });
     }
   });
+
   // append submit button
   let markUpButton = `<li><button class="user-submit">Submit Ranking</button></li>`;
-  // $("<button>")
-  //   .addClass("user-submit")
-  //   .text("SUBMIT RANKING");
   $(".choices").append(markUpButton);
 
   travelApp.getUserRankings();
@@ -407,6 +418,7 @@ travelApp.getUserRankings = () => {
     }
 
     // INITIALIZE ALL GLOBAL VARIABLES FOR DISPLAY AT THE END
+    travelApp.wikiExtract = [];
     travelApp.statNamesArray = [];
     travelApp.statDescriptionArray = [];
     travelApp.wikiPromiseArray = [];
@@ -740,18 +752,7 @@ travelApp.displayDestinations = (results, statChoices) => {
     });
   });
 
-  // append reset button to results
-  let resetButtonMarkup = $("<button>")
-    .addClass("reload")
-    .text("RESTART");
-  $(".results").append(resetButtonMarkup);
-};
-
-/* 7. RESET BUTTON */
-travelApp.reset = () => {
-  $(".results").on("click", ".reload", function() {
-    window.location.reload(true);
-  });
+  $(".results").css("display", "flex");
 };
 
 // WIKIPEDIA API: GET AND DISPLAY
@@ -771,8 +772,7 @@ travelApp.getWiki = country => {
       titles: country,
       format: "json",
       exlimit: 1,
-      exchars: 300,
-      // exsentences: 3,
+      exchars: 280,
       exintro: true,
       explaintext: true,
       redirects: 1
@@ -781,7 +781,6 @@ travelApp.getWiki = country => {
 };
 
 // Display Wikipedia country extract on the page.
-travelApp.wikiExtract = [];
 travelApp.displayWiki = result => {
   // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
   const wikiExtractObject = result[0].query.pages;

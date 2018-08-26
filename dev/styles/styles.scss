@@ -118,6 +118,7 @@ input[type="radio"] {
   width: 100%;
   border: 1px solid red;
   background-color: $font-color-3;
+  display: none;
 }
 
 .criterias-container {
@@ -191,23 +192,24 @@ button {
 .results {
   width: 100%;
   height: 100vh;
-  display: flex;
+  display: none;
   position: relative;
 }
 .result-container {
   width: calc(100% / 3);
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background-size: cover;
   background-position: center;
+  padding-top: 1rem;
 }
 
 .card {
   width: 80%;
-  margin: auto;
+  margin: 0 auto;
   padding: 3.25em 2em 2em 2em;
-  background-color: rgba(225, 227, 232, 0.7);
+  background-color: rgba(225, 227, 232, 0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -243,7 +245,7 @@ button {
 }
 
 .stat-list__item__title-number {
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   margin: 0;
   text-transform: uppercase;
 }
