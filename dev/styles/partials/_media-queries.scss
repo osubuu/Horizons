@@ -1,17 +1,198 @@
 /* =============================
 Portrait tablet and small desktops
 ============================== */
-@media all and (max-width: 940px) {
+@media all and (max-width: 1100px) {
+  .wrapper-sec {
+    width: 80%;
+  }
+
+  .welcome {
+    &__logo-container {
+      margin-top: 150px;
+    }
+  }
+}
+
+@media all and (max-width: 800px) {
+  .travel-form {
+    &__button-container {
+      width: 16rem;
+      height: 16rem;
+    }
+  }
+
+  .criteria-header {
+    font-size: 3rem;
+  }
+}
+
+@media all and (max-height: 800px) {
+  .user-submit {
+    margin-top: 2rem;
+  }
+}
+
+@media all and (max-height: 650px) {
+  .welcome {
+    &__logo-container {
+      margin-top: 25%;
+    }
+  }
+
+  .criteria-header {
+    padding-top: 4rem;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+}
+
+@media all and (max-height: 600px) {
+  .welcome {
+    &__logo-container {
+      margin-top: 15%;
+    }
+  }
+
+  .travel-form {
+    &__button-container {
+      width: 15rem;
+      height: 15rem;
+    }
+  }
+
+  .criteria-header {
+    padding-top: 4rem;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .user-submit {
+    margin-top: 1.5rem;
+  }
 }
 
 /* =============================
 Landscape phone to portrait tablet
 ============================== */
-@media all and (max-width: 768px) {
+
+@media all and (max-width: 650px) {
+  .welcome {
+    &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__logo-container {
+      // margin-top: 18%;
+    }
+
+    &__message {
+      width: 90%;
+    }
+
+    &__header,
+    &__message {
+      text-align: center;
+    }
+
+    &__header {
+      font-size: 5rem;
+    }
+  }
+
+  .travel-form {
+    &__button-container {
+      width: 14rem;
+      height: 14rem;
+      flex: 1 0 25%;
+
+      h3 {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  .icon-image-container {
+    height: 5rem;
+    width: 5rem;
+  }
+
+  .criteria-header {
+    font-size: 2.5rem;
+    width: 100%;
+  }
+
+  .choices-list-container {
+    width: 70%;
+  }
 }
 
 /* =============================
 Landscape phones and down
 ============================== */
-@media all and (max-width: 480px) {
+
+@media all and (max-width: 500px) {
+  html {
+    font-size: 57.5%;
+  }
+
+  .welcome {
+    &__message {
+      font-size: 2rem;
+    }
+  }
+
+  .purpose-header {
+    font-size: 2.7rem;
+  }
+
+  .travel-form {
+    &__button-container {
+      height: 7rem;
+      flex: 1 0 100%;
+      flex-direction: row;
+      justify-content: space-around;
+
+      h3 {
+        font-size: 1.8rem;
+        flex: 0 0 50%;
+      }
+    }
+  }
+
+  .icon-image-container {
+    flex: 0 0 25%;
+  }
+
+  .choices-list-container {
+    width: 80%;
+  }
+}
+
+@media all and (max-height: 550px) {
+  .purpose-header {
+    font-size: 2.5rem;
+  }
+  .travel-form {
+    &__button-container {
+      height: 5.5rem;
+    }
+  }
+}
+
+@media all and (max-width: 400px) {
+  html {
+    font-size: 52.5%;
+  }
+
+  .welcome {
+    &__message {
+      font-size: 2rem;
+    }
+  }
+
+  .criteria-header {
+    font-size: 2.2rem;
+  }
 }
