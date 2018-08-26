@@ -8,12 +8,27 @@ GENERAL STYLING
 ============================================================
 */
 
+.wrapper-prim {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.wrapper-sec {
+  max-width: 1000px;
+  margin: 0 auto;
+  border: 1px solid green;
+}
+
 .background {
   width: 100%;
   height: 100vh;
   background-image: url(../../assets/treasure-map-1850653_1920.jpg);
   background-size: cover;
   background-position: center;
+}
+
+li {
+  list-style: none;
 }
 
 .welcome {
@@ -40,17 +55,29 @@ GENERAL STYLING
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: lightcyan;
+  background-color: $font-color-3;
+}
+
+.purpose-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.purpose-header {
+  margin: 0;
 }
 
 .travel-form {
-  width: 60%;
+  // width: 60%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 
   &__button-container {
-    background-color: #96ceb4;
+    background-color: $font-color-2;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -89,12 +116,25 @@ input[type="radio"] {
 
 .criterias {
   width: 100%;
-  height: 75vh;
+  border: 1px solid red;
+  background-color: $font-color-3;
+}
+
+.criterias-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 1em 0;
+  justify-content: flex-start;
+  height: 100vh;
+  padding-top: 8rem;
+}
+
+.criteria-header {
+  text-align: center;
+  margin: 0 0 5rem 0;
+  padding: 0rem;
+  width: 70%;
 }
 
 .choices {
@@ -105,22 +145,47 @@ input[type="radio"] {
   //   display: none;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  // align-items: center;
+  position: absolute;
+  // top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+}
+
+.choices li:last-child {
+  list-style: none;
 }
 
 .criteria {
-  width: 60%;
-  font-size: 1.4rem;
+  width: 100%;
+  font-size: 1.8rem;
   padding: 0.5em;
   text-align: center;
   display: block;
-  background-color: lightblue;
+  background-image: linear-gradient(to top, #f2f2f2cc, $font-color-4);
   border: 1px solid black;
   border-radius: 3px;
+  color: $font-color-1;
+  margin-bottom: 2%;
 }
 
 .user-submit {
-  margin: 1em;
+  margin-top: 4rem;
+  font-size: 2rem;
+  padding: 1.5rem 4rem;
+  border: 0;
+  border-radius: 2px;
+  background-color: $font-color-2;
+}
+
+button {
+  color: $font-color-1;
+  font-size: 2rem;
+  padding: 1.5rem 4rem;
+  border: 0;
+  border-radius: 2px;
+  background-color: $font-color-2;
 }
 
 .results {

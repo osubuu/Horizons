@@ -346,7 +346,7 @@ travelApp.eventsFunction = () => {
 
 /* 1. GET USER INPUT */
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     travelApp.userPurpose = inputID;
@@ -359,6 +359,11 @@ travelApp.getUserPurpose = () => {
 /* 2. DISPLAY ALL STATS FOR THE SELECTED PURPOSE ON SCREEN */
 travelApp.displayStats = purposeID => {
   $(".choices").empty();
+  // Header for the choose Criteria section
+  $(".criteria-header").text("Please rank the following criteria in order of importance from top to bottom.");
+  // Add css position to criteria container
+  $('.choices-list-container').css('position', 'relative');
+
   // Go through each purpose object in the Stat Array
   travelApp.statArray.forEach(purposeObj => {
     // If the purpose ID matches the purpose Object id
@@ -370,23 +375,23 @@ travelApp.displayStats = purposeID => {
           .attr("id", stat.stat)
           .addClass("criteria")
           .text(stat.statName);
-        $(".choices").append(markUpItem);
+        $('.choices').append(markUpItem);
       });
     }
   });
-
   // append submit button
-  let markUpButton = $("<button>")
-    .addClass("user-submit")
-    .text("SUBMIT RANKING");
-  $(".choices").append(markUpButton);
+  let markUpButton = `<li><button class="user-submit">Submit Ranking</button></li>`;
+  // $("<button>")
+  //   .addClass("user-submit")
+  //   .text("SUBMIT RANKING");
+  $('.choices').append(markUpButton);
 
   travelApp.getUserRankings();
 };
 
 /* 3. OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".criterias").on("click", ".user-submit", function() {
+  $(".criterias").on("click", ".user-submit", function () {
     // get the user rankings from his ordering of stats and store in a variable
     let userRankings = $(".choices")[0].children;
 
@@ -686,7 +691,7 @@ travelApp.displayDestinations = (results, statChoices) => {
         src: `${travelApp.imageArray[imageCounterSmall]}`,
         alt: `Scenic image of ${country.countryName}. Image tags include ${
           travelApp.imageTextArray
-        }.`
+          }.`
       });
     // Add 20 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
     imageCounter += 20;
@@ -742,7 +747,7 @@ travelApp.displayDestinations = (results, statChoices) => {
 
 /* 7. RESET BUTTON */
 travelApp.reset = () => {
-  $(".results").on("click", ".reload", function() {
+  $(".results").on("click", ".reload", function () {
     window.location.reload(true);
   });
 };
@@ -817,7 +822,7 @@ travelApp.displayPixa = results => {
 };
 
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   travelApp.slideDrag();
@@ -826,19 +831,21 @@ travelApp.init = function() {
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
 // Sortable functionality
 travelApp.slideDrag = () => {
+
+
   $(".choices")
     .sortable({
       connectWith: ".sortable",
       scroll: false,
       revert: true,
       helper: "clone",
-      containment: ".criterias"
+      containment: ".criterias-container"
     })
     .css("position", "absolute");
   $("ul, li").disableSelection();
