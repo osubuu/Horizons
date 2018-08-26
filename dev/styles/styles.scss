@@ -53,7 +53,8 @@ WELCOME HEADER SECTION
   padding-top: 30px;
   &__logo-container {
     width: 100px;
-    margin-bottom: 170px;
+    margin: 40px 0 140px 0;
+}
     &__logo {
       display: block;
       width: 100%;
@@ -180,7 +181,7 @@ CRITERIA SECTION
 
 .criterias {
   width: 100%;
-  border: 1px solid red;
+  // border: 1px solid red;
   background-color: $color-3;
   display: none;
 }
