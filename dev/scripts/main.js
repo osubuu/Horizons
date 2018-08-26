@@ -439,6 +439,7 @@ travelApp.getUserRankings = () => {
     travelApp.wikiExtract = [];
     travelApp.statNamesArray = [];
     travelApp.statDescriptionArray = [];
+    travelApp.statCodeArray = [];
     travelApp.wikiPromiseArray = [];
     travelApp.pixaPromiseArray = [];
     travelApp.imageArray = [];
@@ -581,18 +582,21 @@ travelApp.findDirections = (statType1, statType2, statType3) => {
         // if the current stat in the stats array is stattype1, get this direction
         if (stat.stat === statType1) {
           stat1Direction = stat.direction;
+          travelApp.statCodeArray.push(stat.stat);
           travelApp.statNamesArray.push(stat.statName);
           travelApp.statDescriptionArray.push(stat.description);
         }
         // if the current stat in the stats array is stattype2, get this direction
         else if (stat.stat === statType2) {
           stat2Direction = stat.direction;
+          travelApp.statCodeArray.push(stat.stat);
           travelApp.statNamesArray.push(stat.statName);
           travelApp.statDescriptionArray.push(stat.description);
         }
         // if the current stat in the stats array is stattype3, get this direction
         else if (stat.stat === statType3) {
           stat3Direction = stat.direction;
+          travelApp.statCodeArray.push(stat.stat);
           travelApp.statNamesArray.push(stat.statName);
           travelApp.statDescriptionArray.push(stat.description);
         }
@@ -832,7 +836,7 @@ travelApp.displayDestinations = (results, statChoices) => {
     let statCounter = 0;
     statChoices.forEach(stat => {
       let statTitle = travelApp.statNamesArray[statCounter];
-      let statValue = country[stat];
+      let statValue = country[travelApp.statCodeArray[statCounter]];
       let statDescription = travelApp.statDescriptionArray[statCounter];
       statCounter++;
       console.log(statTitle, statValue, statDescription);
