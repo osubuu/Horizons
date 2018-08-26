@@ -341,6 +341,17 @@ travelApp.statArray = [
 travelApp.eventsFunction = () => {
   // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
+  travelApp.getStarted();
+};
+
+/* 0. GET STARTED */
+
+travelApp.getStarted = () => {
+  $(".welcome__button").on("click", function() {
+    $("html, body")
+      .stop()
+      .animate({ scrollTop: $(".purpose-section").offset().top }, 900, "swing");
+  });
 };
 
 /* 1. GET USER INPUT */
@@ -356,7 +367,7 @@ travelApp.getUserPurpose = () => {
     // Display the criterias to be chosen
     $(".criterias").css("display", "flex");
 
-    // Smooth Scroll
+    // Smooth Scroll to criteria's section
     $("html, body")
       .stop()
       .animate(
@@ -752,7 +763,13 @@ travelApp.displayDestinations = (results, statChoices) => {
     });
   });
 
+  // Display the criterias to be chosen
   $(".results").css("display", "flex");
+
+  // Smooth Scroll to criteria's section
+  $("html, body")
+    .stop()
+    .animate({ scrollTop: $(".results").offset().top }, 900, "swing");
 };
 
 // WIKIPEDIA API: GET AND DISPLAY
