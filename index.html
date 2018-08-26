@@ -25,8 +25,8 @@
           <img src="./assets/logo.jpg" alt="Horizon Inc logo" class="welcome__logo-container__logo">
         </div>
         <h1 class="welcome__header">Horizon Inc.</h1>
-        <p class="welcome__message">When leaving home for any period of time, choosing a destination can be a difficult task. At Horizon Inc. we aim
-          to make one of your most important decisions an informed one.
+        <p class="welcome__message">When leaving home for any period of time, choosing a destination can be a difficult task.
+          At Horizon Inc. we aim to make one of your most important decisions an informed one.
         </p>
         <button class="welcome__button">Get Started</button>
       </div>
@@ -37,11 +37,11 @@
         <h2 class="purpose-header">What is your purpose for traveling?</h2>
         <form action="" class="travel-form">
           <input type="radio" name="restriction" class="travel-form__button" id="button-vacation">
-          <label class="travel-form__button-container" for="button-vacation">
+          <label class="travel-form__button-container draw-border" for="button-vacation">
             <h3>Vacation</h3>
             <i aria="hidden">
               <div class="icon-image-container">
-                <img src="./assets/vacation.svg" alt="">
+                <img class="svg" src="./assets/vacation.svg" alt="">
               </div>
             </i>
           </label>
@@ -51,7 +51,7 @@
             <h3>Education</h3>
             <i aria="hidden">
               <div class="icon-image-container">
-                <img src="./assets/education.svg" alt="">
+                <img class="svg education" src="./assets/education.svg" alt="">
               </div>
             </i>
           </label>
@@ -61,7 +61,7 @@
             <h3>Visitor Visa</h3>
             <i aria="hidden">
               <div class="icon-image-container">
-                <img src="./assets/visitor-visa.svg" alt="">
+                <img preserveAspectRatio="none" class="svg" src="./assets/visitor-visa.svg" alt="">
               </div>
             </i>
           </label>
@@ -71,7 +71,7 @@
             <h3>Working Holiday</h3>
             <i aria="hidden">
               <div class="icon-image-container">
-                <img src="./assets/working-holiday.svg" alt="">
+                <img class="svg" src="./assets/working-holiday.svg" alt="">
               </div>
             </i>
           </label>
@@ -82,7 +82,7 @@
               <br>(Individual)</h3>
             <i aria="hidden">
               <div class="icon-image-container">
-                <img src="./assets/perm-solo.svg" alt="">
+                <img class="svg" src="./assets/perm-solo.svg" alt="">
               </div>
             </i>
           </label>
@@ -93,7 +93,7 @@
               <br>(Couple)</h3>
             <i aria="hidden">
               <div class="icon-image-container">
-                <img src="./assets/perm-couple.svg" alt="">
+                <img class="svg" src="./assets/perm-couple.svg" alt="">
               </div>
             </i>
           </label>
@@ -104,7 +104,7 @@
               <br>(Family)</h3>
             <i aria="hidden">
               <div class="icon-image-container">
-                <img src="./assets/perm-family.svg" alt="">
+                <img class="svg" src="./assets/perm-family.svg" alt="">
               </div>
             </i>
           </label>
@@ -138,6 +138,8 @@
   <script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js "></script>
   <!-- FOR JQUERY UI -->
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js "></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.waitforimages/1.5.0/jquery.waitforimages.min.js"></script>
 
   <!-- FOR JS SCRIPT -->
   <script src="./public/scripts/main.js "></script>

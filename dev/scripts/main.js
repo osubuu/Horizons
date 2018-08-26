@@ -342,6 +342,7 @@ travelApp.eventsFunction = () => {
   // This calls the event function to get user input (purpose of travel)
   travelApp.getUserPurpose();
   travelApp.getStarted();
+  travelApp.transformSVG();
 };
 
 /* 0. GET STARTED */
@@ -417,6 +418,12 @@ travelApp.displayStats = purposeID => {
 travelApp.getUserRankings = () => {
   $(".choices").on("click", ".user-submit", function() {
     // get the user rankings from his ordering of stats and store in a variable
+
+    // remove submit button and put a loader until the results come back
+    $(".choices")
+      .find("li:last-child")
+      .html(`<img class="loader" src="../../assets/spinner-1s-100px.gif">`);
+
     let userRankings = $(".choices")[0].children;
 
     // initialize an empty array to store the top 3 rankings
@@ -688,7 +695,14 @@ travelApp.displayDestinations = (results, statChoices) => {
     // This element holds all elements for one country result
     let countryContainerElement = $("<div>")
       .addClass("result-container")
-      .css("background-image", `url("${travelApp.imageArray[imageCounter]}")`);
+      .css(
+        "background-image",
+        `url("${
+          travelApp.imageArray[
+            travelApp.randomize(imageCounter, imageCounter + 15)
+          ]
+        }")`
+      );
     // imageCounter += 20;
     // This element will hold all text and image(s) referring to the country result
     let countryCardElement = $("<div>").addClass("card");
@@ -708,18 +722,22 @@ travelApp.displayDestinations = (results, statChoices) => {
       "country-image-container"
     );
     // This new image counter gets the image in the array that follows the first image being used as a background image for the card
-    let imageCounterSmall = imageCounter + 1;
+    // let imageCounterSmall = imageCounter + 1;
     // This image element will be appended to the image container
     let smallPixaImage = $("<img>")
       .addClass("country-image")
       .attr({
-        src: `${travelApp.imageArray[imageCounterSmall]}`,
+        src: `${
+          travelApp.imageArray[
+            travelApp.randomize(imageCounter, imageCounter + 15)
+          ]
+        }`,
         alt: `Scenic image of ${country.countryName}. Image tags include ${
           travelApp.imageTextArray
         }.`
       });
     // Add 20 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
-    imageCounter += 20;
+    imageCounter += 15;
     //Append the country image to its container
     smallPixaContainerElement.append(smallPixaImage);
     // Append the country name <h2>, wiki text <p>, stat list <ul> and image container <div> to the card <div>.
@@ -763,13 +781,22 @@ travelApp.displayDestinations = (results, statChoices) => {
     });
   });
 
-  // Display the criterias to be chosen
-  $(".results").css("display", "flex");
+  console.log("IMAGES LOADING");
 
-  // Smooth Scroll to criteria's section
-  $("html, body")
-    .stop()
-    .animate({ scrollTop: $(".results").offset().top }, 900, "swing");
+  // Display the criterias to be chosen
+  $(".results").waitForImages(function() {
+    console.log("IMAGES LOADED");
+    $(".results").css("display", "flex");
+    $("html, body")
+      .stop()
+      .animate({ scrollTop: $(".results").offset().top }, 900, "swing");
+
+    // remove loader and display submit ranking button again
+    let markUpButton = `<li><button class="user-submit">Submit Ranking</button></li>`;
+    $(".choices")
+      .find("li:last-child")
+      .html(markUpButton);
+  });
 };
 
 // WIKIPEDIA API: GET AND DISPLAY
@@ -819,7 +846,8 @@ travelApp.getPixa = country => {
     dataType: "jsonp",
     data: {
       key: travelApp.pixaKey,
-      q: country
+      q: country,
+      per_page: 15
     }
   });
 };
@@ -828,7 +856,7 @@ travelApp.getPixa = country => {
 travelApp.displayPixa = results => {
   // Store the array that holds the image URLs in an array
   const resultsArray = results[0].hits;
-  // console.log(resultsArray);
+  console.log(resultsArray);
   // Loop through the results array and push all images into the imageArray
   resultsArray.forEach(item => {
     // Array of images for each country
@@ -865,4 +893,56 @@ travelApp.slideDrag = () => {
     })
     .css("position", "absolute");
   $("ul, li").disableSelection();
+};
+
+// Randomizer function
+
+travelApp.randomize = (startingNum, endingNum) => {
+  return Math.floor(Math.random() * (endingNum - startingNum)) + startingNum;
+};
+
+// Transform SVGs into inline SVGS to be able to change their colors
+travelApp.transformSVG = () => {
+  jQuery("img.svg").each(function() {
+    var $img = jQuery(this);
+    var imgID = $img.attr("id");
+    var imgClass = $img.attr("class");
+    var imgURL = $img.attr("src");
+
+    jQuery.get(
+      imgURL,
+      function(data) {
+        // Get the SVG tag, ignore the rest
+        var $svg = jQuery(data).find("svg");
+
+        // Add replaced image's ID to the new SVG
+        if (typeof imgID !== "undefined") {
+          $svg = $svg.attr("id", imgID);
+        }
+        // Add replaced image's classes to the new SVG
+        if (typeof imgClass !== "undefined") {
+          $svg = $svg.attr("class", imgClass + " replaced-svg");
+        }
+
+        // Remove any invalid XML tags as per http://validator.w3.org
+        $svg = $svg.removeAttr("xmlns:a");
+
+        // Check if the viewport is set, if the viewport is not set the SVG wont't scale.
+        if (
+          !$svg.attr("viewBox") &&
+          $svg.attr("height") &&
+          $svg.attr("width")
+        ) {
+          $svg.attr(
+            "viewBox",
+            "0 0 " + $svg.attr("height") + " " + $svg.attr("width")
+          );
+        }
+
+        // Replace image with new SVG
+        $img.replaceWith($svg);
+      },
+      "xml"
+    );
+  });
 };
