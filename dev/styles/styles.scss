@@ -16,7 +16,7 @@ GENERAL STYLING
 .wrapper-sec {
   max-width: 1000px;
   margin: 0 auto;
-  border: 1px solid green;
+  // border: 1px solid green;
 }
 
 .background {
@@ -44,9 +44,11 @@ button,
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 30px;
   &__logo-container {
     width: 100px;
+    margin-bottom: 170px;
     &__logo {
       display: block;
       width: 100%;
