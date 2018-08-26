@@ -36,6 +36,10 @@ button,
   cursor: pointer;
 }
 
+.display-none {
+  display: none;
+}
+
 /*
 ============================================================
 WELCOME HEADER SECTION
@@ -182,7 +186,7 @@ CRITERIA SECTION
 
 .criterias {
   width: 100%;
-  border: 1px solid red;
+  // border: 1px solid red;
   background-color: $color-3;
   display: none;
 }
@@ -323,7 +327,7 @@ RESULTS SECTION
   width: 80%;
   margin: 0 auto;
   padding: 3.25em 2em 2em 2em;
-  background-color: rgba(225, 227, 232, 0.75);
+  background-color: rgba(242, 242, 242, 0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -337,6 +341,11 @@ RESULTS SECTION
     transition: 0.5s;
     transform: scale(1.02);
   }
+}
+
+.country-name {
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .wiki-text {
@@ -362,27 +371,59 @@ RESULTS SECTION
     border: 1px solid $color-1;
   }
 }
-
+// All Stat information is stored in list
 .stat-list {
   list-style-type: none;
   padding: 0;
-}
-
-.country-name {
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.stat-list__item__title-number {
-  font-size: 1.8rem;
-  margin: 0;
-  text-transform: uppercase;
-  border-bottom: 1px solid $color-1;
-}
-
-.stat-list__item__description {
-  margin-top: 0.25em;
-  font-size: 1.6rem;
+  &__item {
+    position: relative;
+    // color: inherit;
+    &__title-icon-container {
+      display: flex;
+      justify-content: space-between;
+      &__title-number {
+        font-size: 1.8rem;
+        margin: 0;
+        text-transform: uppercase;
+        border-bottom: 1px solid $color-1;
+      }
+      &__icon {
+        font-size: 2rem;
+        align-self: center;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+    &__description-container {
+      transform: scale(1.2);
+      margin-top: 1.2rem;
+      // position: relative;
+      position: absolute;
+      top: 100%;
+      z-index: 2;
+      &__description {
+        margin-top: 0.25em;
+        font-size: 1.4rem;
+        background-color: $color-1;
+        border-radius: 4px;
+        padding: 10px;
+        position: relative;
+        color: $color-4;
+        &::before {
+          content: "";
+          border-top: 15px solid transparent;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 15px solid $color-1;
+          position: absolute;
+          left: 6%;
+          top: -28px;
+          margin: 0 2px;
+        }
+      }
+    }
+  }
 }
 
 /*
