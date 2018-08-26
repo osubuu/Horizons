@@ -359,6 +359,13 @@ travelApp.getUserPurpose = () => {
 /* 2. DISPLAY ALL STATS FOR THE SELECTED PURPOSE ON SCREEN */
 travelApp.displayStats = purposeID => {
   $(".choices").empty();
+  // Header for the choose Criteria section
+  $(".criteria-header").text(
+    "Please rank the following criteria in order of importance from top to bottom."
+  );
+  // Add css position to criteria container
+  $(".choices-list-container").css("position", "relative");
+
   // Go through each purpose object in the Stat Array
   travelApp.statArray.forEach(purposeObj => {
     // If the purpose ID matches the purpose Object id
@@ -374,12 +381,12 @@ travelApp.displayStats = purposeID => {
       });
     }
   });
-
   // append submit button
-  let markUpButton = $("<button>")
-    .addClass("user-submit")
-    .text("SUBMIT RANKING");
-  $(".criterias").append(markUpButton);
+  let markUpButton = `<li><button class="user-submit">Submit Ranking</button></li>`;
+  // $("<button>")
+  //   .addClass("user-submit")
+  //   .text("SUBMIT RANKING");
+  $(".choices").append(markUpButton);
 
   travelApp.getUserRankings();
 };
@@ -838,7 +845,7 @@ travelApp.slideDrag = () => {
       scroll: false,
       revert: true,
       helper: "clone",
-      containment: ".criterias"
+      containment: ".criterias-container"
     })
     .css("position", "absolute");
   $("ul, li").disableSelection();
