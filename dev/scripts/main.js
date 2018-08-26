@@ -343,11 +343,12 @@ travelApp.eventsFunction = () => {
   travelApp.getUserPurpose();
   travelApp.getStarted();
   travelApp.transformSVG();
+  travelApp.displayStatDescription();
 };
 
 /* 0. GET STARTED */
 travelApp.getStarted = () => {
-  $(".welcome__button").on("click", function() {
+  $(".welcome__button").on("click", function () {
     $("html, body")
       .stop()
       .animate({ scrollTop: $(".purpose-section").offset().top }, 900, "swing");
@@ -356,7 +357,7 @@ travelApp.getStarted = () => {
 
 /* 1. GET USER INPUT */
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     travelApp.userPurpose = inputID;
@@ -415,7 +416,7 @@ travelApp.displayStats = purposeID => {
 
 /* 3. OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".choices").on("click", ".user-submit", function() {
+  $(".choices").on("click", ".user-submit", function () {
     // get the user rankings from his ordering of stats and store in a variable
 
     // remove submit button and put a loader until the results come back
@@ -769,9 +770,9 @@ travelApp.displayDestinations = (results, statChoices) => {
       .css(
         "background-image",
         `url("${
-          travelApp.imageArray[
-            travelApp.randomize(imageCounter, imageCounter + 15)
-          ]
+        travelApp.imageArray[
+        travelApp.randomize(imageCounter, imageCounter + 15)
+        ]
         }")`
       );
     // imageCounter += 20;
@@ -800,12 +801,12 @@ travelApp.displayDestinations = (results, statChoices) => {
       .attr({
         src: `${
           travelApp.imageArray[
-            travelApp.randomize(imageCounter, imageCounter + 15)
+          travelApp.randomize(imageCounter, imageCounter + 15)
           ]
-        }`,
+          }`,
         alt: `Scenic image of ${country.countryName}. Image tags include ${
           travelApp.imageTextArray
-        }.`
+          }.`
       });
     // Add 20 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
     imageCounter += 15;
@@ -837,16 +838,26 @@ travelApp.displayDestinations = (results, statChoices) => {
       console.log(statTitle, statValue, statDescription);
       // This list item element will hold stat information
       let statListItemElement = $("<li>").addClass("stat-list__item");
+      // This div will hold the stat title and question mark icon
+      let statTitleIconContainerElement = $('<div>').addClass('stat-list__item__title-icon-container');
       // This element holds the stat title and value
       let statTitleElement = $("<h4>")
-        .addClass("stat-list__item__title-number")
+        .addClass("stat-list__item__title-icon-container__title-number")
         .text(`${statTitle}: ${travelApp.numberWithCommas(statValue)}`);
+      // This question mark icon will sit next to the statTitleElement and when clicked/hoverover, will display the stat description
+      let statHoverIconElement = `<i class="stat-list__item__title-icon-container__icon far fa-question-circle"></i>`;
+      // append the stat title and icon to the statTitleIconContainerElement
+      statTitleIconContainerElement.append(statTitleElement, statHoverIconElement);
+      // This div will hold the stat description and is a sibling of the statTitleIconContainer.
+      let statDescriptionContainerElement = $('<div>').addClass('stat-list__item__description-container display-none');
       // This element holds the stat description
       let statDescriptionElement = $("<p>")
-        .addClass("stat-list__item__description")
+        .addClass("stat-list__item__description-container__description")
         .text(statDescription);
-      // Append stat info to the <li>
-      statListItemElement.append(statTitleElement, statDescriptionElement);
+      // Append the statDescriptionElement to the statDescriptionContainerElement
+      statDescriptionContainerElement.append(statDescriptionElement);
+      // Append the two stat div containers to the <li>
+      statListItemElement.append(statTitleIconContainerElement, statDescriptionContainerElement);
       // Append the <li>s to the <ul>
       statListElement.append(statListItemElement);
     });
@@ -855,7 +866,7 @@ travelApp.displayDestinations = (results, statChoices) => {
   console.log("IMAGES LOADING");
 
   // Display the criterias to be chosen
-  $(".results").waitForImages(function() {
+  $(".results").waitForImages(function () {
     console.log("IMAGES LOADED");
     $(".results").css("display", "flex");
     $("html, body")
@@ -870,8 +881,20 @@ travelApp.displayDestinations = (results, statChoices) => {
   });
 };
 
+// On hover or click over the question mark icon, display the stat description
+travelApp.displayStatDescription = function () {
+  $('.results').on('click', '.stat-list__item__title-icon-container__icon', function () {
+    if ($(this).parents('.stat-list__item').find('.stat-list__item__description-container').hasClass('display-none') === false) {
+      $('.results').find('.stat-list__item__description-container').removeClass('display-none').addClass('display-none');
+    } else {
+      $('.results').find('.stat-list__item__description-container').addClass('display-none');
+      $(this).parents('.stat-list__item').find('.stat-list__item__description-container').removeClass('display-none');
+    }
+  });
+};
+
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
   // This function calls all our apps events: 1. Inputs for travel types
   travelApp.eventsFunction();
   travelApp.slideDrag();
@@ -880,7 +903,7 @@ travelApp.init = function() {
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
@@ -907,7 +930,7 @@ travelApp.randomize = (startingNum, endingNum) => {
 
 // 8.3 Event listener to transform SVGs into inline SVGS to be able to change their colors with css fill
 travelApp.transformSVG = () => {
-  jQuery("img.svg").each(function() {
+  jQuery("img.svg").each(function () {
     var $img = jQuery(this);
     var imgID = $img.attr("id");
     var imgClass = $img.attr("class");
@@ -915,7 +938,7 @@ travelApp.transformSVG = () => {
 
     jQuery.get(
       imgURL,
-      function(data) {
+      function (data) {
         // Get the SVG tag, ignore the rest
         var $svg = jQuery(data).find("svg");
 
