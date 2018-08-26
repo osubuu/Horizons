@@ -346,7 +346,6 @@ travelApp.eventsFunction = () => {
 };
 
 /* 0. GET STARTED */
-
 travelApp.getStarted = () => {
   $(".welcome__button").on("click", function() {
     $("html, body")
@@ -488,21 +487,23 @@ travelApp.getStat = (statType1, statType2, statType3) => {
       );
     });
 
+    // when all wiki and pixa promises are fulfilled, store the results
+    // to prepare them for display
     $.when(...travelApp.wikiPromiseArray, ...travelApp.pixaPromiseArray).then(
       (...wikiPixaResults) => {
         // go through the wikiPixa results
         for (let i = 0; i < wikiPixaResults.length; i++) {
-          // first three are wiki, push into array
+          // first three are wiki, push (store) into array
           if (i < 3) {
-            travelApp.displayWiki(wikiPixaResults[i]);
+            travelApp.storeWiki(wikiPixaResults[i]);
           }
-          // last three are pixa, push into array
+          // last three are pixa, push (store) into array
           else {
-            travelApp.displayPixa(wikiPixaResults[i]);
+            travelApp.storePixa(wikiPixaResults[i]);
           }
         }
 
-        // Display all info on screen
+        // Once results all stored, display all info on screen (3 countries, wiki and pixa)
         travelApp.displayDestinations(finalResults, [
           statType1,
           statType2,
@@ -683,7 +684,77 @@ travelApp.determineNCountries = (result, statType, n, direction) => {
   return nCountries;
 };
 
-/* 6. DISPLAY DESTIONATIONS ON SCREEN */
+/* 6. SEND API REQUESTS TO WIKI AND PIXA */
+
+// 6.1 WIKIPEDIA API: GET AND STORE
+// ==============================
+// Store important info for calls to the Wiki API.
+travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
+// Get info from Wikipedia (AJAX)
+travelApp.getWiki = country => {
+  // get extract
+  return $.ajax({
+    url: travelApp.wikiURL,
+    method: "GET",
+    dataType: "jsonp",
+    data: {
+      action: "query",
+      prop: "extracts",
+      titles: country,
+      format: "json",
+      exlimit: 1,
+      exchars: 280,
+      exintro: true,
+      explaintext: true,
+      redirects: 1
+    }
+  });
+};
+
+// Store Wikipedia country extract
+travelApp.storeWiki = result => {
+  // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
+  const wikiExtractObject = result[0].query.pages;
+  // If we convert the above object into an array, the extract can be accessed on the first value of the array. This variable holds the wiki extract.
+  travelApp.wikiExtract.push(Object.values(wikiExtractObject)[0].extract);
+};
+
+// 6.2 PIXABAY API: GET AND STORE
+// ============================
+// Store important info for calls to the Pixabay API.
+travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
+travelApp.pixaURL = "https://www.pixabay.com/api/";
+// Get info from Wikipedia (AJAX)
+travelApp.getPixa = country => {
+  // Get image URL
+  return $.ajax({
+    url: travelApp.pixaURL,
+    method: "GET",
+    dataType: "jsonp",
+    data: {
+      key: travelApp.pixaKey,
+      q: country,
+      per_page: 15
+    }
+  });
+};
+
+// Store Pixabay country images on the page
+travelApp.storePixa = results => {
+  // Store the array that holds the image URLs in an array
+  const resultsArray = results[0].hits;
+  console.log(resultsArray);
+  // Loop through the results array and push all images into the imageArray
+  resultsArray.forEach(item => {
+    // Array of images for each country
+    travelApp.imageArray.push(item.largeImageURL);
+    // Array of image information from each country to be used for Alt text
+    travelApp.imageTextArray.push(item.tags);
+  });
+  console.log(travelApp.imageArray);
+};
+
+/* 7. DISPLAY DESTIONATIONS ON SCREEN WITH WIKI + PIXA RESULTS */
 travelApp.displayDestinations = (results, statChoices) => {
   // Get rid of previous clicked results
   $(".results").empty();
@@ -799,74 +870,6 @@ travelApp.displayDestinations = (results, statChoices) => {
   });
 };
 
-// WIKIPEDIA API: GET AND DISPLAY
-// ==============================
-// Store important info for calls to the Wiki API.
-travelApp.wikiURL = "https://en.wikipedia.org/w/api.php";
-// Get info from Wikipedia (AJAX)
-travelApp.getWiki = country => {
-  // get extract
-  return $.ajax({
-    url: travelApp.wikiURL,
-    method: "GET",
-    dataType: "jsonp",
-    data: {
-      action: "query",
-      prop: "extracts",
-      titles: country,
-      format: "json",
-      exlimit: 1,
-      exchars: 280,
-      exintro: true,
-      explaintext: true,
-      redirects: 1
-    }
-  });
-};
-
-// Display Wikipedia country extract on the page.
-travelApp.displayWiki = result => {
-  // This variable stores the object that holds a key name unique to every country. The value of this key is an object that holds the extact.
-  const wikiExtractObject = result[0].query.pages;
-  // If we convert the above object into an array, the extract can be accessed on the first value of the array. This variable holds the wiki extract.
-  travelApp.wikiExtract.push(Object.values(wikiExtractObject)[0].extract);
-};
-
-// PIXABAY API: GET AND DISPLAY
-// ============================
-// Store important info for calls to the Pixabay API.
-travelApp.pixaKey = "9879571-e4cbbef3e692aa15a24a7119b";
-travelApp.pixaURL = "https://www.pixabay.com/api/";
-// Get info from Wikipedia (AJAX)
-travelApp.getPixa = country => {
-  // Get image URL
-  return $.ajax({
-    url: travelApp.pixaURL,
-    method: "GET",
-    dataType: "jsonp",
-    data: {
-      key: travelApp.pixaKey,
-      q: country,
-      per_page: 15
-    }
-  });
-};
-
-// Display Pixabay country images on the page
-travelApp.displayPixa = results => {
-  // Store the array that holds the image URLs in an array
-  const resultsArray = results[0].hits;
-  console.log(resultsArray);
-  // Loop through the results array and push all images into the imageArray
-  resultsArray.forEach(item => {
-    // Array of images for each country
-    travelApp.imageArray.push(item.largeImageURL);
-    // Array of image information from each country to be used for Alt text
-    travelApp.imageTextArray.push(item.tags);
-  });
-  console.log(travelApp.imageArray);
-};
-
 // Init function to hold all our functions in order
 travelApp.init = function() {
   // This function calls all our apps events: 1. Inputs for travel types
@@ -881,7 +884,9 @@ $(function() {
   travelApp.init();
 });
 
-// Sortable functionality
+/* 8. EXTRA FUNCTIONS USED THROUGHOUT APP */
+
+// 8.1 Sortable functionality for criterias
 travelApp.slideDrag = () => {
   $(".choices")
     .sortable({
@@ -895,13 +900,12 @@ travelApp.slideDrag = () => {
   $("ul, li").disableSelection();
 };
 
-// Randomizer function
-
+// 8.2 Randomizer function to select random images to display
 travelApp.randomize = (startingNum, endingNum) => {
   return Math.floor(Math.random() * (endingNum - startingNum)) + startingNum;
 };
 
-// Transform SVGs into inline SVGS to be able to change their colors
+// 8.3 Event listener to transform SVGs into inline SVGS to be able to change their colors with css fill
 travelApp.transformSVG = () => {
   jQuery("img.svg").each(function() {
     var $img = jQuery(this);
