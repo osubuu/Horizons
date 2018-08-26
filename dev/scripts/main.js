@@ -361,7 +361,7 @@ travelApp.displayStats = purposeID => {
   $(".choices").empty();
   // Header for the choose Criteria section
   $(".criteria-header").text(
-    "Please rank the following criteria in order of importance from top to bottom."
+    "Please rank the following criteria in order of importance from top to bottom. Use your cursor to drag and drop the items."
   );
   // Add css position to criteria container
   $(".choices-list-container").css("position", "relative");
