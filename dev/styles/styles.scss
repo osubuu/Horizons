@@ -32,6 +32,12 @@ li {
   list-style: none;
 }
 
+button,
+.travel-form__button-container,
+.criteria {
+  cursor: pointer;
+}
+
 .welcome {
   // width: 80%;
   height: 100vh;
@@ -49,7 +55,6 @@ li {
     // padding: 30px;
   }
   &__header {
-
   }
   &__message {
     font-size: 2.2rem;
