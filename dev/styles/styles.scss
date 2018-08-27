@@ -260,7 +260,7 @@ CRITERIA SECTION
   background-color: $color-2;
 }
 
-button {
+.btn {
   color: $color-1;
   font-size: 2rem;
   padding: 1.5rem 4rem;
@@ -312,12 +312,19 @@ RESULTS SECTION
   height: 100vh;
   display: none;
   position: relative;
+
+  /* enable Flickity by default */
+  &:after {
+    content: "flickity";
+    display: none; /* hide :after */
+  }
 }
+
 .result-container {
   width: calc(100% / 3);
   height: 100vh;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   background-size: cover;
   background-position: center;
   padding-top: 1rem;
@@ -381,18 +388,21 @@ RESULTS SECTION
     &__title-icon-container {
       display: flex;
       justify-content: space-between;
+      border-bottom: 1px solid $color-1;
+
       &__title-number {
         font-size: 1.8rem;
         margin: 0;
         text-transform: uppercase;
-        border-bottom: 1px solid $color-1;
       }
       &__icon {
+        margin-left: 1rem;
         font-size: 2rem;
         align-self: center;
         &:hover {
           cursor: pointer;
         }
+        border-bottom: none;
       }
     }
     &__description-container {
@@ -423,6 +433,21 @@ RESULTS SECTION
         }
       }
     }
+  }
+}
+
+.flickity-button {
+  background-color: $color-2;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: $color-1;
+    transition: 0.3s;
+  }
+
+  &:hover .flickity-button-icon {
+    transition: 0.3s;
+    fill: $color-2;
   }
 }
 
