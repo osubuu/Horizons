@@ -337,18 +337,11 @@ travelApp.statArray = [
   }
 ];
 
-// This function holds all our events funtions
-travelApp.eventsFunction = () => {
-  // This calls the event function to get user input (purpose of travel)
-  travelApp.getUserPurpose();
-  travelApp.getStarted();
-  travelApp.transformSVG();
-  travelApp.displayStatDescription();
-};
-
 /* 0. GET STARTED */
 travelApp.getStarted = () => {
-  $(".welcome__button").on("click", function () {
+  // Listens for click on GET STARTED BUTTON
+  $(".welcome__button").on("click", function() {
+    // Smooth scroll to next section
     $("html, body")
       .stop()
       .animate({ scrollTop: $(".purpose-section").offset().top }, 900, "swing");
@@ -357,7 +350,7 @@ travelApp.getStarted = () => {
 
 /* 1. GET USER INPUT */
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function () {
+  $(".travel-form__button").on("click", function() {
     // Store user input in variable
     const inputID = $(this).attr("id");
     travelApp.userPurpose = inputID;
@@ -416,14 +409,13 @@ travelApp.displayStats = purposeID => {
 
 /* 3. OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".choices").on("click", ".user-submit", function () {
-    // get the user rankings from his ordering of stats and store in a variable
-
+  $(".choices").on("click", ".user-submit", function() {
     // remove submit button and put a loader until the results come back
     $(".choices")
       .find("li:last-child")
       .html(`<img class="loader" src="../../assets/spinner-1s-100px.gif">`);
 
+    // get the user rankings from his ordering of stats and store in a variable
     let userRankings = $(".choices")[0].children;
 
     // initialize an empty array to store the top 3 rankings
@@ -466,7 +458,6 @@ travelApp.getStat = (statType1, statType2, statType3) => {
     }
   }).then(res => {
     // calling the calculation function to get the top n / bottom n countries
-    // finalResults holds an array of three objects. Each object contains a country and it's 3 stat types. I need to re-edit the display function to account for the new array/objects/array/objects I created and set the conditional to compare it to the data in the finalResults array. Then edit the elements I created and how they are appended on the page.
 
     //finalResults holds the final 3 coutries and all of their stats
     let finalResults = travelApp.getRecommendations(
@@ -533,7 +524,6 @@ travelApp.getRecommendations = (res, statType1, statType2, statType3) => {
 
   //Initial filter to account for realistic results (based on HDI)
   initialArr = travelApp.determineResults(res, "hdi", "max", initialIter);
-  console.log(initialArr);
 
   // ITERATION 1
   arr1 = travelApp.determineResults(
@@ -542,7 +532,6 @@ travelApp.getRecommendations = (res, statType1, statType2, statType3) => {
     arrDirections[0],
     iteration1
   );
-  console.log(arr1);
 
   // ITERATION 2
   arr2 = travelApp.determineResults(
@@ -551,7 +540,6 @@ travelApp.getRecommendations = (res, statType1, statType2, statType3) => {
     arrDirections[1],
     iteration2
   );
-  console.log(arr2);
 
   // ITERATION 3
   arr3 = travelApp.determineResults(
@@ -560,7 +548,6 @@ travelApp.getRecommendations = (res, statType1, statType2, statType3) => {
     arrDirections[2],
     iteration3
   );
-  console.log(arr3);
 
   // return the array with the final results
   return arr3;
@@ -604,8 +591,6 @@ travelApp.findDirections = (statType1, statType2, statType3) => {
     }
   });
 
-  console.log(travelApp.statNamesArray);
-  console.log(travelApp.statDescriptionArray);
   return [stat1Direction, stat2Direction, stat3Direction];
 };
 
@@ -748,7 +733,6 @@ travelApp.getPixa = country => {
 travelApp.storePixa = results => {
   // Store the array that holds the image URLs in an array
   const resultsArray = results[0].hits;
-  console.log(resultsArray);
   // Loop through the results array and push all images into the imageArray
   resultsArray.forEach(item => {
     // Array of images for each country
@@ -756,14 +740,12 @@ travelApp.storePixa = results => {
     // Array of image information from each country to be used for Alt text
     travelApp.imageTextArray.push(item.tags);
   });
-  console.log(travelApp.imageArray);
 };
 
 /* 7. DISPLAY DESTIONATIONS ON SCREEN WITH WIKI + PIXA RESULTS */
 travelApp.displayDestinations = (results, statChoices) => {
   // Get rid of previous clicked results
   $(".results").empty();
-  console.log(results);
   // Go through each country result and build the string literal to append to the page
   let countryCounter = 0;
   let imageCounter = 0;
@@ -771,15 +753,15 @@ travelApp.displayDestinations = (results, statChoices) => {
     // This element holds all elements for one country result
     let countryContainerElement = $("<div>")
       .addClass("result-container")
+      // assign random pixa image of country to the result background
       .css(
         "background-image",
         `url("${
-        travelApp.imageArray[
-        travelApp.randomize(imageCounter, imageCounter + 15)
-        ]
+          travelApp.imageArray[
+            travelApp.randomize(imageCounter, imageCounter + 15)
+          ]
         }")`
       );
-    // imageCounter += 20;
     // This element will hold all text and image(s) referring to the country result
     let countryCardElement = $("<div>").addClass("card");
     // This element holds the name of the country
@@ -798,21 +780,20 @@ travelApp.displayDestinations = (results, statChoices) => {
       "country-image-container"
     );
     // This new image counter gets the image in the array that follows the first image being used as a background image for the card
-    // let imageCounterSmall = imageCounter + 1;
     // This image element will be appended to the image container
     let smallPixaImage = $("<img>")
       .addClass("country-image")
       .attr({
         src: `${
           travelApp.imageArray[
-          travelApp.randomize(imageCounter, imageCounter + 15)
+            travelApp.randomize(imageCounter, imageCounter + 15)
           ]
-          }`,
+        }`,
         alt: `Scenic image of ${country.countryName}. Image tags include ${
           travelApp.imageTextArray
-          }.`
+        }.`
       });
-    // Add 20 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
+    // Add 15 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
     imageCounter += 15;
     //Append the country image to its container
     smallPixaContainerElement.append(smallPixaImage);
@@ -823,7 +804,6 @@ travelApp.displayDestinations = (results, statChoices) => {
       statListElement,
       smallPixaContainerElement
     );
-    // console.log(countryCardElement);
     // Append the card div to the result-container
     countryContainerElement.append(countryCardElement);
     //Append the result-container to the results section element on our page
@@ -839,11 +819,12 @@ travelApp.displayDestinations = (results, statChoices) => {
       let statValue = country[travelApp.statCodeArray[statCounter]];
       let statDescription = travelApp.statDescriptionArray[statCounter];
       statCounter++;
-      console.log(statTitle, statValue, statDescription);
       // This list item element will hold stat information
       let statListItemElement = $("<li>").addClass("stat-list__item");
       // This div will hold the stat title and question mark icon
-      let statTitleIconContainerElement = $('<div>').addClass('stat-list__item__title-icon-container');
+      let statTitleIconContainerElement = $("<div>").addClass(
+        "stat-list__item__title-icon-container"
+      );
       // This element holds the stat title and value
       let statTitleElement = $("<h4>")
         .addClass("stat-list__item__title-icon-container__title-number")
@@ -851,9 +832,14 @@ travelApp.displayDestinations = (results, statChoices) => {
       // This question mark icon will sit next to the statTitleElement and when clicked/hoverover, will display the stat description
       let statHoverIconElement = `<i class="stat-list__item__title-icon-container__icon far fa-question-circle"></i>`;
       // append the stat title and icon to the statTitleIconContainerElement
-      statTitleIconContainerElement.append(statTitleElement, statHoverIconElement);
+      statTitleIconContainerElement.append(
+        statTitleElement,
+        statHoverIconElement
+      );
       // This div will hold the stat description and is a sibling of the statTitleIconContainer.
-      let statDescriptionContainerElement = $('<div>').addClass('stat-list__item__description-container display-none');
+      let statDescriptionContainerElement = $("<div>").addClass(
+        "stat-list__item__description-container display-none"
+      );
       // This element holds the stat description
       let statDescriptionElement = $("<p>")
         .addClass("stat-list__item__description-container__description")
@@ -861,53 +847,97 @@ travelApp.displayDestinations = (results, statChoices) => {
       // Append the statDescriptionElement to the statDescriptionContainerElement
       statDescriptionContainerElement.append(statDescriptionElement);
       // Append the two stat div containers to the <li>
-      statListItemElement.append(statTitleIconContainerElement, statDescriptionContainerElement);
+      statListItemElement.append(
+        statTitleIconContainerElement,
+        statDescriptionContainerElement
+      );
       // Append the <li>s to the <ul>
       statListElement.append(statListItemElement);
     });
   });
 
-  console.log("IMAGES LOADING");
+  travelApp.finalDisplay();
+};
 
-  // Display the criterias to be chosen
-  $(".results").waitForImages(function () {
-    console.log("IMAGES LOADED");
+/*  7.1 Once all images are loaded as background images or regular images, display the final results without "lag"*/
+travelApp.finalDisplay = () => {
+  $(".results").waitForImages(function() {
     $(".results").css("display", "flex");
+
+    let flickityOrNot = "flex";
+    if (window.matchMedia("(max-width: 1100px)").matches) {
+      /* the viewport is at most 1100 pixels wide */
+      flickityOrNot = "block";
+    }
+
+    $(".results").css("display", flickityOrNot);
     $("html, body")
       .stop()
       .animate({ scrollTop: $(".results").offset().top }, 900, "swing");
 
     // remove loader and display submit ranking button again
-    let markUpButton = `<li><button class="user-submit">Submit Ranking</button></li>`;
+    let markUpButton = `<li><button class="user-submit btn">Submit Ranking</button></li>`;
     $(".choices")
       .find("li:last-child")
       .html(markUpButton);
+
+    /* FLICKITY */
+    $(".results").flickity({
+      // options
+      cellAlign: "left",
+      contain: true,
+      autoPlay: 5000,
+      pageDots: false,
+      watchCSS: true
+    });
   });
 };
 
-// On hover or click over the question mark icon, display the stat description
-travelApp.displayStatDescription = function () {
-  $('.results').on('click', '.stat-list__item__title-icon-container__icon', function () {
-    if ($(this).parents('.stat-list__item').find('.stat-list__item__description-container').hasClass('display-none') === false) {
-      $('.results').find('.stat-list__item__description-container').removeClass('display-none').addClass('display-none');
-    } else {
-      $('.results').find('.stat-list__item__description-container').addClass('display-none');
-      $(this).parents('.stat-list__item').find('.stat-list__item__description-container').removeClass('display-none');
+// 7.2 On hover or click over the question mark icon, display the stat description
+travelApp.displayStatDescription = function() {
+  $(".results").on(
+    "click",
+    ".stat-list__item__title-icon-container__icon",
+    function() {
+      if (
+        $(this)
+          .parents(".stat-list__item")
+          .find(".stat-list__item__description-container")
+          .hasClass("display-none") === false
+      ) {
+        $(".results")
+          .find(".stat-list__item__description-container")
+          .removeClass("display-none")
+          .addClass("display-none");
+      } else {
+        $(".results")
+          .find(".stat-list__item__description-container")
+          .addClass("display-none");
+        $(this)
+          .parents(".stat-list__item")
+          .find(".stat-list__item__description-container")
+          .removeClass("display-none");
+      }
     }
-  });
+  );
+};
+
+// This function holds all our events funtions
+travelApp.eventsFunction = () => {
+  travelApp.getUserPurpose();
+  travelApp.getStarted();
+  travelApp.transformSVG();
+  travelApp.displayStatDescription();
 };
 
 // Init function to hold all our functions in order
-travelApp.init = function () {
-  // This function calls all our apps events: 1. Inputs for travel types
+travelApp.init = function() {
   travelApp.eventsFunction();
   travelApp.slideDrag();
-  // travelApp.getUserInput();
-  // travelApp.displayStats();
 };
 
 // Document Ready to call our init() function and start the app
-$(function () {
+$(function() {
   travelApp.init();
 });
 
@@ -934,7 +964,7 @@ travelApp.randomize = (startingNum, endingNum) => {
 
 // 8.3 Event listener to transform SVGs into inline SVGS to be able to change their colors with css fill
 travelApp.transformSVG = () => {
-  jQuery("img.svg").each(function () {
+  jQuery("img.svg").each(function() {
     var $img = jQuery(this);
     var imgID = $img.attr("id");
     var imgClass = $img.attr("class");
@@ -942,7 +972,7 @@ travelApp.transformSVG = () => {
 
     jQuery.get(
       imgURL,
-      function (data) {
+      function(data) {
         // Get the SVG tag, ignore the rest
         var $svg = jQuery(data).find("svg");
 
