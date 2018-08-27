@@ -413,7 +413,7 @@ travelApp.getUserRankings = () => {
     // remove submit button and put a loader until the results come back
     $(".choices")
       .find("li:last-child")
-      .html(`<img class="loader" src="../../assets/spinner-1s-100px.gif">`);
+      .html(`<img class="loader" src="../../assets/spinner-1s-100px.svg">`);
 
     // get the user rankings from his ordering of stats and store in a variable
     let userRankings = $(".choices")[0].children;
