@@ -1,0 +1,142 @@
+.results {
+  width: 100%;
+  height: 100vh;
+  display: none;
+  position: relative;
+
+  /* enable Flickity by default */
+  &:after {
+    content: "flickity";
+    display: none; /* hide :after */
+  }
+}
+
+.result-container {
+  width: calc(100% / 3);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  padding-top: 1rem;
+}
+
+.card {
+  width: 80%;
+  margin: 0 auto;
+  padding: 3.25em 2em 2em 2em;
+  background-color: rgba(242, 242, 242, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid black;
+  border-radius: 3px;
+  box-shadow: 0px 1px 1px $color-1;
+  transition: 0.5s;
+
+  &:hover {
+    transition: 0.5s;
+    transform: scale(1.02);
+  }
+}
+
+.country-name {
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.wiki-text {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.country-image-container {
+  width: 100%;
+  height: 200px;
+}
+
+.country-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 1px 2px $color-1;
+  transition: 0.5s;
+
+  &:hover {
+    transition: transform 0.5s;
+    transform: scale(1.25);
+    border: 1px solid $color-1;
+  }
+}
+
+// All Stat information is stored in list
+.stat-list {
+  list-style-type: none;
+  padding: 0;
+  &__item {
+    position: relative;
+    &__title-icon-container {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid $color-1;
+
+      &__title-number {
+        font-size: 1.8rem;
+        margin: 0;
+        text-transform: uppercase;
+      }
+      &__icon {
+        margin-left: 1rem;
+        font-size: 2rem;
+        align-self: center;
+        &:hover {
+          cursor: pointer;
+        }
+        border-bottom: none;
+      }
+    }
+    &__description-container {
+      transform: scale(1.2);
+      margin-top: 1.2rem;
+      position: absolute;
+      top: 100%;
+      z-index: 2;
+      &__description {
+        margin-top: 0.25em;
+        font-size: 1.4rem;
+        background-color: $color-1;
+        border-radius: 4px;
+        padding: 10px;
+        position: relative;
+        color: $color-4;
+        &::before {
+          content: "";
+          border-top: 15px solid transparent;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 15px solid $color-1;
+          position: absolute;
+          left: 6%;
+          top: -28px;
+          margin: 0 2px;
+        }
+      }
+    }
+  }
+}
+
+.flickity-button {
+  background-color: $color-2;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: $color-1;
+    transition: 0.3s;
+  }
+
+  &:hover .flickity-button-icon {
+    transition: 0.3s;
+    fill: $color-2;
+  }
+}
