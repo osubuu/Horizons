@@ -401,7 +401,7 @@ travelApp.displayStats = purposeID => {
   });
 
   // append submit button
-  let markUpButton = `<li><button class="user-submit">Submit Ranking</button></li>`;
+  let markUpButton = `<li><button class="user-submit btn">Submit Ranking</button></li>`;
   $(".choices").append(markUpButton);
 
   travelApp.getUserRankings();
