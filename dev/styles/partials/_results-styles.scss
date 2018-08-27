@@ -3,7 +3,9 @@
   height: 100vh;
   display: none;
   position: relative;
+}
 
+.results {
   /* enable Flickity by default */
   &:after {
     content: "flickity";
