@@ -486,6 +486,8 @@ travelApp.getUserRankings = () => {
     travelApp.imageArray = [];
     travelApp.imageTextArray = [];
 
+    $(".results").flickity("destroy");
+
     travelApp.getStat(...statsForAPICall);
   });
 };
