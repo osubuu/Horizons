@@ -1,7 +1,3 @@
-/* =============================
-Portrait tablet and small desktops
-============================== */
-
 @media screen and (min-width: 1100px) {
   /* disable Flickity for large devices */
   .results:after {
@@ -9,6 +5,7 @@ Portrait tablet and small desktops
   }
 }
 
+// Set up styling for flickity (1 country card at a time)
 @media all and (max-width: 1100px) {
   .wrapper-sec {
     width: 80%;
@@ -46,6 +43,7 @@ Portrait tablet and small desktops
   }
 }
 
+// Reduce general size of purpose icons
 @media all and (max-width: 800px) {
   .travel-form {
     &__button-container {
@@ -59,12 +57,14 @@ Portrait tablet and small desktops
   }
 }
 
+// Reduce top margin for user submit button
 @media all and (max-height: 800px) {
   .user-submit {
     margin-top: 2rem;
   }
 }
 
+// Adjust margin spacing
 @media all and (max-height: 650px) {
   .welcome {
     &__logo-container {
@@ -79,6 +79,7 @@ Portrait tablet and small desktops
   }
 }
 
+// Adjust margin spacing in relation to high
 @media all and (max-height: 600px) {
   .welcome {
     &__logo-container {
@@ -104,10 +105,7 @@ Portrait tablet and small desktops
   }
 }
 
-/* =============================
-Landscape phone to portrait tablet
-============================== */
-
+// Center header due to smaller screen sizes
 @media all and (max-width: 650px) {
   .welcome {
     &__content {
@@ -133,6 +131,7 @@ Landscape phone to portrait tablet
     }
   }
 
+  // decrease size of purpose icons
   .travel-form {
     &__button-container {
       width: 14rem;
@@ -172,10 +171,7 @@ Landscape phone to portrait tablet
   }
 }
 
-/* =============================
-Landscape phones and down
-============================== */
-
+// Rearrange purpose icons for mobile (all taking 100% of width)
 @media all and (max-width: 500px) {
   html {
     font-size: 57.5%;
@@ -219,6 +215,7 @@ Landscape phones and down
   }
 }
 
+// Margin spacing adjustment
 @media all and (max-height: 550px) {
   .purpose-header {
     font-size: 2.5rem;
@@ -230,6 +227,7 @@ Landscape phones and down
   }
 }
 
+// General font decrease and flickity button adjustment
 @media all and (max-width: 400px) {
   html {
     font-size: 52.5%;
