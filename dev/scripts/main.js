@@ -340,7 +340,7 @@ travelApp.statArray = [
 /* 0. GET STARTED */
 travelApp.getStarted = () => {
   // Listens for click on GET STARTED BUTTON
-  $(".welcome__button").on("click", function() {
+  $(".welcome__button").on("click", function () {
     // Smooth scroll to next section
     $("html, body")
       .stop()
@@ -350,7 +350,7 @@ travelApp.getStarted = () => {
 
 /* 1. GET USER INPUT */
 travelApp.getUserPurpose = () => {
-  $(".travel-form__button").on("click", function() {
+  $(".travel-form__button").on("click", function () {
     // Store user input in variable
     const inputID = $(this).attr("id");
     travelApp.userPurpose = inputID;
@@ -409,57 +409,57 @@ travelApp.displayStats = purposeID => {
 
 /* 3. OBTAIN THE RANKING OF THE STATS FROM USER */
 travelApp.getUserRankings = () => {
-  $(".choices").on("click", ".user-submit", function() {
+  $(".choices").on("click", ".user-submit", function () {
     // remove submit button and put a loader until the results come back
     // .html(`<img class="loader" src="../../assets/spinner-1s-100px.svg">`);
     $(".choices").find(
       "li:last-child"
     ).html(`<svg class="lds-spinner loader" width="100px"  height="100px"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="background: none;"><g transform="rotate(0 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.9166666666666666s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(30 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.8333333333333334s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(60 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.75s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(90 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.6666666666666666s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(120 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.5833333333333334s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(150 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.5s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(180 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.4166666666666667s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(210 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.3333333333333333s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(240 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.25s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(270 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.16666666666666666s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(300 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.08333333333333333s" repeatCount="indefinite"></animate>
   </rect>
 </g><g transform="rotate(330 50 50)">
-  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#a5b452">
+  <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#fd9341">
     <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animate>
   </rect>
 </g></svg>`);
@@ -486,7 +486,7 @@ travelApp.getUserRankings = () => {
     travelApp.imageArray = [];
     travelApp.imageTextArray = [];
 
-    $(".results").flickity("destroy");
+    // $(".results").flickity("destroy");
 
     travelApp.getStat(...statsForAPICall);
   });
@@ -808,9 +808,9 @@ travelApp.displayDestinations = (results, statChoices) => {
       .css(
         "background-image",
         `url("${
-          travelApp.imageArray[
-            travelApp.randomize(imageCounter, imageCounter + 15)
-          ]
+        travelApp.imageArray[
+        travelApp.randomize(imageCounter, imageCounter + 15)
+        ]
         }")`
       );
     // This element will hold all text and image(s) referring to the country result
@@ -837,12 +837,12 @@ travelApp.displayDestinations = (results, statChoices) => {
       .attr({
         src: `${
           travelApp.imageArray[
-            travelApp.randomize(imageCounter, imageCounter + 15)
+          travelApp.randomize(imageCounter, imageCounter + 15)
           ]
-        }`,
+          }`,
         alt: `Scenic image of ${country.countryName}. Image tags include ${
           travelApp.imageTextArray
-        }.`
+          }.`
       });
     // Add 15 to the image counter ensures that every iteration through the forEach will add images to the associated coutries
     imageCounter += 15;
@@ -912,16 +912,16 @@ travelApp.displayDestinations = (results, statChoices) => {
 
 /*  7.1 Once all images are loaded as background images or regular images, display the final results without "lag"*/
 travelApp.finalDisplay = () => {
-  $(".results").waitForImages(function() {
+  $(".results").waitForImages(function () {
     $(".results").css("display", "flex");
 
     let flickityOrNot = "flex";
-    if (window.matchMedia("(max-width: 1100px)").matches) {
+    if (window.matchMedia("(max-width: 1920px)").matches) {
       /* the viewport is at most 1100 pixels wide */
       flickityOrNot = "block";
     }
 
-    $(".results").css("display", flickityOrNot);
+    // $(".results").css("display", flickityOrNot);
     $("html, body")
       .stop()
       .animate({ scrollTop: $(".results").offset().top }, 900, "swing");
@@ -945,11 +945,11 @@ travelApp.finalDisplay = () => {
 };
 
 // 7.2 On hover or click over the question mark icon, display the stat description
-travelApp.displayStatDescription = function() {
+travelApp.displayStatDescription = function () {
   $(".results").on(
     "click",
     ".stat-list__item__title-icon-container__icon",
-    function() {
+    function () {
       if (
         $(this)
           .parents(".stat-list__item")
@@ -982,13 +982,13 @@ travelApp.eventsFunction = () => {
 };
 
 // Init function to hold all our functions in order
-travelApp.init = function() {
+travelApp.init = function () {
   travelApp.eventsFunction();
   travelApp.slideDrag();
 };
 
 // Document Ready to call our init() function and start the app
-$(function() {
+$(function () {
   travelApp.init();
 });
 
@@ -1015,7 +1015,7 @@ travelApp.randomize = (startingNum, endingNum) => {
 
 // 8.3 Event listener to transform SVGs into inline SVGS to be able to change their colors with css fill
 travelApp.transformSVG = () => {
-  jQuery("img.svg").each(function() {
+  jQuery("img.svg").each(function () {
     var $img = jQuery(this);
     var imgID = $img.attr("id");
     var imgClass = $img.attr("class");
@@ -1023,7 +1023,7 @@ travelApp.transformSVG = () => {
 
     jQuery.get(
       imgURL,
-      function(data) {
+      function (data) {
         // Get the SVG tag, ignore the rest
         var $svg = jQuery(data).find("svg");
 
