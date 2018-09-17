@@ -204,6 +204,15 @@ p {
   font-size: 1.5rem;
   font-family: "Roboto", sans-serif; }
 
+a,
+a:visited {
+  color: #f2f2f2;
+  transition: 0.3s; }
+  a:hover,
+  a:visited:hover {
+    transition: 0.3s;
+    color: #fd9341; }
+
 .wrapper-prim {
   max-width: 1920px;
   margin: 0 auto; }
@@ -257,6 +266,8 @@ button,
     margin-top: 12px; }
   .welcome h1 {
     margin: 0; }
+  .welcome h4 {
+    font-size: 1.6rem; }
 
 .purpose-section {
   width: 100%;
