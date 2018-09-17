@@ -205,7 +205,7 @@ p {
   font-family: "Roboto", sans-serif; }
 
 .wrapper-prim {
-  max-width: 1440px;
+  max-width: 1920px;
   margin: 0 auto; }
 
 .wrapper-sec {
@@ -215,7 +215,7 @@ p {
 .background {
   width: 100%;
   height: 100vh;
-  background: #e2dbaa url(../../assets/road-cropped.jpg) center no-repeat fixed;
+  background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0)), url(../../assets/road-cropped.jpg) center no-repeat fixed;
   background-size: cover; }
 
 li {
@@ -264,7 +264,8 @@ button,
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #e2dbaa; }
+  background: #e2dbaa url(../../assets/road-cropped.jpg) center no-repeat fixed;
+  background-size: cover; }
 
 .purpose-container {
   height: 100vh;
@@ -282,7 +283,7 @@ button,
   flex-wrap: wrap;
   justify-content: center; }
   .travel-form__button-container {
-    background-color: #a5b452;
+    background-color: #fd9341;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -297,11 +298,11 @@ button,
     transition: 0.3s; }
     .travel-form__button-container:hover {
       background-color: rgba(40, 40, 40, 0.9);
-      color: #a5b452;
+      color: #fd9341;
       padding: 1.5rem; }
       .travel-form__button-container:hover .svg,
       .travel-form__button-container:hover .svg path {
-        fill: #a5b452; }
+        fill: #fd9341; }
     .travel-form__button-container h3 {
       margin: 0;
       text-transform: uppercase; }
@@ -327,7 +328,8 @@ input[type="radio"] {
 
 .criterias {
   width: 100%;
-  background-color: #e2dbaa;
+  background: #e2dbaa url(../../assets/road-cropped.jpg) center no-repeat fixed;
+  background-size: cover;
   display: none; }
 
 .criterias-container {
@@ -369,14 +371,15 @@ input[type="radio"] {
   padding: 0.5em;
   text-align: center;
   display: block;
-  background-image: linear-gradient(to top, rgba(242, 242, 242, 0.7), #f2f2f2);
+  background-image: linear-gradient(to top, rgba(254, 211, 144, 0.7), #fed390);
   border: 1px solid #282828;
   border-radius: 3px;
   color: #282828;
   margin-bottom: 2%;
-  box-shadow: 0px 1px 1px #282828; }
+  box-shadow: 0px 1px 1px #282828;
+  transition: all 0.3s; }
   .criteria:hover {
-    background-image: linear-gradient(to top, rgba(165, 180, 82, 0.9), #f2f2f2); }
+    background-image: linear-gradient(to bottom, rgba(254, 211, 144, 0.7), #fed390); }
 
 .user-submit {
   margin-top: 4rem;
@@ -394,8 +397,8 @@ input[type="radio"] {
   border-radius: 2px;
   box-shadow: 0px 17px 10px -10px rgba(0, 0, 0, 0.4);
   position: relative;
-  transition: 0.4s;
-  background: linear-gradient(to right, #282828 50%, #a5b452 50%);
+  transition: 0.3s;
+  background: #fd9341;
   background-size: 200% 100%;
   background-position: right bottom; }
   .btn:after {
@@ -405,11 +408,11 @@ input[type="radio"] {
     top: 4.5px;
     opacity: 0;
     right: -3px;
-    transition: 0.4s; }
+    transition: 0.3s; }
   .btn:hover {
     padding-right: 50px;
     padding-left: 30px;
-    color: #a5b452;
+    color: #282828;
     background-position: left bottom; }
   .btn:hover:after {
     opacity: 1;
