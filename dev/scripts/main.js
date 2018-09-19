@@ -503,8 +503,7 @@ travelApp.getStat = (statType1, statType2, statType3) => {
     }
   }).then(res => {
     // calling the calculation function to get the top n / bottom n countries
-
-    //finalResults holds the final 3 coutries and all of their stats
+    // finalResults holds the final 3 coutries and all of their stats
     let finalResults = travelApp.getRecommendations(res, statType1, statType2, statType3);
 
     // Get wiki and pixa extracts for each country
