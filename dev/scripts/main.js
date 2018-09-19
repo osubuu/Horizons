@@ -475,8 +475,11 @@ travelApp.getUserRankings = () => {
     travelApp.pixaPromiseArray = [];
     travelApp.imageArray = [];
     travelApp.imageTextArray = [];
+    travelApp.flickityOn = false;
 
-    $(".results").flickity("destroy");
+    if (travelApp.flickityOn === true) {
+      $(".results").flickity("destroy");
+    }
     $(".results").css("display", "none");
 
     travelApp.getStat(...statsForAPICall);
@@ -860,6 +863,8 @@ travelApp.finalDisplay = () => {
       pageDots: false,
       watchCSS: true
     });
+
+    travelApp.flickityOn === true;
   });
 };
 
