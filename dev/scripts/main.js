@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // IMPORT HEAP MODULE FROM NPM
 const MinHeap = require("fastpriorityqueue");
 
@@ -475,11 +477,17 @@ travelApp.getUserRankings = () => {
     travelApp.pixaPromiseArray = [];
     travelApp.imageArray = [];
     travelApp.imageTextArray = [];
-    travelApp.flickityOn = false;
 
+    // If flickity is not enabled yet, initialize a variable to keep track of whether it is enabled or not
+    if (!travelApp.flickityOn) {
+      travelApp.flickityOn = false;
+    }
+
+    // If flickity is enabled, "destroy" it so the results can be re-rendered without flickity conflicts
     if (travelApp.flickityOn === true) {
       $(".results").flickity("destroy");
     }
+
     $(".results").css("display", "none");
 
     travelApp.getStat(...statsForAPICall);
@@ -492,11 +500,11 @@ travelApp.getUserRankings = () => {
 travelApp.statKey = "5d3687c7c1788d5f";
 travelApp.statURL = "http://inqstatsapi.inqubu.com";
 travelApp.getStat = (statType1, statType2, statType3) => {
-  $.ajax({
-    url: travelApp.statURL,
+  axios({
     method: "GET",
-    dataType: "json",
-    data: {
+    url: travelApp.statURL,
+    dataResponse: "jsonp",
+    params: {
       api_key: travelApp.statKey,
       data: `hdi,${statType1},${statType2},${statType3}`,
       cmd: "getWorldData"
@@ -504,7 +512,7 @@ travelApp.getStat = (statType1, statType2, statType3) => {
   }).then(res => {
     // calling the calculation function to get the top n / bottom n countries
     // finalResults holds the final 3 coutries and all of their stats
-    let finalResults = travelApp.getRecommendations(res, statType1, statType2, statType3);
+    let finalResults = travelApp.getRecommendations(res.data, statType1, statType2, statType3);
 
     // Get wiki and pixa extracts for each country
     finalResults.forEach(countryObj => {
@@ -863,7 +871,7 @@ travelApp.finalDisplay = () => {
       watchCSS: true
     });
 
-    travelApp.flickityOn === true;
+    travelApp.flickityOn = true;
   });
 };
 
